@@ -1,24 +1,26 @@
-import logo from './logo.svg'
-import './App.css'
+import { QueryClient, QueryClientProvider } from 'react-query';
+import Router from './Router';
+import Header from './components/common/Header';
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+      staleTime: 60 * 1_000,
+      cacheTime: 300 * 1_000,
+      refetchOnWindowFocus: true,
+      keepPreviousData: true,
+    },
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
-    </div>
-  )
+    <QueryClientProvider client={queryClient}>
+      <Header />
+      <Router />
+    </QueryClientProvider>
+  );
 }
 
-export default App
+export default App;

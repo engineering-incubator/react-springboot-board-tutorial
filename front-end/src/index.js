@@ -1,27 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 3,
-      staleTime: 60 * 1_000,
-      cacheTime: 300 * 1_000,
-      refetchOnWindowFocus: true,
-      keepPreviousData: true,
-    },
-  },
-});
-
 ReactDOM.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <App />
   </React.StrictMode>,
   document.getElementById('root'),
 );
