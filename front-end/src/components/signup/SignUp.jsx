@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import InputText from '../common/InputText';
-import { idValidation, pwValidation } from '../../utils/validation';
+import { inputValidation } from '../../utils/validation';
+import { ID_VALIDATION, PW_VALIDATION } from '../../constants';
 
 const SignUp = () => {
   const [inputText, setInputText] = useState({
@@ -18,8 +19,8 @@ const SignUp = () => {
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
-    const isValid = idValidation(value);
-    console.log(value, isValid);
+    const reg = name === 'id' ? ID_VALIDATION : PW_VALIDATION;
+    const isValid = inputValidation(value, reg);
 
     setIsInputValid(() => {
       return {
@@ -34,14 +35,11 @@ const SignUp = () => {
     });
   };
 
-  // console.log(isInputValid);
-
   const handleChangeEmail = (e) => {
     const { value } = e.target;
     setInputEmail(value);
   };
 
-  // console.log(inputText, inputEmail);
   return (
     <main>
       <InputText
