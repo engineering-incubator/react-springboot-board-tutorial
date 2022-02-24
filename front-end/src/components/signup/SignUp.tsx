@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import InputText from '../common/InputText';
-import { inputValidation } from '../../utils/validation';
-import { ID_VALIDATION, PW_VALIDATION } from '../../constants';
+import React, { SyntheticEvent, useState } from 'react';
+import InputText from '_/components/common/InputText';
+import { inputValidation } from '_/utils/validation';
+import { ID_VALIDATION, PW_VALIDATION } from '_/constants';
 
 const SignUp = () => {
   const [inputText, setInputText] = useState({
@@ -17,7 +17,7 @@ const SignUp = () => {
 
   const [inputEmail, setInputEmail] = useState('');
 
-  const handleChangeInput = (e) => {
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const reg = name === 'id' ? ID_VALIDATION : PW_VALIDATION;
     const isValid = inputValidation(value, reg);
@@ -35,7 +35,7 @@ const SignUp = () => {
     });
   };
 
-  const handleChangeEmail = (e) => {
+  const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setInputEmail(value);
   };
