@@ -19,8 +19,8 @@ const SignUp = () => {
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const reg = name === 'id' ? ID_VALIDATION : PW_VALIDATION;
-    const isValid = inputValidation(value, reg);
+    const regType = name === 'id' ? ID_VALIDATION : PW_VALIDATION;
+    const isValid = inputValidation(value, regType);
 
     setIsInputValid(() => {
       return {
