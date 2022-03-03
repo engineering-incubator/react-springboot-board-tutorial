@@ -1,8 +1,6 @@
 package com.example.reactspringbootboardtutorial.article.dto;
 
 import com.example.reactspringbootboardtutorial.article.model.Article;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

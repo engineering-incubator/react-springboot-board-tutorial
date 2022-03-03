@@ -10,9 +10,6 @@ spring:
     username: example
     password: a&Cq@oq%FNcY@Vf#&R41hSry04t%JE!*
 
-  devtools:
-    livereload:
-      enabled: true
   jpa:
     hibernate:
       ddl-auto: validate

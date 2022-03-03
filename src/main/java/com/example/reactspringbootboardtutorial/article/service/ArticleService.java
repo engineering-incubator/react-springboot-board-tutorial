@@ -4,7 +4,9 @@ import com.example.reactspringbootboardtutorial.article.dto.ArticleCreateDto;
 import com.example.reactspringbootboardtutorial.article.dto.ArticleDetailsDto;
 import com.example.reactspringbootboardtutorial.article.model.Article;
 import com.example.reactspringbootboardtutorial.article.repository.ArticleRepository;
-import java.util.Optional;
+import com.example.reactspringbootboardtutorial.common.exception.CustomException;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,9 +17,16 @@ import org.springframework.stereotype.Service;
 public class ArticleService {
   private final ArticleRepository articleRepository;
 
+  public List<ArticleDetailsDto> getArticleList() {
+    List<Article> articles = articleRepository.findAll();
+    return articles.stream().map(ArticleDetailsDto::of).collect(Collectors.toList());
+  }
+
   public ArticleDetailsDto getArticle(Long articleId) {
-    Optional<Article> targetArticle = articleRepository.findById(articleId);
-    return targetArticle.map(ArticleDetailsDto::of).orElse(null);
+    Article article = articleRepository.findById(articleId)
+        .orElseThrow(() -> new CustomException("No article with that number."));
+
+    return ArticleDetailsDto.of(article);
   }
 
   public ArticleDetailsDto saveArticle(ArticleCreateDto articleCreateDto) {
@@ -29,13 +38,24 @@ public class ArticleService {
     return ArticleDetailsDto.of(articleRepository.save(article));
   }
 
-  public void deleteArticle(Long articleId) throws Exception {
-    Optional<Article> targetArticle = articleRepository.findById(articleId);
+  public void deleteArticle(Long articleId) {
+    Article article = articleRepository.findById(articleId)
+        .orElseThrow(() -> new CustomException("No article with that number."));
 
-    if (targetArticle.isPresent()) {
-      articleRepository.delete(targetArticle.get());
-    } else {
-      throw new Exception("No article with that number.");
+    try {
+      articleRepository.delete(article);
+    } catch(Exception e) {
+      throw new CustomException(e.getMessage());
     }
+  }
+
+  public ArticleDetailsDto updateArticle(Long articleId, ArticleCreateDto articleUpdateDto) {
+    Article article = articleRepository.findById(articleId)
+        .orElseThrow(() -> new CustomException("No article with that number."));
+
+    article.setTitle(articleUpdateDto.getTitle());
+    article.setContent(articleUpdateDto.getContent());
+
+    return ArticleDetailsDto.of(articleRepository.save(article));
   }
 }
