@@ -1,27 +1,25 @@
-import React, { SyntheticEvent } from 'react';
-import Input from '_/components/common/Input';
+import React from 'react';
 
-export type inputTextProps = {
-  text: string;
-} & inputTypes;
-
-export type inputTypes = {
+export type InputTypes = {
   type: string;
+  name: string;
+  text?: string;
   placeholder: string;
   value: string;
   handleChange(e: React.FormEvent<HTMLInputElement>): void;
 };
 
-const InputText = ({ type, value = '', placeholder, text, handleChange }: inputTextProps) => {
+const InputText = ({ type, name, value = '', placeholder, text, handleChange }: InputTypes) => {
   return (
     <div>
-      <label htmlFor={text}>{text}</label>
-      <Input
+      {!name && <label htmlFor={text}>{text}</label>}
+      <input
         type={type}
         value={value}
+        name={name}
         placeholder={placeholder}
-        handleChange={handleChange}
-        inputText={text || ''}
+        onChange={handleChange}
+        id={name}
       />
     </div>
   );
