@@ -6,21 +6,24 @@ import {
   PW_VALIDATION,
   EMAIL_VALIDATION,
   DOMAIN_VALIDATION,
+  DIGIT_FIRST_VALID,
+  DIGIT_SECOND_VALID,
+  DIGIT_THIRD_VALID,
   EMAIL_DOMAINS,
+  DIGITS,
 } from '_/constants';
+
+type inputType = HTMLInputElement | HTMLSelectElement;
 
 const SignUp = () => {
   const [inputText, setInputText] = useState({
     id: '',
     pw: '',
-    administrator: false,
-  });
-
-  const [isInputValid, setIsInputValid] = useState({
-    id: false,
-    pw: false,
-    email: false,
-    digit: false,
+    digit: {
+      first: '',
+      second: '',
+      third: '',
+    },
     administrator: false,
   });
 
@@ -30,12 +33,26 @@ const SignUp = () => {
     isInput: false,
   });
 
-  const handleChangeInput = (regType: RegExp) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  // NOTE  inputText, inputEmail 나눈것 처럼 valid 도 나누는게 나을지!?
+  const [inputValid, setInputValid] = useState({
+    id: false,
+    pw: false,
+    email: false,
+    domain: false,
+    digit: {
+      first: false,
+      second: false,
+      third: false,
+    },
+    administrator: false,
+  });
+
+  const handleChangeInput = <T extends inputType>(e: React.ChangeEvent<T>, regType: RegExp) => {
     const { name, value } = e.target;
     const isValid: boolean = inputValidation(value, regType);
 
-    setIsInputValid({
-      ...isInputValid,
+    setInputValid({
+      ...inputValid,
       [name]: isValid,
     });
 
@@ -45,44 +62,52 @@ const SignUp = () => {
     });
   };
 
-  const handleChangeEmail = (regType: RegExp) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+  const handleChangeDigit = <T extends inputType>(e: React.ChangeEvent<T>, regType: RegExp) => {
+    const { name, value } = e.target;
+    if (value.length >= 5) return;
+
+    const convertedName = name.split('.')[0];
+    const isValid: boolean = inputValidation(value, regType);
+
+    setInputValid({
+      ...inputValid,
+      digit: {
+        ...inputValid.digit,
+        [convertedName]: isValid,
+      },
+    });
+
+    setInputText({
+      ...inputText,
+      digit: {
+        ...inputText.digit,
+        [convertedName]: value,
+      },
+    });
+  };
+
+  const handleChangeEmail = <T extends inputType>(e: React.ChangeEvent<T>, regType: RegExp) => {
+    const { value, name } = e.target;
     const isValid = inputValidation(value, regType);
 
-    setIsInputValid({
-      ...isInputValid,
-      email: isValid,
+    setInputValid({
+      ...inputValid,
+      [name]: isValid,
     });
 
     setInputEmail({
       ...inputEmail,
-      email: value,
+      [name]: value,
     });
   };
 
-  const handleChangeEmailDomain = (regType: RegExp) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    const isValid = inputValidation(value, regType);
-
-    setIsInputValid({
-      ...isInputValid,
-      email: isValid,
-    });
-
-    setInputEmail({
-      ...inputEmail,
-      domain: value,
-    });
-  };
-
-  const handleChangeSelect = (regType: RegExp) => (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>, regType: RegExp) => {
     const { value } = e.target;
     const isInput = value === '직접입력';
     const isValid = inputValidation(value, regType);
-    console.log(isValid);
 
-    setIsInputValid({
-      ...isInputValid,
+    setInputValid({
+      ...inputValid,
       email: isValid,
     });
 
@@ -103,8 +128,9 @@ const SignUp = () => {
     }
   };
 
-  console.log(isInputValid);
-  console.log(inputEmail);
+  // console.log(inputText);
+  // console.log(inputEmail);
+  // console.log(inputValid);
 
   return (
     <main>
@@ -121,9 +147,11 @@ const SignUp = () => {
         text="아이디"
         placeholder="id를 입력해주세요"
         value={inputText.id}
-        handleChange={handleChangeInput(ID_VALIDATION)}
+        handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          handleChangeInput(e, ID_VALIDATION)
+        }
       />
-      {!isInputValid.id && !!inputText.id && (
+      {!inputValid.id && !!inputText.id && (
         <p>아이디는 5자 이상 15자 이하 영문+숫자만 가능합니다.</p>
       )}
       <InputText
@@ -132,9 +160,11 @@ const SignUp = () => {
         text="비밀번호"
         placeholder="pw를 입력해주세요"
         value={inputText.pw}
-        handleChange={handleChangeInput(PW_VALIDATION)}
+        handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          handleChangeInput(e, PW_VALIDATION)
+        }
       />
-      {!isInputValid.pw && !!inputText.pw && (
+      {!inputValid.pw && !!inputText.pw && (
         <p>패스워드는 최소8자 특수문자, 대문자, 숫자를 각각 최소 1개 포함하여야 합니다.</p>
       )}
       <div>
@@ -144,10 +174,17 @@ const SignUp = () => {
           text="이메일"
           placeholder="email을 입력해주세요"
           value={inputEmail.email}
-          handleChange={handleChangeEmail(EMAIL_VALIDATION)}
+          handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleChangeEmail(e, EMAIL_VALIDATION)
+          }
         />
         @
-        <select onChange={handleChangeSelect(DOMAIN_VALIDATION)}>
+        <select
+          id="emailDomain"
+          name="domain"
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            handleChangeSelect(e, DOMAIN_VALIDATION)
+          }>
           <option hidden={true} value="">
             선택하세요.
           </option>
@@ -156,15 +193,49 @@ const SignUp = () => {
             <option key={idx + 1}>{value}</option>
           ))}
         </select>
-        {inputEmail.isInput && (
+        <label htmlFor="emailDomain">
           <InputText
             type="text"
-            name="isInput"
+            name="domain"
+            disabled={!inputEmail.isInput}
             placeholder="domain을 입력해주세요"
             value={inputEmail.domain}
-            handleChange={handleChangeEmailDomain(DOMAIN_VALIDATION)}
+            handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChangeEmail(e, DOMAIN_VALIDATION)
+            }
           />
-        )}
+        </label>
+      </div>
+      <div>
+        <select
+          name="first.digit"
+          id="digit"
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            handleChangeDigit(e, DIGIT_FIRST_VALID)
+          }>
+          <option hidden={true}>선택하세요.</option>
+          {DIGITS.map((number, idx) => (
+            <option key={idx} value={number}>
+              {number}
+            </option>
+          ))}
+        </select>
+        <InputText
+          type="number"
+          name="second.digit"
+          value={inputText.digit.second}
+          handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleChangeDigit(e, DIGIT_SECOND_VALID)
+          }
+        />
+        <InputText
+          type="number"
+          name="third.digit"
+          value={inputText.digit.third}
+          handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleChangeDigit(e, DIGIT_THIRD_VALID)
+          }
+        />
       </div>
 
       <button onClick={handleSubmit}>submit</button>

@@ -4,12 +4,21 @@ export type InputTypes = {
   type: string;
   name: string;
   text?: string;
-  placeholder: string;
+  placeholder?: string;
   value: string;
+  disabled?: boolean;
   handleChange(e: React.FormEvent<HTMLInputElement>): void;
 };
 
-const InputText = ({ type, name, value = '', placeholder, text, handleChange }: InputTypes) => {
+const InputText = ({
+  type,
+  name,
+  text,
+  value = '',
+  placeholder,
+  disabled,
+  handleChange,
+}: InputTypes) => {
   return (
     <div>
       {!name && <label htmlFor={text}>{text}</label>}
@@ -17,6 +26,7 @@ const InputText = ({ type, name, value = '', placeholder, text, handleChange }: 
         type={type}
         value={value}
         name={name}
+        disabled={disabled}
         placeholder={placeholder}
         onChange={handleChange}
         id={name}
