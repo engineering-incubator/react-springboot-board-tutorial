@@ -4,11 +4,9 @@ export const PW_VALIDATION =
 
 export const DOMAIN_VALIDATION = /[A-Za-z0-9]([-_\.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
 
-export const EMAIL_VALIDATION = /^[a-zA-Z0-9]*$/;
+export const EMAIL_VALIDATION = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-export const DIGIT_FIRST_VALID = /[0-9]{3}/g;
-export const DIGIT_SECOND_VALID = /[0-9]{3, 4}/g;
-export const DIGIT_THIRD_VALID = /[0-9]{4}/g;
+export const DIGIT_VALIDATION = /[0-9]{3}-[0-9]{3,4}-[0-9]{4}/g;
 
 export const EMAIL_DOMAINS = [
   { domain: 'gmail', value: 'gmail.com' },
