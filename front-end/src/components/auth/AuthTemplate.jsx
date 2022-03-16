@@ -10,7 +10,6 @@ const AuthTemplateContainer = styled.div`
 	background: #fff;
 	display: flex;
 	justify-content: center;
-	align-item: center;
 `;
 
 const MainContainer = styled.div`
