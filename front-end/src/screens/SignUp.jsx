@@ -35,9 +35,9 @@ const SignUp = () => {
 			<AuthTemplate title="회원가입">
 				<Input placeholder="아이디" name="id" onChange={onChange} />
 				<Input placeholder="비밀번호" name="password" onChange={onChange} />
-				{!isPassword(state.password) && (
+				{state.password && !isPassword(state.password) && (
 					<ErrorMessage>
-						8 ~ 16자 영문, 숫자 조합으로 비밀번호를 설정해주세요.
+						💡 8 ~ 16자 영문, 숫자 조합으로 비밀번호를 설정해주세요.
 					</ErrorMessage>
 				)}
 				<Input
@@ -46,16 +46,18 @@ const SignUp = () => {
 					onChange={onChange}
 				/>
 				{state.password !== state.passwordConfirm && (
-					<ErrorMessage>비밀번호가 다릅니다.</ErrorMessage>
+					<ErrorMessage>💡 비밀번호가 다릅니다.</ErrorMessage>
 				)}
 				권한<Selection options={PERMISSIONS} onChange={onChange}></Selection>
 				<Input placeholder="이메일" name="email" onChange={onChange} />
-				{!isEmail(state.email) && (
-					<ErrorMessage>example@example.com 형식으로 입력해주세요</ErrorMessage>
+				{state.email && !isEmail(state.email) && (
+					<ErrorMessage>
+						💡 example@example.com 형식으로 입력해주세요
+					</ErrorMessage>
 				)}
 				<Input placeholder="전화번호" name="phoneNumber" onChange={onChange} />
-				{!isPhoneNumber(state.phoneNumber) && (
-					<ErrorMessage>000-0000-0000 형식으로 입력해주세요.</ErrorMessage>
+				{state.phoneNumber && !isPhoneNumber(state.phoneNumber) && (
+					<ErrorMessage>💡 000-0000-0000 형식으로 입력해주세요.</ErrorMessage>
 				)}
 				<Button>완료</Button>
 			</AuthTemplate>
