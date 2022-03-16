@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import Button from "../components/common/Button";
-import AuthTemplate from "../components/auth/AuthTemplate";
+import Template from "../components/common/Template";
 import Input from "../components/common/Input";
 import ErrorMessage from "../components/common/ErrorMessage";
 import Select from "../components/common/Select";
@@ -33,7 +33,7 @@ const SignUp = () => {
 
 	return (
 		<>
-			<AuthTemplate title="회원가입">
+			<Template title="회원가입">
 				<Input
 					placeholder="아이디"
 					name="id"
@@ -98,7 +98,7 @@ const SignUp = () => {
 				>
 					완료
 				</Button>
-			</AuthTemplate>
+			</Template>
 		</>
 	);
 };

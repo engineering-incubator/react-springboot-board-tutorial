@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const AuthTemplateContainer = styled.div`
+const TemplateContainer = styled.div`
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -28,14 +28,14 @@ const Title = styled.div`
 	padding: 1rem;
 `;
 
-const AuthTemplate = ({ title, children }) => {
+const Template = ({ title, children }) => {
 	return (
-		<AuthTemplateContainer>
+		<TemplateContainer>
 			<MainContainer>
 				<Title>{title}</Title>
 				{children}
 			</MainContainer>
-		</AuthTemplateContainer>
+		</TemplateContainer>
 	);
 };
-export default AuthTemplate;
+export default Template;
