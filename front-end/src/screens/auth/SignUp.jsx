@@ -1,11 +1,15 @@
 import React, { useReducer } from "react";
-import Button from "../components/common/Button";
-import Template from "../components/common/Template";
-import Input from "../components/common/Input";
-import ErrorMessage from "../components/common/ErrorMessage";
-import Select from "../components/common/Select";
-import { isPassword, isEmail, isPhoneNumber } from "../validation/SignUpRegEx";
-import { signUp } from "../api/authApi";
+import Button from "../../components/common/Button";
+import Template from "../../components/common/Template";
+import Input from "../../components/common/Input";
+import ErrorMessage from "../../components/common/ErrorMessage";
+import Select from "../../components/common/Select";
+import {
+	isPassword,
+	isEmail,
+	isPhoneNumber,
+} from "../../validation/SignUpRegEx";
+import { signUp } from "../../api/authApi";
 
 const PERMISSIONS = [
 	{ value: "admin", name: "admin" },

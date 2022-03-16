@@ -1,7 +1,7 @@
 import React from "react";
-import Button from "../components/common/Button";
-import Input from "../components/common/Input";
-import Template from "../components/common/Template";
+import Button from "../../components/common/Button";
+import Input from "../../components/common/Input";
+import Template from "../../components/common/Template";
 
 const SignIn = () => {
 	return (
