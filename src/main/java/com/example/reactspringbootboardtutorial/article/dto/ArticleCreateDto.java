@@ -1,6 +1,5 @@
 package com.example.reactspringbootboardtutorial.article.dto;
 
-import com.example.reactspringbootboardtutorial.article.model.Article;
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,13 +14,4 @@ public class ArticleCreateDto {
 
   @NotBlank
   private String content;
-
-  public Article toEntity(ArticleCreateDto articleCreateDto) {
-    Article article = new Article();
-
-    article.setTitle(articleCreateDto.getTitle());
-    article.setContent(articleCreateDto.getContent());
-
-    return article;
-  }
 }
