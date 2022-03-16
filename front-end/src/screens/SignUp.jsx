@@ -5,6 +5,8 @@ import Input from "../components/common/Input";
 import ErrorMessage from "../components/common/ErrorMessage";
 import Select from "../components/common/Select";
 import { isPassword, isEmail, isPhoneNumber } from "../validation/SignUpRegEx";
+import { signUp } from "../api/authApi";
+
 const PERMISSIONS = [
 	{ value: "admin", name: "admin" },
 	{ value: "manager", name: "manager" },
@@ -89,7 +91,13 @@ const SignUp = () => {
 				{phoneNumber && !isPhoneNumber(phoneNumber) && (
 					<ErrorMessage>💡 000-0000-0000 형식으로 입력해주세요.</ErrorMessage>
 				)}
-				<Button>완료</Button>
+				<Button
+					onClick={async () => {
+						await signUp(email, id, password, permission, phoneNumber);
+					}}
+				>
+					완료
+				</Button>
 			</AuthTemplate>
 		</>
 	);
