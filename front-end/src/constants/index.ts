@@ -15,3 +15,13 @@ export const EMAIL_DOMAINS = [
 ];
 
 export const DIGITS = ['010', '011', '016', '017', '018', '019'];
+
+export type QueryStringParams = { [key: string]: string | number | boolean };
+
+export const AXIOS_TYPE = {
+  POST: 'post',
+  DELETE: 'delete',
+  OPTIONS: 'options',
+  HEAD: 'head',
+} as const;
+export type AXIOS_TYPE = typeof AXIOS_TYPE[keyof typeof AXIOS_TYPE];
