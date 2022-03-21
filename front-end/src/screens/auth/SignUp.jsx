@@ -1,15 +1,15 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import Button from "../../components/common/Button";
 import Template from "../../components/common/Template";
 import Input from "../../components/common/Input";
 import ErrorMessage from "../../components/common/ErrorMessage";
 import Select from "../../components/common/Select";
 import {
-	isPassword,
-	isEmail,
-	isPhoneNumber,
+	isPasswordPattern,
+	isEmailPattern,
+	isPhoneNumberPattern,
 } from "../../validation/SignUpRegEx";
-import { signUp } from "../../api/authApi";
+import { register } from "../../api/authApi";
 
 const PERMISSIONS = [
 	{ value: "admin", name: "admin" },
@@ -22,8 +22,8 @@ const reducer = (state, action) => {
 		[action.name]: action.value,
 	};
 };
-
 const SignUp = () => {
+	const [isClickSubmitButton, setIsClickSubmitButton] = useState(false);
 	const [state, dispatch] = useReducer(reducer, {
 		id: "",
 		password: "",
@@ -34,7 +34,9 @@ const SignUp = () => {
 	});
 	const { id, password, passwordConfirm, permission, email, phoneNumber } =
 		state;
-
+	const requestRegister = async () => {
+						await	register(email, id, password, permission, phoneNumber);
+					}
 	return (
 		<>
 			<Template title="회원가입">
@@ -43,16 +45,18 @@ const SignUp = () => {
 					name="id"
 					onChange={(e) => dispatch(e.target)}
 				/>
+				{isClickSubmitButton && !id && <ErrorMessage>❕ 아이디를 입력해주세요</ErrorMessage>}
 				<Input
 					placeholder="비밀번호"
 					name="password"
 					onChange={(e) => dispatch(e.target)}
 				/>
-				{password && !isPassword(password) && (
+				{password && !isPasswordPattern(password) && (
 					<ErrorMessage>
 						💡 8 ~ 16자 영문, 숫자 조합으로 비밀번호를 설정해주세요.
 					</ErrorMessage>
 				)}
+				{isClickSubmitButton && !password && <ErrorMessage>❕ 비밀번호를 입력해주세요</ErrorMessage>}
 				<Input
 					placeholder="비밀번호 확인"
 					name="passwordConfirm"
@@ -61,6 +65,7 @@ const SignUp = () => {
 				{password !== passwordConfirm && (
 					<ErrorMessage>💡 비밀번호가 다릅니다.</ErrorMessage>
 				)}
+				{isClickSubmitButton && !passwordConfirm && <ErrorMessage>❕ 비밀번호 확인을 입력해주세요</ErrorMessage>}
 				권한
 				<Select
 					onChange={(e) => {
@@ -79,11 +84,12 @@ const SignUp = () => {
 					name="email"
 					onChange={(e) => dispatch(e.target)}
 				/>
-				{email && !isEmail(email) && (
+				{email && !isEmailPattern(email) && (
 					<ErrorMessage>
 						💡 example@example.com 형식으로 입력해주세요
 					</ErrorMessage>
 				)}
+				{isClickSubmitButton && !email && <ErrorMessage>❕ 이메일을 입력해주세요</ErrorMessage>}
 				<Input
 					placeholder="전화번호"
 					name="phoneNumber"
@@ -92,14 +98,11 @@ const SignUp = () => {
 						console.log(state);
 					}}
 				/>
-				{phoneNumber && !isPhoneNumber(phoneNumber) && (
+				{phoneNumber && !isPhoneNumberPattern(phoneNumber) && (
 					<ErrorMessage>💡 000-0000-0000 형식으로 입력해주세요.</ErrorMessage>
 				)}
-				<Button
-					onClick={async () => {
-						await	signUp(email, id, password, permission, phoneNumber);
-					}}
-				>
+				{isClickSubmitButton && !phoneNumber && <ErrorMessage>❕ 전화번호를 입력해주세요</ErrorMessage>}
+				<Button	onClick={() => { setIsClickSubmitButton(true); }}>
 					완료
 				</Button>
 			</Template>

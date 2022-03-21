@@ -1,5 +1,5 @@
 import client from "./client";
-export const signUp = async({
+export const register = async({
     email,
     loginId,
     password,
