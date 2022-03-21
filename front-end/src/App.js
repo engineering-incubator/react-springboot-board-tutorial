@@ -5,8 +5,8 @@ import Home from "./screens/Home";
 import SignUp from "./screens/auth/SignUp";
 import SignIn from "./screens/auth/SignIn";
 import Template from "./components/common/Template";
-import ArticleList from "./screens/board/ArticleList";
-import Article from "./screens/board/Article";
+import ArticleList from "./screens/article/ArticleList";
+import Article from "./screens/article/Article";
 
 const Header = styled.div``;
 
