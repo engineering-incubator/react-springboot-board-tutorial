@@ -1,25 +1,51 @@
 import React from "react";
-import styled from "styled-components";
+import Button from "../../components/common/Button";
+import Input from "../../components/common/Input";
 import Template from "../../components/common/Template";
+import ArticleItem from "../../components/article/ArticleItem";
 
-export const ArticleContainer = styled.select`
-	margin: 10px 0;
-	display: block;
-	width: 100%;
-	padding: 5px;
-	font-size: 1rem;
-	border: 1px solid;
-`;
-
-const Article = ({data}) => {
-	const { article_id, title, content, created_at, modified_at } = data.data;
+const sampleDate = [{
+		article_id: 1,
+		title: '첫번째 제목',
+		content: '첫번쨰 글 내용',
+		created_at: '2022-03-21',
+		modified_at: '2022-03-22'
+	},
+		{
+		article_id: 2,
+		title: '두번째 제목',
+		content: '두번쨰 글 내용',
+		created_at: '2022-03-21',
+		modified_at: '2022-03-22'
+		},
+		{
+		article_id: 3,
+		title: '세번째 제목',
+		content: '세번쨰 글 내용',
+		created_at: '2022-03-21',
+		modified_at: '2022-03-22'
+		},
+		{
+		article_id: 4,
+		title: '네번째 제목',
+		content: '네번쨰 글 내용',
+		created_at: '2022-03-21',
+		modified_at: '2022-03-22'
+	},
+	]
+const Article = () => {
+	const test = {
+		article_id: 1,
+		title: '첫번째 제목',
+		content: '첫번째 글 내용',
+		created_at: '2022-03-21',
+		modified_at: '2022-03-22'
+	}
 	return (
 		<>
-			<Template title='글 상세'>
-			<ArticleContainer>
-				<div>{title}</div>
-				</ArticleContainer>
-				</Template>
+			<Template title="글 상세">
+				<ArticleItem data={test}></ArticleItem>			
+			</Template>
 		</>
 	);
 };
