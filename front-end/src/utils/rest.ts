@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 const RestWithCredentials = (options?: AxiosRequestConfig) =>
-  axios.create({ withCredentials: true, timeout: 5000, ...options });
+  axios.create({ withCredentials: true, timeout: 2000, ...options });
 
-export default RestWithCredentials();
+export default RestWithCredentials;

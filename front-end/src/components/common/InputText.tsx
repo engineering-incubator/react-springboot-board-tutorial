@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from '@emotion/styled';
 
 export type InputTypes = {
   type: string;
@@ -20,9 +21,9 @@ const InputText = ({
   handleChange,
 }: InputTypes) => {
   return (
-    <div>
+    <StyledInputWrap>
       {!name && <label htmlFor={text}>{text}</label>}
-      <input
+      <StyledInput
         type={type}
         value={value}
         name={name}
@@ -31,8 +32,21 @@ const InputText = ({
         onChange={handleChange}
         id={name}
       />
-    </div>
+    </StyledInputWrap>
   );
 };
+
+const StyledInputWrap = styled.div`
+  flex: 1;
+`;
+
+const StyledInput = styled.input`
+  width: 100%;
+  height: 35px;
+  padding-left: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+`;
 
 export default InputText;
