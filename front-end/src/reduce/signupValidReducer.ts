@@ -15,12 +15,12 @@ interface StateType {
 }
 
 export const signupValidInitialState = {
-  id: false,
-  pw: false,
-  digit: false,
-  email: false,
-  domain: false,
-  permission: false,
+  id: true,
+  pw: true,
+  digit: true,
+  email: true,
+  domain: true,
+  permission: true,
 };
 
 export const signupValidReducer = (state: StateType, action: ActionType) => {

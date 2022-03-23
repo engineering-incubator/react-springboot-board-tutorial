@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 export const StyledCommonWrap = styled.main`
+  padding: 0 10px;
   background-color: white;
 `;
 

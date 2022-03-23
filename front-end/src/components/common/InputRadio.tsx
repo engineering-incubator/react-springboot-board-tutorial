@@ -1,17 +1,15 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { css } from '@emotion/css';
 import { PERMISSION_TYPE } from '_/constants';
 
 interface InputRadioProps {
   name: string;
-  text: PERMISSION_TYPE;
+  text: string;
   isChecked: boolean;
   onChangeRadio: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isError?: boolean;
 }
 
-const InputRadio = ({ name, text, isChecked, onChangeRadio, isError }: InputRadioProps) => {
+const InputRadio = ({ name, text, isChecked, onChangeRadio }: InputRadioProps) => {
   return (
     <StyledLabel htmlFor={text} isChecked={isChecked}>
       <StyledInputRadio

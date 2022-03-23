@@ -3,11 +3,11 @@ import styled from '@emotion/styled';
 import InputText from '_/components/common/InputText';
 import InputRadio from '_/components/common/InputRadio';
 import { inputValidation } from '_/utils/validation';
-import { ID_VALIDATION, DOMAIN_VALIDATION } from '_/config';
-import { EMAIL_DOMAINS, PERMISSION_TYPE, PERMISSION_KIND } from '_/constants';
+import { EMAIL_DOMAINS, ID_VALIDATION, DOMAIN_VALIDATION } from '_/config';
+import { PERMISSIONS, PERMISSION_KIND, ERROR_SIGNUP_TEXT, ERROR_SIGNUP } from '_/constants';
 import { getValidationReg, typeValidation } from '_/utils/validation';
 import { signupReducer, signupInitialState } from '_/reduce/signupReducer';
-import { signupValidReducer, signupValidInitialState } from '_/reduce/singupValidReducer';
+import { signupValidReducer, signupValidInitialState } from '_/reduce/signupValidReducer';
 import { SIGNUP_CHANGE, SIGNUP_VALIDATION } from '_/reduce/actions';
 import {
   StyledCommonWrap,
@@ -17,13 +17,14 @@ import {
   StyledCommonSelectWrap,
   StyledCommonSelectBox,
 } from '_/styles/common';
+import ErrorText from '_/components/common/ErrorNotice';
 
 const SignUp = () => {
   const [inputState, dispatch] = useReducer(signupReducer, signupInitialState);
   const [inputValidState, dispatchValid] = useReducer(signupValidReducer, signupValidInitialState);
   const [isEmailManual, setIsEmailManual] = useState<boolean>(false);
 
-  const { id, pw, digit, email, domain } = inputState;
+  const { id, pw, digit, email, domain, permission } = inputState;
   const {
     id: idValid,
     pw: pwValid,
@@ -84,7 +85,9 @@ const SignUp = () => {
     setIsEmailManual(false);
   };
 
-  const onChangeRadio = (name: string, value: string) => {
+  const onChangeRadio = (value: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+
     dispatch({
       type: SIGNUP_CHANGE,
       payload: {
@@ -102,8 +105,9 @@ const SignUp = () => {
   };
 
   const isComplete = Object.values(inputState).every((i) => !!i);
-  console.log(inputState);
-  console.log(isComplete);
+  // console.log(inputValidState);
+  // console.log(inputState);
+  // console.log(isComplete);
   const handleSubmit = () => {
     // const { id: idValue, pw: pwValue } = inputText;
     // if (!idValue) {
@@ -123,15 +127,14 @@ const SignUp = () => {
             {PERMISSION_KIND.map((i) => (
               <InputRadio
                 name="permission"
-                text={PERMISSION_TYPE[i]}
-                isChecked={inputState.permission === PERMISSION_TYPE[i]}
-                onChangeRadio={(e) => onChangeRadio(e.target.name, PERMISSION_TYPE[i])}
-                isError={!permissionValid}
+                text={PERMISSIONS[i]}
+                isChecked={inputState.permission === PERMISSIONS[i]}
+                onChangeRadio={onChangeRadio(PERMISSIONS[i])}
                 key={i}
               />
             ))}
           </StyledPermission>
-          <StyledNotice>셋중 하나를 선택해주세요.</StyledNotice>
+          <ErrorText text={ERROR_SIGNUP.PERMISSIONS} />
         </StyledArea>
 
         <StyledArea>
@@ -141,10 +144,9 @@ const SignUp = () => {
             text="아이디"
             placeholder="id를 입력해주세요"
             value={id}
-            handleChange={onChangeInput}
+            onChangeInput={onChangeInput}
           />
-          <StyledNotice>아이디는 5자 이상 15자 이하 영문+숫자만 가능합니다.</StyledNotice>
-          {/* !idValid && !!id  */}
+          <ErrorText text={ERROR_SIGNUP.ID} />
         </StyledArea>
         <StyledArea>
           <InputText
@@ -153,12 +155,9 @@ const SignUp = () => {
             text="비밀번호"
             placeholder="pw를 입력해주세요"
             value={pw}
-            handleChange={onChangeInput}
+            onChangeInput={onChangeInput}
           />
-          <StyledNotice>
-            패스워드는 최소8자 특수문자, 대문자, 숫자를 각각 최소 1개 포함하여야 합니다.
-          </StyledNotice>
-          {/* {!pwValid && !!pw && } */}
+          <ErrorText text={ERROR_SIGNUP.PW} />
         </StyledArea>
 
         <StyledArea>
@@ -169,7 +168,7 @@ const SignUp = () => {
               text="이메일"
               placeholder="email을 입력해주세요"
               value={email}
-              handleChange={onChangeInput}
+              onChangeInput={onChangeInput}
             />
             <StyledEmailUnit>@</StyledEmailUnit>
             {
@@ -181,7 +180,7 @@ const SignUp = () => {
                       name="domain"
                       placeholder="domain을 입력해주세요"
                       value={domain}
-                      handleChange={onChangeInput}
+                      onChangeInput={onChangeInput}
                     />
                     <StyledRevertButton type="button" onClick={onClickEmailDirectCancel} />
                   </StyledDomainWrap>
@@ -206,7 +205,7 @@ const SignUp = () => {
               </>
             }
           </StyledEmailArea>
-          <StyledNotice>email 형식에 맞춰주세요</StyledNotice>
+          <ErrorText text={ERROR_SIGNUP.EMAIL} />
         </StyledArea>
 
         <StyledArea>
@@ -216,9 +215,9 @@ const SignUp = () => {
             text="전화번호"
             placeholder="전화번호를 입력해주세요"
             value={digit}
-            handleChange={onChangeInput}
+            onChangeInput={onChangeInput}
           />
-          <StyledNotice>{'전화번호는 "-" 제외 숫자만 입력해주세요.'}</StyledNotice>
+          <ErrorText text={ERROR_SIGNUP.DIGIT} />
         </StyledArea>
 
         <StyledCommonButton isPositive={isComplete} onClick={handleSubmit}>
@@ -241,14 +240,9 @@ const StyledSignupWrap = styled.article`
   max-width: 400px;
   margin: 0 auto;
   border: 1px solid #eee;
+  border-radius: 4px;
   padding: 10px;
   box-sizing: border-box;
-`;
-
-const StyledNotice = styled.p`
-  padding-top: 12px;
-  font-size: 12px;
-  color: gray;
 `;
 
 const StyledEmailArea = styled.div`

@@ -8,7 +8,7 @@ export type InputTypes = {
   placeholder?: string;
   value: string;
   disabled?: boolean;
-  handleChange(e: React.FormEvent<HTMLInputElement>): void;
+  onChangeInput(e: React.FormEvent<HTMLInputElement>): void;
 };
 
 const InputText = ({
@@ -18,7 +18,7 @@ const InputText = ({
   value = '',
   placeholder,
   disabled,
-  handleChange,
+  onChangeInput,
 }: InputTypes) => {
   return (
     <StyledInputWrap>
@@ -29,7 +29,7 @@ const InputText = ({
         name={name}
         disabled={disabled}
         placeholder={placeholder}
-        onChange={handleChange}
+        onChange={onChangeInput}
         id={name}
       />
     </StyledInputWrap>

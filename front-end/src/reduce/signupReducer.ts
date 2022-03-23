@@ -1,5 +1,5 @@
 import { SIGNUP_CHANGE } from '_/reduce/actions';
-import { PERMISSION_TYPE } from '_/constants';
+import { PERMISSION_TYPE, PERMISSIONS } from '_/constants';
 
 interface ActionType {
   type: string;
@@ -23,7 +23,7 @@ export const signupInitialState = {
   digit: '',
   email: '',
   domain: '',
-  permission: PERMISSION_TYPE.NONE,
+  permission: PERMISSIONS.NONE,
 };
 
 export const signupReducer = (state: StateType, action: ActionType) => {
