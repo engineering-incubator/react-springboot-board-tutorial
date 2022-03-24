@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { PERMISSION_TYPE } from '_/constants';
 
 interface InputRadioProps {
   name: string;

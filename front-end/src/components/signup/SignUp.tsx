@@ -1,14 +1,12 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import InputText from '_/components/common/InputText';
 import InputRadio from '_/components/common/InputRadio';
 import { inputValidation } from '_/utils/validation';
 import { EMAIL_DOMAINS, ID_VALIDATION, DOMAIN_VALIDATION } from '_/config';
-import { PERMISSIONS, PERMISSION_KIND, ERROR_SIGNUP_TEXT, ERROR_SIGNUP } from '_/constants';
+import { PERMISSIONS, PERMISSION_KIND, ERROR_SIGNUP } from '_/constants';
 import { getValidationReg, typeValidation } from '_/utils/validation';
-import { signupReducer, signupInitialState } from '_/reduce/signupReducer';
-import { signupValidReducer, signupValidInitialState } from '_/reduce/signupValidReducer';
-import { SIGNUP_CHANGE, SIGNUP_VALIDATION } from '_/reduce/actions';
+import { SIGNUP_CHANGE } from '_/reduce/actions';
 import {
   StyledCommonWrap,
   StyledCommonCenter,
@@ -18,40 +16,31 @@ import {
   StyledCommonSelectBox,
 } from '_/styles/common';
 import ErrorText from '_/components/common/ErrorNotice';
+import { useSignupDispatch, useSignupState } from '_/context/SignContext';
 
 const SignUp = () => {
-  const [inputState, dispatch] = useReducer(signupReducer, signupInitialState);
-  const [inputValidState, dispatchValid] = useReducer(signupValidReducer, signupValidInitialState);
+  const { input } = useSignupState();
+  const dispatch = useSignupDispatch();
+  const { id, pw, digit, email, domain, permission } = input;
   const [isEmailManual, setIsEmailManual] = useState<boolean>(false);
-
-  const { id, pw, digit, email, domain, permission } = inputState;
-  const {
-    id: idValid,
-    pw: pwValid,
-    email: emailValid,
-    domain: domainValid,
-    digit: digitValid,
-    permission: permissionValid,
-  } = inputValidState;
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const regType = getValidationReg(name as typeValidation) || ID_VALIDATION;
     const isValid: boolean = inputValidation(value, regType);
 
+    console.log(name, isValid);
     dispatch({
       type: SIGNUP_CHANGE,
       payload: {
-        name,
-        value,
-      },
-    });
-
-    dispatchValid({
-      type: SIGNUP_VALIDATION,
-      payload: {
-        name,
-        value: isValid,
+        input: {
+          name,
+          value,
+        },
+        valid: {
+          name,
+          isValid,
+        },
       },
     });
   };
@@ -67,16 +56,14 @@ const SignUp = () => {
     dispatch({
       type: SIGNUP_CHANGE,
       payload: {
-        name,
-        value: isManual ? '' : value,
-      },
-    });
-
-    dispatchValid({
-      type: SIGNUP_VALIDATION,
-      payload: {
-        name: 'domain',
-        value: isValid,
+        input: {
+          name,
+          value: isManual ? '' : value,
+        },
+        valid: {
+          name,
+          isValid,
+        },
       },
     });
   };
@@ -91,22 +78,22 @@ const SignUp = () => {
     dispatch({
       type: SIGNUP_CHANGE,
       payload: {
-        name,
-        value,
-      },
-    });
-    dispatchValid({
-      type: SIGNUP_VALIDATION,
-      payload: {
-        name,
-        value: true,
+        input: {
+          name,
+          value,
+        },
+        valid: {
+          name,
+          isValid: true,
+        },
       },
     });
   };
 
-  const isComplete = Object.values(inputState).every((i) => !!i);
-  // console.log(inputValidState);
-  // console.log(inputState);
+  // const isInputComplete = Object.values(inputState.input).every((i) => !!i);
+  // const isValidComplete = Object.values(inputState.valid).every((i) => i);
+
+  // console.log(inputState.input);
   // console.log(isComplete);
   const handleSubmit = () => {
     // const { id: idValue, pw: pwValue } = inputText;
@@ -128,7 +115,7 @@ const SignUp = () => {
               <InputRadio
                 name="permission"
                 text={PERMISSIONS[i]}
-                isChecked={inputState.permission === PERMISSIONS[i]}
+                isChecked={permission === PERMISSIONS[i]}
                 onChangeRadio={onChangeRadio(PERMISSIONS[i])}
                 key={i}
               />
@@ -191,10 +178,9 @@ const SignUp = () => {
                         name="domain"
                         defaultValue={'default'}
                         onChange={onChangeSelect}>
-                        <option disabled value="default">
+                        <option disabled hidden value="default">
                           선택하세요.
                         </option>
-                        <option key={0}>직접입력</option>
                         {EMAIL_DOMAINS.map(({ value }, idx) => (
                           <option key={idx + 1}>{value}</option>
                         ))}
@@ -220,7 +206,8 @@ const SignUp = () => {
           <ErrorText text={ERROR_SIGNUP.DIGIT} />
         </StyledArea>
 
-        <StyledCommonButton isPositive={isComplete} onClick={handleSubmit}>
+        {/* <StyledCommonButton isPositive={isInputComplete && isValidComplete} onClick={handleSubmit}> */}
+        <StyledCommonButton isPositive={false} onClick={handleSubmit}>
           회원가입
         </StyledCommonButton>
       </StyledSignupWrap>

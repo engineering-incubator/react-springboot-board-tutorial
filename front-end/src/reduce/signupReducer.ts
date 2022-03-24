@@ -1,39 +1,56 @@
+import { Dispatch } from 'react';
 import { SIGNUP_CHANGE } from '_/reduce/actions';
 import { PERMISSION_TYPE, PERMISSIONS } from '_/constants';
 
-interface ActionType {
-  type: string;
-  payload: {
-    [key: string]: string;
+export interface StateType {
+  input: {
+    [key: string]: string | PERMISSION_TYPE;
+  };
+  valid: {
+    [key: string]: string | boolean;
   };
 }
 
-interface StateType {
-  id: string;
-  pw: string;
-  digit: string;
-  email: string;
-  domain: string;
-  permission: PERMISSION_TYPE;
-}
+export type SignupDispatch = Dispatch<ActionType>;
+
+type ActionType = { type: 'SIGNUP_CHANGE'; payload: StateType };
 
 export const signupInitialState = {
-  id: '',
-  pw: '',
-  digit: '',
-  email: '',
-  domain: '',
-  permission: PERMISSIONS.NONE,
+  input: {
+    id: '',
+    pw: '',
+    digit: '',
+    email: '',
+    domain: '',
+    permission: PERMISSIONS.NONE,
+  },
+  valid: {
+    id: true,
+    pw: true,
+    digit: true,
+    email: true,
+    domain: true,
+    permission: true,
+  },
 };
 
-export const signupReducer = (state: StateType, action: ActionType) => {
+export const reducer = (state: StateType, action: ActionType) => {
+  const { name, value } = action.payload.input;
+  const { isValid } = action.payload.valid;
+
   switch (action.type) {
     case SIGNUP_CHANGE:
       return {
-        ...state,
-        [action.payload.name]: action.payload.value,
+        input: {
+          ...state.input,
+          [name]: value,
+        },
+        valid: {
+          ...state.valid,
+          [name]: isValid,
+        },
       };
     default:
-      return state;
+      throw new Error('Unhandled action');
   }
 };

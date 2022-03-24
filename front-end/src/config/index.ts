@@ -10,6 +10,7 @@ export const EMAIL_VALIDATION = /[0-9a-zA-Z]([-_\.]?[\w])/g;
 export const DIGIT_VALIDATION = /^01([0|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
 export const EMAIL_DOMAINS = [
+  { domain: '', value: '직접입력' },
   { domain: 'gmail', value: 'gmail.com' },
   { domain: 'naver', value: 'naver.com' },
   { domain: 'kakao', value: 'kakao.com' },
