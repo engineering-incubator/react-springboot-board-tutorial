@@ -7,12 +7,12 @@ export default function SignUp() {
   const formRef = useRef();
   const history = useHistory();
   const [userSignUpData, setUserSignUpData] = useState({
-    permission: "",
-    username: "martin",
-    password: "dudgns123!",
-    passwordConfirm: "dudgns123!",
-    email: "tarry24@naver.com",
-    phoneNumber: "010-1234-1234",
+    permission: "USER",
+    username: "",
+    password: "",
+    passwordConfirm: "",
+    email: "",
+    phoneNumber: "",
   });
 
   const onChangeUserData = (type, value) => {
@@ -27,7 +27,10 @@ export default function SignUp() {
         alert("모든 값을 입력하세요.");
         return;
       }
-      const res = await axios.post("/api", submitUserSignUpData);
+      const res = await axios.post(
+        "/api/v1/authentication/sign-up",
+        submitUserSignUpData,
+      );
       if (res.data.code !== "SUCCESS") {
         alert(res.data.message);
         return;
