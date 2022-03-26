@@ -1,0 +1,11 @@
+{
+  "code": "SUCCESS",
+  "message":  "",
+  "content": {
+    "email": "test@naver.com",
+    "password": "123456abc*",
+    "permission": "ADMIN",
+    "phoneNumber": "010-1234-1234",
+    "username": "mochi"
+  }
+}
