@@ -7,7 +7,6 @@ import {
   validateUserName,
 } from "../utilites/inputValidation";
 import { isEmpty } from "../../utilites/typeGuard/typeGuard";
-import { email } from "../../utilites/validates/rules/userValidationsRules";
 
 export default React.forwardRef(function SignUpForm(
   { onChangeUserData, userSignUpData, submitValidationError },
@@ -106,6 +105,7 @@ export default React.forwardRef(function SignUpForm(
         <div>
           <label>
             <input
+              checked={userSignUpData.permission === "ADMIN"}
               type="radio"
               name="Permission"
               onChange={onChangePermission}
@@ -114,6 +114,7 @@ export default React.forwardRef(function SignUpForm(
           </label>
           <label>
             <input
+              checked={userSignUpData.permission === "MANAGER"}
               type="radio"
               name="Permission"
               onChange={onChangePermission}
@@ -122,7 +123,7 @@ export default React.forwardRef(function SignUpForm(
           </label>
           <label>
             <input
-              checked
+              checked={userSignUpData.permission === "USER"}
               type="radio"
               name="Permission"
               onChange={onChangePermission}
