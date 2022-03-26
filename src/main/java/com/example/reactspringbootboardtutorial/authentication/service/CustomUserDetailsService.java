@@ -3,6 +3,7 @@ package com.example.reactspringbootboardtutorial.authentication.service;
 import com.example.reactspringbootboardtutorial.authentication.dto.SignUpRequestDto;
 import com.example.reactspringbootboardtutorial.authentication.model.User;
 import com.example.reactspringbootboardtutorial.authentication.repository.UserRepository;
+import com.example.reactspringbootboardtutorial.common.exception.CustomException;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,9 @@ public class CustomUserDetailsService implements UserDetailsService {
   }
 
   public void signUp(SignUpRequestDto signUpRequestDto) {
+    if (userRepository.findByUsername(signUpRequestDto.getUsername()).isPresent()) {
+      throw new CustomException("이미 가입된 아이디입니다.");
+    }
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     signUpRequestDto.setPassword(encoder.encode(signUpRequestDto.getPassword()));
 
