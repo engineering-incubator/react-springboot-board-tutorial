@@ -7,6 +7,7 @@ import {
   validateUserName,
 } from "../utilites/inputValidation";
 import { isEmpty } from "../../utilites/typeGuard/typeGuard";
+import { email } from "../../utilites/validates/rules/userValidationsRules";
 
 export default React.forwardRef(function SignUpForm(
   { onChangeUserData, userSignUpData, submitValidationError },
@@ -20,7 +21,7 @@ export default React.forwardRef(function SignUpForm(
   const [phoneNumberErrorMessage, setPhoneNumberErrorMessage] = useState("");
 
   const onChangePermission = (e) => {
-    onChangeUserData("permission", e.currentTarget.value);
+    onChangeUserData("permission", e.currentTarget.checked);
   };
 
   const onChangeUsername = (e) => {
@@ -105,30 +106,25 @@ export default React.forwardRef(function SignUpForm(
         <div>
           <label>
             <input
-              checked={userSignUpData.permission === "ADMIN"}
               type="radio"
               name="Permission"
-              value="ADMIN"
               onChange={onChangePermission}
             />
             관리자
           </label>
           <label>
             <input
-              checked={userSignUpData.permission === "MANAGER"}
               type="radio"
               name="Permission"
-              value="MANAGER"
               onChange={onChangePermission}
             />
             매니저
           </label>
           <label>
             <input
-              checked={userSignUpData.permission === "USER"}
+              checked
               type="radio"
               name="Permission"
-              value="USER"
               onChange={onChangePermission}
             />
             일반회원
@@ -141,7 +137,6 @@ export default React.forwardRef(function SignUpForm(
           type="text"
           name="username"
           value={userSignUpData.username}
-          placeholder="아이디"
           onChange={onChangeUsername}
         />
         {!isEmpty(usernameErrorMessage) && <p>{usernameErrorMessage}</p>}
@@ -150,7 +145,6 @@ export default React.forwardRef(function SignUpForm(
         <h5>비밀번호</h5>
         <input
           type="password"
-          placeholder="비밀번호"
           value={userSignUpData.password}
           onChange={onChangePassword}
         />
@@ -160,7 +154,6 @@ export default React.forwardRef(function SignUpForm(
         <h5>비밀번호 확인</h5>
         <input
           type="password"
-          placeholder="비밀번호 확인"
           value={userSignUpData.passwordConfirm}
           onChange={onChangePasswordConfirm}
         />
@@ -173,7 +166,6 @@ export default React.forwardRef(function SignUpForm(
         <input
           type="email"
           name="email"
-          placeholder="이메일"
           value={userSignUpData.email}
           onChange={onChangeEmail}
         />
@@ -184,7 +176,6 @@ export default React.forwardRef(function SignUpForm(
         <input
           type="text"
           name="phoneNumber"
-          placeholder="휴대폰 번호"
           value={userSignUpData.phoneNumber}
           onChange={onChangePhoneNumber}
         />

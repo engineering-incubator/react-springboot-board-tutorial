@@ -4,10 +4,10 @@ import React from "react";
 export default function Navigation() {
   return (
     <>
-      <h1>네비게이션</h1>
-      <ol>
+      <h1>로고</h1>
+      <ul>
         <li>
-          <Link to="/articles?page=1">게시판</Link>
+          <Link to="/">홈</Link>
         </li>
         <li>
           <Link to="/signup">회원가입</Link>
@@ -15,7 +15,7 @@ export default function Navigation() {
         <li>
           <Link to="/login">로그인</Link>
         </li>
-      </ol>
+      </ul>
     </>
   );
 }
