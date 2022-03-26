@@ -28,6 +28,9 @@ public class SignUpRequestDto {
     @NotBlank(message = "휴대전화 번호는 필수 입력사항입니다.")
     private String phoneNumber;
 
-    @NotBlank(message = "권한은 필수 입력사항입니다.")
     private Permission permission;
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
