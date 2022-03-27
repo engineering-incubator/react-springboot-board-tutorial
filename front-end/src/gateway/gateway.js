@@ -1,11 +1,37 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { isEmpty } from "../utilites/typeGuard/typeGuard";
+import { Link, useHistory } from "react-router-dom";
 
-export default function gateway() {
+export default function Gateway() {
+  const [articles, setArticles] = useState();
+  const history = useHistory();
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const res = await axios.get("/api/v1/article");
+        if (res.data.code === "SUCCESS") {
+          return setArticles(res.data.content);
+        }
+        return alert(res.data.message);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
   return (
     <>
       <div>
         <h1>안녕하세요! 게시판입니다.</h1>
-        <button>글쓰기</button>
+        <button
+          onClick={() => {
+            history.push("/login");
+          }}
+        >
+          글쓰기
+        </button>
       </div>
       <table>
         <thead>
@@ -18,22 +44,20 @@ export default function gateway() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th>1</th>
-            <Link path="/article/1">
-              <th>제목이당</th>
-            </Link>
-            <th>2022-03-26</th>
-            <th>김모찌</th>
-            <th>1</th>
-          </tr>
-          <tr>
-            <th>2</th>
-            <th>제목2이당</th>
-            <th>2022-03-26</th>
-            <th>아이린</th>
-            <th>1</th>
-          </tr>
+          {!isEmpty(articles) &&
+            articles.map((article) => (
+              <tr key={article.article_id}>
+                <td>{article.article_id}</td>
+                <td>
+                  <Link to={`/articles/${article.article_id}`}>
+                    {article.title}
+                  </Link>
+                </td>
+                <td>{article.created_at}</td>
+                <td>김모찌</td>
+                <td>0</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </>
