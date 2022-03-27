@@ -60,7 +60,10 @@ export default function LogIn() {
         alert("모든 값을 제대로 입력해주세요.");
         return;
       }
-      const res = await axios.post("/v1/authentication/login", userLogInData);
+      const res = await axios.post(
+        "/api/v1/authentication/login",
+        userLogInData,
+      );
       if (res.data.code !== "SUCCESS") {
         alert(res.data.message);
         return;

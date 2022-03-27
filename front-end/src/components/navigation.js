@@ -4,7 +4,7 @@ import React from "react";
 export default function Navigation() {
   return (
     <>
-      <h1>로고</h1>
+      <h1>네비게이션</h1>
       <ul>
         <li>
           <Link to="/">홈</Link>
