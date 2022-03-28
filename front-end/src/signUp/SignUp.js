@@ -35,8 +35,8 @@ export default function SignUp() {
         alert(res.data.message);
         return;
       }
-      alert("회원가입을 완료되었습니다.");
       history.push("/login");
+      alert("고객님, 환영합니다!");
     } catch (error) {
       console.log(error);
     }

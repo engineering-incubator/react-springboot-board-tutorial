@@ -53,6 +53,7 @@ export default function Gateway() {
                     {article.title}
                   </Link>
                 </td>
+                //TODO modified 날짜 비교해서 최신 날짜로 보여주기
                 <td>{article.created_at}</td>
                 <td>김모찌</td>
                 <td>0</td>
