@@ -1,42 +1,19 @@
 import { Dispatch } from 'react';
-import { SIGNUP_CHANGE } from '_/reduce/actions';
-import { PERMISSION_TYPE, PERMISSIONS } from '_/constants';
+import { SIGNUP_CHANGE, SIGNUP_CHANGE_TYPE } from '_/reduce/actions';
+import { InitialStateType } from '_/context/SignContext';
 
 export interface StateType {
-  input: {
-    [key: string]: string | PERMISSION_TYPE;
-  };
-  valid: {
-    [key: string]: string | boolean;
-  };
+  name: string;
+  value: string;
+  isValid: boolean;
 }
 
 export type SignupDispatch = Dispatch<ActionType>;
 
-type ActionType = { type: 'SIGNUP_CHANGE'; payload: StateType };
+type ActionType = { type: SIGNUP_CHANGE_TYPE; payload: StateType };
 
-export const signupInitialState = {
-  input: {
-    id: '',
-    pw: '',
-    digit: '',
-    email: '',
-    domain: '',
-    permission: PERMISSIONS.NONE,
-  },
-  valid: {
-    id: true,
-    pw: true,
-    digit: true,
-    email: true,
-    domain: true,
-    permission: true,
-  },
-};
-
-export const reducer = (state: StateType, action: ActionType) => {
-  const { name, value } = action.payload.input;
-  const { isValid } = action.payload.valid;
+export const reducer = (state: InitialStateType, action: ActionType) => {
+  const { name, value, isValid } = action.payload;
 
   switch (action.type) {
     case SIGNUP_CHANGE:

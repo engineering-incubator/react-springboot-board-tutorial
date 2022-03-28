@@ -1,25 +1,25 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { ERROR_SIGNUP_TEXT, ERROR_SIGNUP_TYPE } from '_/constants';
 import { useSignupState } from '_/context/SignContext';
 
 interface ErrorType {
-  text: ERROR_SIGNUP_TYPE;
+  text: string;
 }
 
 const ErrorText = ({ text }: ErrorType) => {
-  const { input, valid } = useSignupState();
-  const inputValue = input[text.toLocaleLowerCase()];
-  const validValue = valid[text.toLocaleLowerCase()];
-  const isError = !!inputValue && !validValue;
+  // const { input, valid } = useSignupState();
+  // const upperText = text.toLocaleLowerCase();
+  // const inputValue = input[upperText];
+  // const validValue = valid[upperText];
+  // const isError = !!inputValue && !validValue;
 
-  return <StyledError isError={isError}>{ERROR_SIGNUP_TEXT[text]}</StyledError>;
+  return <StyledError>{text}</StyledError>;
 };
 
-const StyledError = styled.p<{ isError?: boolean }>`
-  padding-top: 12px;
+const StyledError = styled.span`
+  padding: 12px 0 0 4px;
   font-size: 12px;
-  color: ${({ isError }) => (isError ? 'red' : 'gray')};
+  color: #ff7777;
 `;
 
 export default ErrorText;

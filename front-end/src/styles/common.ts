@@ -59,3 +59,9 @@ export const StyledCommonSelectBox = styled.select`
   border-radius: 4px;
   box-sizing: border-box;
 `;
+
+export const StyledCommonLabel = styled.label`
+  display: block;
+  height: 32px;
+  font-weight: bold;
+`;

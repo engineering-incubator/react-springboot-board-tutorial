@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import InputText from '_/components/common/InputText';
 import InputRadio from '_/components/common/InputRadio';
 import { inputValidation } from '_/utils/validation';
-import { EMAIL_DOMAINS, ID_VALIDATION, DOMAIN_VALIDATION } from '_/config';
-import { PERMISSIONS, PERMISSION_KIND, ERROR_SIGNUP } from '_/constants';
+import { ID_VALIDATION } from '_/config';
+import { PERMISSIONS, PERMISSION_KIND, PERMISSION_TYPE, SIGNUP_PLACEHOLDER } from '_/constants';
 import { getValidationReg, typeValidation } from '_/utils/validation';
 import { SIGNUP_CHANGE } from '_/reduce/actions';
 import {
@@ -12,97 +12,62 @@ import {
   StyledCommonCenter,
   StyledCommonTitle,
   StyledCommonButton,
-  StyledCommonSelectWrap,
-  StyledCommonSelectBox,
+  StyledCommonLabel,
 } from '_/styles/common';
-import ErrorText from '_/components/common/ErrorNotice';
 import { useSignupDispatch, useSignupState } from '_/context/SignContext';
+import ErrorNotice from '_/components/common/ErrorNotice';
 
 const SignUp = () => {
-  const { input } = useSignupState();
+  const { input, valid } = useSignupState();
   const dispatch = useSignupDispatch();
-  const { id, pw, digit, email, domain, permission } = input;
-  const [isEmailManual, setIsEmailManual] = useState<boolean>(false);
+  const { id, pw, email, digit, permission } = input;
+  const {
+    id: validId,
+    pw: validPw,
+    email: validEmail,
+    digit: validDigit,
+    permission: validPermission,
+  } = valid;
+  const [isClicked, setIsClicked] = useState(false);
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const regType = getValidationReg(name as typeValidation) || ID_VALIDATION;
-    const isValid: boolean = inputValidation(value, regType);
-
-    console.log(name, isValid);
-    dispatch({
-      type: SIGNUP_CHANGE,
-      payload: {
-        input: {
-          name,
-          value,
-        },
-        valid: {
-          name,
-          isValid,
-        },
-      },
-    });
-  };
-
-  const onChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value, name } = e.target;
-    const isManual = value === '직접입력';
-
-    if (isManual) setIsEmailManual(true);
-
-    const isValid = isManual ? false : inputValidation(value, DOMAIN_VALIDATION);
+    const isValid = !!value ? inputValidation(value, regType) : false;
 
     dispatch({
       type: SIGNUP_CHANGE,
       payload: {
-        input: {
-          name,
-          value: isManual ? '' : value,
-        },
-        valid: {
-          name,
-          isValid,
-        },
+        name,
+        value,
+        isValid,
       },
     });
   };
 
-  const onClickEmailDirectCancel = () => {
-    setIsEmailManual(false);
-  };
-
-  const onChangeRadio = (value: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeRadio = (value: PERMISSION_TYPE) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
-
-    dispatch({
+    return dispatch({
       type: SIGNUP_CHANGE,
       payload: {
-        input: {
-          name,
-          value,
-        },
-        valid: {
-          name,
-          isValid: true,
-        },
+        name,
+        value,
+        isValid: true,
       },
     });
   };
 
-  // const isInputComplete = Object.values(inputState.input).every((i) => !!i);
-  // const isValidComplete = Object.values(inputState.valid).every((i) => i);
+  const inCompletedField = Object.entries(input).filter((item) => {
+    if (!item[1] || item[1] === PERMISSIONS.NONE || !valid[item[0]]) {
+      return item;
+    }
+  });
+  const isCompleted = useMemo(() => !inCompletedField.length, [inCompletedField]);
 
-  // console.log(inputState.input);
-  // console.log(isComplete);
   const handleSubmit = () => {
-    // const { id: idValue, pw: pwValue } = inputText;
-    // if (!idValue) {
-    //   alert('id 없어요');
-    // }
-    // if (!pwValue) {
-    //   alert('pw 가 없어요');
-    // }
+    setIsClicked(true);
+    console.log(1);
+    console.log(isCompleted);
   };
 
   return (
@@ -110,6 +75,7 @@ const SignUp = () => {
       <StyledCommonTitle>회원가입</StyledCommonTitle>
       <StyledSignupWrap>
         <StyledArea>
+          <StyledCommonLabel as={'span'}>권한</StyledCommonLabel>
           <StyledPermission>
             {PERMISSION_KIND.map((i) => (
               <InputRadio
@@ -121,93 +87,82 @@ const SignUp = () => {
               />
             ))}
           </StyledPermission>
-          <ErrorText text={ERROR_SIGNUP.PERMISSIONS} />
+          <StyledNotice isNotice={permission !== PERMISSIONS.NONE && !validPermission && isClicked}>
+            {SIGNUP_PLACEHOLDER['PERMISSION']}
+          </StyledNotice>
+          {permission === PERMISSIONS.NONE && isClicked && (
+            <ErrorNotice text="필수 입력 항목입니다" />
+          )}
         </StyledArea>
 
         <StyledArea>
-          <InputText
-            type="text"
-            name="id"
-            text="아이디"
-            placeholder="id를 입력해주세요"
-            value={id}
-            onChangeInput={onChangeInput}
-          />
-          <ErrorText text={ERROR_SIGNUP.ID} />
-        </StyledArea>
-        <StyledArea>
-          <InputText
-            type="password"
-            name="pw"
-            text="비밀번호"
-            placeholder="pw를 입력해주세요"
-            value={pw}
-            onChangeInput={onChangeInput}
-          />
-          <ErrorText text={ERROR_SIGNUP.PW} />
-        </StyledArea>
-
-        <StyledArea>
-          <StyledEmailArea>
+          <StyledInputWrap>
             <InputText
               type="text"
-              name="email"
-              text="이메일"
-              placeholder="email을 입력해주세요"
-              value={email}
+              isValid={!!id && !validId}
+              value={id}
+              name="id"
+              text="아이디"
               onChangeInput={onChangeInput}
             />
-            <StyledEmailUnit>@</StyledEmailUnit>
-            {
-              <>
-                {isEmailManual ? (
-                  <StyledDomainWrap>
-                    <InputText
-                      type="text"
-                      name="domain"
-                      placeholder="domain을 입력해주세요"
-                      value={domain}
-                      onChangeInput={onChangeInput}
-                    />
-                    <StyledRevertButton type="button" onClick={onClickEmailDirectCancel} />
-                  </StyledDomainWrap>
-                ) : (
-                  <StyledDomainWrap>
-                    <StyledCommonSelectWrap>
-                      <StyledCommonSelectBox
-                        name="domain"
-                        defaultValue={'default'}
-                        onChange={onChangeSelect}>
-                        <option disabled hidden value="default">
-                          선택하세요.
-                        </option>
-                        {EMAIL_DOMAINS.map(({ value }, idx) => (
-                          <option key={idx + 1}>{value}</option>
-                        ))}
-                      </StyledCommonSelectBox>
-                    </StyledCommonSelectWrap>
-                  </StyledDomainWrap>
-                )}
-              </>
-            }
-          </StyledEmailArea>
-          <ErrorText text={ERROR_SIGNUP.EMAIL} />
+            <StyledNotice isNotice={!!id && !validId && isClicked}>
+              {SIGNUP_PLACEHOLDER['ID']}
+            </StyledNotice>
+            {!id && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
+          </StyledInputWrap>
+        </StyledArea>
+        <StyledArea>
+          <StyledInputWrap>
+            <InputText
+              type="password"
+              isValid={!!pw && !validPw}
+              value={pw}
+              name="pw"
+              text="비밀번호"
+              onChangeInput={onChangeInput}
+            />
+            <StyledNotice isNotice={!!pw && !validPw && isClicked}>
+              {SIGNUP_PLACEHOLDER['PW']}
+            </StyledNotice>
+            {!pw && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
+          </StyledInputWrap>
         </StyledArea>
 
         <StyledArea>
-          <InputText
-            type="text"
-            name="digit"
-            text="전화번호"
-            placeholder="전화번호를 입력해주세요"
-            value={digit}
-            onChangeInput={onChangeInput}
-          />
-          <ErrorText text={ERROR_SIGNUP.DIGIT} />
+          <StyledInputWrap>
+            <InputText
+              type="text"
+              isValid={!!email && !validEmail}
+              value={email}
+              name="email"
+              text="이메일"
+              onChangeInput={onChangeInput}
+            />
+            <StyledNotice isNotice={!!email && !validEmail && isClicked}>
+              {SIGNUP_PLACEHOLDER['EMAIL']}
+            </StyledNotice>
+            {!email && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
+          </StyledInputWrap>
         </StyledArea>
 
-        {/* <StyledCommonButton isPositive={isInputComplete && isValidComplete} onClick={handleSubmit}> */}
-        <StyledCommonButton isPositive={false} onClick={handleSubmit}>
+        <StyledArea>
+          <StyledInputWrap>
+            <InputText
+              type="text"
+              isValid={!!digit && !validDigit}
+              value={digit}
+              name="digit"
+              text="전화번호"
+              onChangeInput={onChangeInput}
+            />
+            <StyledNotice isNotice={!!digit && !validDigit && isClicked}>
+              {SIGNUP_PLACEHOLDER['EMAIL']}
+            </StyledNotice>
+            {!digit && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
+          </StyledInputWrap>
+        </StyledArea>
+
+        <StyledCommonButton isPositive={isCompleted} onClick={handleSubmit}>
           회원가입
         </StyledCommonButton>
       </StyledSignupWrap>
@@ -232,46 +187,16 @@ const StyledSignupWrap = styled.article`
   box-sizing: border-box;
 `;
 
-const StyledEmailArea = styled.div`
-  display: flex;
-  align-items: center;
+const StyledNotice = styled.p<{ isNotice: boolean }>`
+  margin: 8px 4px;
+  font-size: 12px;
+  color: ${({ isNotice }) => (isNotice ? '#ff7777' : '#757575')};
 `;
 
-const StyledEmailUnit = styled.span`
-  padding: 0 4px;
-`;
-
-const StyledDomainWrap = styled.div`
-  position: relative;
+const StyledInputWrap = styled.div`
   flex: 1;
-`;
-
-const StyledRevertButton = styled.button`
-  position: absolute;
-  top: 50%;
-  right: 0px;
-  width: 30px;
-  height: 30px;
-  transform: translateY(-50%);
-
-  &::before,
-  &::after {
-    position: absolute;
-    top: 50%;
-    right: 50%;
-    width: 1px;
-    height: 12px;
-    background-color: black;
-    content: '';
-  }
-
-  &::before {
-    transform: translateY(-50%) rotate(45deg);
-  }
-
-  &::after {
-    transform: translateY(-50%) rotate(-45deg);
-  }
+  overflow: hidden;
+  box-sizing: border-box;
 `;
 
 export default SignUp;

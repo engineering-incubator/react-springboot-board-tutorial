@@ -1,10 +1,4 @@
-import {
-  ID_VALIDATION,
-  PW_VALIDATION,
-  EMAIL_VALIDATION,
-  DOMAIN_VALIDATION,
-  DIGIT_VALIDATION,
-} from '_/config';
+import { ID_VALIDATION, PW_VALIDATION, EMAIL_VALIDATION, DIGIT_VALIDATION } from '_/config';
 
 export const inputValidation = (value: string, regType: RegExp) => new RegExp(regType).test(value);
 
@@ -17,6 +11,5 @@ export const getValidationReg = (type: typeValidation) => {
     PW: PW_VALIDATION,
     DIGIT: DIGIT_VALIDATION,
     EMAIL: EMAIL_VALIDATION,
-    DOMAIN: DOMAIN_VALIDATION,
   }[typeName];
 };

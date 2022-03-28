@@ -60,7 +60,7 @@ body {
 body {
   font-family: system-ui;
   font-size: 14px;
-  color: black;s
+  color: black;
   line-height: 1.5;
 }
 

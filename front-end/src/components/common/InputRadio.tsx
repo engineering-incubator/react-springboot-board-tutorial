@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { blind } from '_/styles/mixin';
 
 interface InputRadioProps {
   name: string;
@@ -8,25 +9,23 @@ interface InputRadioProps {
   onChangeRadio: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputRadio = ({ name, text, isChecked, onChangeRadio }: InputRadioProps) => {
-  return (
-    <StyledLabel htmlFor={text} isChecked={isChecked}>
-      <StyledInputRadio
-        type="radio"
-        name={name}
-        id={text}
-        checked={isChecked}
-        onChange={onChangeRadio}
-      />
-      {text}
-    </StyledLabel>
-  );
-};
+const InputRadio = ({ name, text, isChecked, onChangeRadio }: InputRadioProps) => (
+  <StyledLabel htmlFor={text} isChecked={isChecked}>
+    <StyledInputRadio
+      type="radio"
+      name={name}
+      id={text}
+      checked={isChecked}
+      onChange={onChangeRadio}
+    />
+    {text}
+  </StyledLabel>
+);
 
 const StyledLabel = styled.label<{ isChecked: boolean }>`
   position: relative;
   padding-left: 18px;
-  color: gray;
+  color: ${({ isChecked }) => (isChecked ? '#0078ff' : 'gray')};
   cursor: pointer;
 
   &::before {
@@ -60,7 +59,7 @@ const StyledLabel = styled.label<{ isChecked: boolean }>`
 `;
 
 const StyledInputRadio = styled.input`
-  appearance: none;
+  ${blind}
 `;
 
 export default InputRadio;

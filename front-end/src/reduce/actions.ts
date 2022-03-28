@@ -1,1 +1,2 @@
 export const SIGNUP_CHANGE = 'SIGNUP_CHANGE';
+export type SIGNUP_CHANGE_TYPE = 'SIGNUP_CHANGE';
