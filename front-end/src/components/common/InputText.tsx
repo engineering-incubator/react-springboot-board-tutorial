@@ -1,42 +1,67 @@
-import React from 'react';
+import React, { forwardRef, useRef, useImperativeHandle, RefObject } from 'react';
 import styled from '@emotion/styled';
 import { StyledCommonLabel } from '_/styles/common';
+import { colors } from '_/styles/variables';
+import { mixinPlaceholder } from '_/styles/mixin';
 
 export type InputTypes = {
   type: string;
   name: string;
   value: string;
   text: string;
-  isValid: boolean;
+  isInValid: boolean;
   disabled?: boolean;
   onChangeInput(e: React.FormEvent<HTMLInputElement>): void;
 };
 
-const InputText = ({ type, value, isValid, name, text, disabled, onChangeInput }: InputTypes) => {
-  return (
-    <>
-      {text && <StyledCommonLabel htmlFor={text}>{text}</StyledCommonLabel>}
-      <StyledInput
-        type={type}
-        value={value}
-        name={name}
-        isValid={isValid}
-        disabled={disabled}
-        placeholder={text}
-        onChange={onChangeInput}
-        id={name}
-      />
-    </>
-  );
-};
+export interface focusRef {
+  [key: string]: () => void;
+}
 
-const StyledInput = styled.input<{ isValid: boolean }>`
+const InputText = forwardRef(
+  // NOTE 여기 ref 의 type이 뭔지 도저히 모르겠습니다..! somebody help me!
+  ({ type, value, isInValid, name, text, disabled, onChangeInput }: InputTypes, ref: any) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+    console.log(ref);
+    useImperativeHandle(ref, () => ({
+      ...ref.current,
+      [name]: () => inputRef.current?.focus(),
+    }));
+
+    return (
+      <>
+        {text && (
+          <StyledCommonLabel isError={isInValid} htmlFor={text}>
+            {text}
+          </StyledCommonLabel>
+        )}
+        <StyledInput
+          ref={inputRef}
+          type={type}
+          value={value}
+          name={name}
+          isInValid={isInValid}
+          disabled={disabled}
+          placeholder={text}
+          onChange={onChangeInput}
+          id={name}
+        />
+      </>
+    );
+  },
+);
+
+const StyledInput = styled.input<{ isInValid: boolean }>`
   width: 100%;
   height: 35px;
   padding-left: 8px;
-  border: 1px solid ${({ isValid }) => (isValid ? '#ff7777' : '#ddd')};
+  border: 1px solid ${({ isInValid }) => (isInValid ? `${colors.warning}` : `${colors.gray}`)};
   border-radius: 4px;
   box-sizing: border-box;
+
+  ${mixinPlaceholder()};
 `;
+
+InputText.displayName = `inputText`;
 
 export default InputText;

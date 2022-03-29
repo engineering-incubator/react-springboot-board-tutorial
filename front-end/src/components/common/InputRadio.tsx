@@ -1,16 +1,18 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { blind } from '_/styles/mixin';
+import { colors } from 'src/styles/variables';
 
 interface InputRadioProps {
   name: string;
   text: string;
   isChecked: boolean;
+  isInValid: boolean;
   onChangeRadio: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputRadio = ({ name, text, isChecked, onChangeRadio }: InputRadioProps) => (
-  <StyledLabel htmlFor={text} isChecked={isChecked}>
+const InputRadio = ({ name, text, isInValid, isChecked, onChangeRadio }: InputRadioProps) => (
+  <StyledLabel htmlFor={text} isChecked={isChecked} isInValid={isInValid}>
     <StyledInputRadio
       type="radio"
       name={name}
@@ -22,10 +24,11 @@ const InputRadio = ({ name, text, isChecked, onChangeRadio }: InputRadioProps) =
   </StyledLabel>
 );
 
-const StyledLabel = styled.label<{ isChecked: boolean }>`
+const StyledLabel = styled.label<{ isChecked: boolean; isInValid: boolean }>`
   position: relative;
   padding-left: 18px;
-  color: ${({ isChecked }) => (isChecked ? '#0078ff' : 'gray')};
+  color: ${({ isChecked, isInValid }) =>
+    isChecked ? '#0078ff' : isInValid ? `${colors.warning}` : `${colors.gray1}`};
   cursor: pointer;
 
   &::before {
@@ -35,7 +38,9 @@ const StyledLabel = styled.label<{ isChecked: boolean }>`
     width: 12px;
     height: 12px;
     border-radius: 10px;
-    border: 1px solid ${({ isChecked }) => (isChecked ? '#0078ff' : 'gray')};
+    border: 1px solid
+      ${({ isChecked, isInValid }) =>
+        isChecked ? '#0078ff' : isInValid ? `${colors.warning}` : `${colors.gray1}`};
     box-sizing: border-box;
     background-color: white;
     transform: translateY(-50%);

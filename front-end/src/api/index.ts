@@ -1,14 +1,14 @@
-import RestWithCredentials from '_/utils/rest';
-import QueryString from 'qs';
+import axios from 'axios';
+import qs from 'qs';
 
 export function generateUrl(path: string, params = {}) {
-  const query = QueryString.parse(params);
-  return `${process.env.REACT_APP_API_URL}${path}?${query ? `&${query}` : ''}`;
+  const query = qs.stringify(params);
+  return `${path}?${query ? `&${query}` : ''}`;
 }
 
 export async function fetchPostApi<T>(url: string, data?: T) {
   try {
-    const response = await RestWithCredentials().post(url, data);
+    const response = await axios.post(url, data);
     return response.data;
   } catch (err: unknown) {
     if (err instanceof Error) {

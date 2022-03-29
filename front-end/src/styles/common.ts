@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { colors } from '_/styles/variables';
 
 export const StyledCommonWrap = styled.main`
   padding: 0 10px;
@@ -24,7 +25,7 @@ export const StyledCommonButton = styled.button<{ isPositive: boolean }>`
   justify-content: center;
   border-radius: 4px;
   color: white;
-  background-color: ${({ isPositive }) => (isPositive ? 'black' : 'gray')};
+  background-color: ${({ isPositive }) => (isPositive ? `${colors.black}` : `${colors.gray}`)};
 `;
 
 export const StyledCommonSelectWrap = styled.div`
@@ -60,8 +61,9 @@ export const StyledCommonSelectBox = styled.select`
   box-sizing: border-box;
 `;
 
-export const StyledCommonLabel = styled.label`
+export const StyledCommonLabel = styled.label<{ isError?: boolean }>`
   display: block;
   height: 32px;
   font-weight: bold;
+  color: ${({ isError }) => (isError ? `${colors.warning}` : 'inherit')};
 `;

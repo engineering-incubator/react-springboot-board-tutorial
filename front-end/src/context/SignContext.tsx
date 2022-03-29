@@ -1,5 +1,5 @@
 import React, { useReducer, useContext, createContext } from 'react';
-import { reducer, StateType, SignupDispatch } from '_/reduce/signupReducer';
+import { reducer, SignupDispatch } from '_/reduce/signupReducer';
 import { PERMISSION_TYPE, PERMISSIONS } from '_/constants';
 
 export interface InitialStateType {
@@ -16,16 +16,16 @@ const SignupDispatchContext = createContext<SignupDispatch | null>(null);
 
 export const initialState = {
   input: {
-    id: '',
-    pw: '',
-    digit: '',
+    username: '',
+    password: '',
+    phone_number: '',
     email: '',
     permission: PERMISSIONS.NONE,
   },
   valid: {
-    id: false,
-    pw: false,
-    digit: false,
+    username: false,
+    password: false,
+    phone_number: false,
     email: false,
     permission: false,
   },

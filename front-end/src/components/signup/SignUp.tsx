@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import styled from '@emotion/styled';
-import InputText from '_/components/common/InputText';
+import InputText, { focusRef } from '_/components/common/InputText';
 import InputRadio from '_/components/common/InputRadio';
 import { inputValidation } from '_/utils/validation';
-import { ID_VALIDATION } from '_/config';
+import { USERNAME_VALIDATION } from '_/config';
 import { PERMISSIONS, PERMISSION_KIND, PERMISSION_TYPE, SIGNUP_PLACEHOLDER } from '_/constants';
 import { getValidationReg, typeValidation } from '_/utils/validation';
 import { SIGNUP_CHANGE } from '_/reduce/actions';
@@ -16,23 +16,27 @@ import {
 } from '_/styles/common';
 import { useSignupDispatch, useSignupState } from '_/context/SignContext';
 import ErrorNotice from '_/components/common/ErrorNotice';
+import { colors } from '_/styles/variables';
+import { fetchPostApi, generateUrl } from '_/api';
 
 const SignUp = () => {
+  // const focusRef = useRef<focusRef>(null);
+  const elRef = useRef<focusRef>(null);
   const { input, valid } = useSignupState();
   const dispatch = useSignupDispatch();
-  const { id, pw, email, digit, permission } = input;
+  const { username, password, email, phone_number: phoneNumber, permission } = input;
   const {
-    id: validId,
-    pw: validPw,
+    username: validusername,
+    password: validPassword,
     email: validEmail,
-    digit: validDigit,
+    phone_number: validPhoneNumber,
     permission: validPermission,
   } = valid;
   const [isClicked, setIsClicked] = useState(false);
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const regType = getValidationReg(name as typeValidation) || ID_VALIDATION;
+    const regType = getValidationReg(name as typeValidation) || USERNAME_VALIDATION;
     const isValid = !!value ? inputValidation(value, regType) : false;
 
     dispatch({
@@ -66,99 +70,114 @@ const SignUp = () => {
 
   const handleSubmit = () => {
     setIsClicked(true);
-    console.log(1);
-    console.log(isCompleted);
+    // if (!elRef.current) return;
+    // elRef.current['password']();
+    if (!isCompleted) return;
+
+    const url = generateUrl('/v1/authentication/sign-up');
+    (async () => {
+      const response = await fetchPostApi(url, input);
+    })();
   };
+
+  console.log(elRef);
 
   return (
     <StyledCommonWrap>
       <StyledCommonTitle>회원가입</StyledCommonTitle>
       <StyledSignupWrap>
         <StyledArea>
-          <StyledCommonLabel as={'span'}>권한</StyledCommonLabel>
+          <StyledCommonLabel as={'span'} isError={permission === PERMISSIONS.NONE && isClicked}>
+            권한
+          </StyledCommonLabel>
           <StyledPermission>
             {PERMISSION_KIND.map((i) => (
               <InputRadio
                 name="permission"
                 text={PERMISSIONS[i]}
+                isInValid={permission === PERMISSIONS.NONE && isClicked}
                 isChecked={permission === PERMISSIONS[i]}
                 onChangeRadio={onChangeRadio(PERMISSIONS[i])}
                 key={i}
               />
             ))}
           </StyledPermission>
+          {permission === PERMISSIONS.NONE && isClicked && (
+            <ErrorNotice text="필수 선택 항목입니다" />
+          )}
           <StyledNotice isNotice={permission !== PERMISSIONS.NONE && !validPermission && isClicked}>
             {SIGNUP_PLACEHOLDER['PERMISSION']}
           </StyledNotice>
-          {permission === PERMISSIONS.NONE && isClicked && (
-            <ErrorNotice text="필수 입력 항목입니다" />
-          )}
         </StyledArea>
 
         <StyledArea>
           <StyledInputWrap>
             <InputText
+              ref={elRef}
               type="text"
-              isValid={!!id && !validId}
-              value={id}
-              name="id"
+              isInValid={(!!username && !validusername) || (!username && isClicked)}
+              value={username}
+              name="username"
               text="아이디"
               onChangeInput={onChangeInput}
             />
-            <StyledNotice isNotice={!!id && !validId && isClicked}>
-              {SIGNUP_PLACEHOLDER['ID']}
+            {!username && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
+            <StyledNotice isNotice={!!username && !validusername && isClicked}>
+              {SIGNUP_PLACEHOLDER['USERNAME']}
             </StyledNotice>
-            {!id && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
           </StyledInputWrap>
         </StyledArea>
         <StyledArea>
           <StyledInputWrap>
             <InputText
+              ref={elRef}
               type="password"
-              isValid={!!pw && !validPw}
-              value={pw}
-              name="pw"
+              isInValid={(!!password && !validPassword) || (!password && isClicked)}
+              value={password}
+              name="password"
               text="비밀번호"
               onChangeInput={onChangeInput}
             />
-            <StyledNotice isNotice={!!pw && !validPw && isClicked}>
-              {SIGNUP_PLACEHOLDER['PW']}
+            {!password && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
+            <StyledNotice isNotice={!!password && !validPassword && isClicked}>
+              {SIGNUP_PLACEHOLDER['PASSWORD']}
             </StyledNotice>
-            {!pw && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
           </StyledInputWrap>
         </StyledArea>
 
         <StyledArea>
           <StyledInputWrap>
             <InputText
+              ref={elRef}
               type="text"
-              isValid={!!email && !validEmail}
+              isInValid={(!!email && !validEmail) || (!email && isClicked)}
               value={email}
               name="email"
               text="이메일"
               onChangeInput={onChangeInput}
             />
+            {!email && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
             <StyledNotice isNotice={!!email && !validEmail && isClicked}>
               {SIGNUP_PLACEHOLDER['EMAIL']}
             </StyledNotice>
-            {!email && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
           </StyledInputWrap>
         </StyledArea>
 
         <StyledArea>
           <StyledInputWrap>
             <InputText
+              ref={elRef}
               type="text"
-              isValid={!!digit && !validDigit}
-              value={digit}
-              name="digit"
+              isInValid={(!!phoneNumber && !validPhoneNumber) || (!phoneNumber && isClicked)}
+              value={phoneNumber}
+              name="phone_number"
               text="전화번호"
               onChangeInput={onChangeInput}
             />
-            <StyledNotice isNotice={!!digit && !validDigit && isClicked}>
-              {SIGNUP_PLACEHOLDER['EMAIL']}
+            {!phoneNumber && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
+            <StyledNotice isNotice={!!phoneNumber && !validPhoneNumber && isClicked}>
+              {SIGNUP_PLACEHOLDER['PHONE_NUMBER']}
             </StyledNotice>
-            {!digit && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
           </StyledInputWrap>
         </StyledArea>
 
@@ -190,7 +209,7 @@ const StyledSignupWrap = styled.article`
 const StyledNotice = styled.p<{ isNotice: boolean }>`
   margin: 8px 4px;
   font-size: 12px;
-  color: ${({ isNotice }) => (isNotice ? '#ff7777' : '#757575')};
+  color: ${({ isNotice }) => (isNotice ? `${colors.warning}` : `${colors.gray1}`)};
 `;
 
 const StyledInputWrap = styled.div`
@@ -198,5 +217,7 @@ const StyledInputWrap = styled.div`
   overflow: hidden;
   box-sizing: border-box;
 `;
+
+SignUp.displayName = 'signUp';
 
 export default SignUp;
