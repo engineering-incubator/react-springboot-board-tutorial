@@ -35,7 +35,7 @@ export default function SignUp() {
         alert(res.data.message);
         return;
       }
-      history.push("/login");
+      history.replace("/login");
       alert("고객님, 환영합니다!");
     } catch (error) {
       console.log(error);
