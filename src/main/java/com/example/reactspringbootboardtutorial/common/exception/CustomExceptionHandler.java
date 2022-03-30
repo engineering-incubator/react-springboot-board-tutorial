@@ -15,7 +15,7 @@ public class CustomExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public WrappedResponseDto<String> invalidException(MethodArgumentNotValidException e) {
-    return WrappedResponseDto.failure(e.getMessage());
+    return WrappedResponseDto.failure(e.getFieldErrors().get(0).getDefaultMessage());
   }
 
   @ExceptionHandler(CustomException.class)
