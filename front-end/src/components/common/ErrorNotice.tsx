@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { useSignupState } from '_/context/SignContext';
 
 interface ErrorType {
   text: string;

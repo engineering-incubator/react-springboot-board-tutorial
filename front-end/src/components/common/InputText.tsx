@@ -22,7 +22,6 @@ const InputText = forwardRef(
   // NOTE 여기 ref 의 type이 뭔지 도저히 모르겠습니다..! somebody help me!
   ({ type, value, isInValid, name, text, disabled, onChangeInput }: InputTypes, ref: any) => {
     const inputRef = useRef<HTMLInputElement>(null);
-    console.log(ref);
     useImperativeHandle(ref, () => ({
       ...ref.current,
       [name]: () => inputRef.current?.focus(),

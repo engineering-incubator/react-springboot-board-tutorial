@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import { SIGNUP_CHANGE, SIGNUP_CHANGE_TYPE } from '_/reduce/actions';
-import { InitialStateType } from '_/context/SignContext';
+import { InitialStateType } from '_/context/signContext';
 
 export interface StateType {
   name: string;
@@ -12,7 +12,7 @@ export type SignupDispatch = Dispatch<ActionType>;
 
 type ActionType = { type: SIGNUP_CHANGE_TYPE; payload: StateType };
 
-export const reducer = (state: InitialStateType, action: ActionType) => {
+export const reducer = (state: InitialStateType, action: ActionType): InitialStateType => {
   const { name, value, isValid } = action.payload;
 
   switch (action.type) {
