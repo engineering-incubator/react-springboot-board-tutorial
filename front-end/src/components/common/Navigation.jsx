@@ -36,14 +36,14 @@ const Navigation = () => {
           <Link to="/article">게시글 목록</Link>
         </Category>
         <Category>
-          <Link to="/article/1">게시글 상세</Link>
+          <Link to="/article/:article_id">게시글 상세</Link>
         </Category>
       </Header>
       <Route path="/" element={Home} exact></Route>
       <Route path="/signUp" component={SignUp} />
       <Route path="/signIn" component={SignIn} />
       <Route path="/article" component={ArticleList} />
-      <Route path="/article/1" component={Article} />
+      <Route path="/article/:article_id" component={Article} />
     </>
   )
 }
