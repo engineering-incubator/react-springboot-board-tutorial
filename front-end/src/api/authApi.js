@@ -1,22 +1,21 @@
-import client from "./client";
-export const register = async({
-    email,
-    loginId,
-    password,
-    permission,
-    phoneNumber,
-}) => {
+//import client from './client'
+import axios from "axios";
+
+export const register = async(
+    data
+) => {
     try {
-        const response = await client.post("/api/v1/authentication/sign-up", {
-            email,
-            loginId,
-            password,
-            permission,
-            phoneNumber,
+        console.log('data', data);
+        const response = await axios.post('/api/v1/authentication/sign-up', {
+            email: data.email,
+            password: data.password,
+            permission: data.permission,
+            phoneNumber: data.phoneNumber,
+            username: data.username,
         });
-        console.log("회원가입 api 호출");
-        return true;
+        console.log('response', response);
+        return response.data;
     } catch (e) {
-        return false;
+        return e;
     }
-};
+}
