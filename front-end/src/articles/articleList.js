@@ -12,7 +12,7 @@ export default function ArticleList() {
   useEffect(() => {
     (async function () {
       try {
-        const res = await axios.get("/api/v1/article");
+        const res = await axios.get("/api/v1/articles");
         if (res.data.code === "SUCCESS") {
           return setArticles(res.data.content);
         }

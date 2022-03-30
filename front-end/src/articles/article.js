@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 
 export default function Article() {
-  const location = useLocation();
-  const articleId = location.pathname.substr(9);
+  const param = useParams();
   const [article, setArticle] = useState();
 
   useEffect(() => {
     (async function () {
       try {
-        const res = await axios.get(`/api/v1/article/${articleId}`);
+        const res = await axios.get(`/api/v1/articles/${param.articleId}`);
         if (res.data.code === "SUCCESS") {
           return setArticle(res.data.content);
         }
@@ -28,6 +27,7 @@ export default function Article() {
         <button>수정</button>
         <button>삭제</button>
       </div>
+      {/* FIXME 정말 컨텐츠가 없는 경우는 어떻게 처리할 것인지. */}
       {isEmpty(article) && <h5>불러오는 중입니다...</h5>}
       {!isEmpty(article) && (
         <article>
