@@ -5,9 +5,9 @@ export default function Navigation() {
   return (
     <>
       <h1>네비게이션</h1>
-      <ul>
+      <ol>
         <li>
-          <Link to="/">홈</Link>
+          <Link to="/article">홈</Link>
         </li>
         <li>
           <Link to="/signup">회원가입</Link>
@@ -15,7 +15,7 @@ export default function Navigation() {
         <li>
           <Link to="/login">로그인</Link>
         </li>
-      </ul>
+      </ol>
     </>
   );
 }
