@@ -1,57 +1,52 @@
 import axios from "axios";
-import qs from "qs";
 import { useEffect, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import Pagination from "../components/pagination";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
-import { isSuccess } from "../utilites/validates/httpValidation";
-import "./pagination.css";
+import { Link, useHistory } from "react-router-dom";
+import Pagination from "react-js-pagination";
 
 export default function ArticleList() {
-  const history = useHistory();
-  const location = useLocation();
-  const [articles, setArticles] = useState([]);
-  // TODO pagination state -> useReducer 로 통합(custom hook으로 분리하면 좀더 좋을 듯.
-  const [totalPages, setTotalPages] = useState(1);
+  const [articles, setArticles] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalArticles, setTotalArticles] = useState(0);
-
-  const onPageChange = (currentPage) => {
-    history.push(`/articles?page=${currentPage.selected + 1}`);
-  };
-  const onMoveWritePage = () => history.push("/article-write");
+  const history = useHistory();
 
   useEffect(() => {
-    const query = qs.parse(location.search, {
-      ignoreQueryPrefix: true,
-    });
-    const page = Number(query.page) || 1;
-    setCurrentPage(page);
     (async function () {
       try {
-        const res = await axios.get(`/api/v1/articles?currentPage=${page}`);
-        if (!isSuccess(res)) {
-          alert(res.data.message);
-          return;
+        const res = await axios.get("/api/v1/article");
+        if (res.data.code === "SUCCESS") {
+          return setArticles(res.data.content);
         }
-
-        setArticles(res.data.content.items);
-        setTotalPages(res.data.content.totalPages);
-        setTotalArticles(res.data.content.totalElements);
+        return alert(res.data.message);
       } catch (error) {
         console.log(error);
       }
     })();
-  }, [location]);
+  }, []);
+
+  const handlePageClick = () => {};
 
   return (
     <>
       <div>
         <h1>안녕하세요! 게시판입니다.</h1>
-        <button onClick={onMoveWritePage}>글쓰기</button>
+        <button
+          onClick={() => {
+            history.push("/article/post");
+          }}
+        >
+          글쓰기
+        </button>
       </div>
-      {(isEmpty(articles) || isEmpty(totalArticles)) && (
-        <p>등록된 게시글이 없습니다.</p>
+      {!isEmpty(articles) && (
+        <Pagination
+          activePage={currentPage}
+          itemsCountPerPage={10}
+          totalItemsCount={articles.length}
+          pageRangeDisplayed={5}
+          prevPageText="‹ 이전"
+          nextPageText="다음 ›"
+          onChange={handlePageClick}
+        />
       )}
       <table>
         <thead>
@@ -69,30 +64,18 @@ export default function ArticleList() {
               <tr key={article.article_id}>
                 <td>{article.article_id}</td>
                 <td>
-                  <Link
-                    to={{
-                      pathname: `/articles/${article.article_id}`,
-                      state: { page: currentPage },
-                    }}
-                  >
+                  <Link to={`/article/${article.article_id}`}>
                     {article.title}
                   </Link>
                 </td>
-                <td>{article.created_at}</td>
-                <td>{article.author}</td>
+                <td>{article.modified_at}</td>
+                <td>김모찌</td>
                 <td>0</td>
               </tr>
             ))}
         </tbody>
       </table>
-
-      {!isEmpty(articles) && (
-        <Pagination
-          pageCount={totalPages}
-          onPageChange={onPageChange}
-          currentPage={currentPage}
-        />
-      )}
+      {isEmpty(articles) && <h5>불러오는 중입니다...</h5>}
     </>
   );
 }

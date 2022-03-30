@@ -1,16 +1,17 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 
 export default function Article() {
-  const param = useParams();
+  const location = useLocation();
+  const articleId = location.pathname.substr(9);
   const [article, setArticle] = useState();
 
   useEffect(() => {
     (async function () {
       try {
-        const res = await axios.get(`/api/v1/articles/${param.articleId}`);
+        const res = await axios.get(`/api/v1/article/${articleId}`);
         if (res.data.code === "SUCCESS") {
           return setArticle(res.data.content);
         }

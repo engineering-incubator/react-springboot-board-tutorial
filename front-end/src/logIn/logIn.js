@@ -66,7 +66,7 @@ export default function LogIn() {
         return;
       }
       alert("로그인되었습니다.");
-      history.push("/");
+      history.push("/article");
     } catch (error) {
       console.log(error);
     }
