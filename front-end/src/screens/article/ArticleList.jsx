@@ -41,13 +41,11 @@ const ArticleList = () => {
 		created_at: '2022-03-21',
 		modified_at: '2022-03-22'
 	}
+	const articleList = sampleDate.map((article) => <ArticleItem data={article} />)
 	return (
 		<>
 			<Template title="글 목록">
-				<ArticleItem data={test}></ArticleItem>
-				<ArticleItem data={test}></ArticleItem>
-				<ArticleItem data={test}></ArticleItem>
-				<ArticleItem data={test}></ArticleItem>
+				{articleList}
 			</Template>
 		</>
 	);
