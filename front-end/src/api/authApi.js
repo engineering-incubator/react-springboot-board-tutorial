@@ -1,12 +1,11 @@
-//import client from './client'
-import axios from "axios";
+import client from './client'
 
 export const register = async(
     data
 ) => {
     try {
         console.log('data', data);
-        const response = await axios.post('/api/v1/authentication/sign-up', {
+        const response = await client.post('/api/v1/authentication/sign-up', {
             email: data.email,
             password: data.password,
             permission: data.permission,

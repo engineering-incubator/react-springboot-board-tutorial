@@ -1,4 +1,5 @@
 import React, { useReducer, useState } from 'react'
+import { Route, Link } from "react-router-dom";
 import Button from '../../components/common/Button'
 import Template from '../../components/common/Template'
 import Input from '../../components/common/Input'
@@ -39,13 +40,18 @@ const SignUp = () => {
     permission,
     email,
     phoneNumber,
-  } = state
+	} = state
+	
   const requestRegister = async () => {
     const result = await register(state)
-    if (result.code === 'SUCCESS') console.log('회원가입 완료')
+		if (result.code === 'SUCCESS')
+		{
+			alert('회원가입 완료되었습니다.');
+			document.location.href = '/signIn'
+		}
     else {
 			if (result.message === '이미 가입된 아이디입니다.')
-				console.log("회원가입 실패: 이미 가입된 아이디입니다.")
+				alert("회원가입 실패: 이미 가입된 아이디입니다.")
     }
   }
   return (
