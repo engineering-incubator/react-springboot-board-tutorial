@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/v1/article")
+@RequestMapping("/v1/articles")
 public class ArticleController {
   private final ArticleService articleService;
 

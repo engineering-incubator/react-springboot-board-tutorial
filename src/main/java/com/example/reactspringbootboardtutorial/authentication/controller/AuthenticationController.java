@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/authentication")
+@RequiredArgsConstructor
 public class AuthenticationController {
     private final CustomUserDetailsService userService;
+
 
     @PostMapping("/sign-up")
     public WrappedResponseDto signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
