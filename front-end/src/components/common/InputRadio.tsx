@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { blind } from '_/styles/mixin';
-import { colors } from 'src/styles/variables';
+import { colors } from '_/styles/variables';
 
 interface InputRadioProps {
   name: string;
