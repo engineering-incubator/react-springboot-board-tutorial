@@ -2,9 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { Link, useHistory } from "react-router-dom";
+import Pagination from "react-js-pagination";
 
-export default function Gateway() {
+export default function ArticleList() {
   const [articles, setArticles] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
   const history = useHistory();
 
   useEffect(() => {
@@ -21,22 +23,35 @@ export default function Gateway() {
     })();
   }, []);
 
+  const handlePageClick = () => {};
+
   return (
     <>
       <div>
         <h1>안녕하세요! 게시판입니다.</h1>
         <button
           onClick={() => {
-            history.push("/login");
+            history.push("/article/post");
           }}
         >
           글쓰기
         </button>
       </div>
+      {!isEmpty(articles) && (
+        <Pagination
+          activePage={currentPage}
+          itemsCountPerPage={10}
+          totalItemsCount={articles.length}
+          pageRangeDisplayed={5}
+          prevPageText="‹ 이전"
+          nextPageText="다음 ›"
+          onChange={handlePageClick}
+        />
+      )}
       <table>
         <thead>
           <tr>
-            <th>번호</th>
+            <th>게시글 번호</th>
             <th>제목</th>
             <th>날짜</th>
             <th>작성자</th>
@@ -49,18 +64,18 @@ export default function Gateway() {
               <tr key={article.article_id}>
                 <td>{article.article_id}</td>
                 <td>
-                  <Link to={`/articles/${article.article_id}`}>
+                  <Link to={`/article/${article.article_id}`}>
                     {article.title}
                   </Link>
                 </td>
-                //TODO modified 날짜 비교해서 최신 날짜로 보여주기
-                <td>{article.created_at}</td>
+                <td>{article.modified_at}</td>
                 <td>김모찌</td>
                 <td>0</td>
               </tr>
             ))}
         </tbody>
       </table>
+      {isEmpty(articles) && <h5>불러오는 중입니다...</h5>}
     </>
   );
 }
