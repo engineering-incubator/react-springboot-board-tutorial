@@ -1,15 +1,12 @@
-import React, { useReducer, useState } from 'react'
-import Button from '../../components/common/Button'
-import Template from '../../components/common/Template'
-import Input from '../../components/common/Input'
-import ErrorMessage from '../../components/common/ErrorMessage'
-import Select from '../../components/common/Select'
-import {
-  isPasswordPattern,
-  isEmailPattern,
-  isPhoneNumberPattern,
-} from '../../validation/SignUpRegEx'
-import { register } from '../../api/authApi'
+import React, { useMemo, useReducer, useState } from "react";
+import { register } from "../../api/authApi";
+import { isFailureStatus } from "../../api/config/status-code.config";
+import Button from "../../components/common/Button";
+import ErrorMessage from "../../components/common/ErrorMessage";
+import Input from "../../components/common/Input";
+import Select from "../../components/common/Select";
+import Template from "../../components/common/Template";
+import { isEmailPattern, isPasswordPattern, isPhoneNumberPattern } from "../../validation/SignUpRegEx";
 
 const PERMISSIONS = [
   { value: 'ADMIN', name: 'admin' },
@@ -17,11 +14,18 @@ const PERMISSIONS = [
   { value: 'USER', name: 'user' },
 ]
 const reducer = (state, action) => {
+  // TODO reducer 의 철학에 위배 되는 듯 하다.. Plain object 형태를 넣어줘야 할듯 하다. DOM 을 넣는 건 쫌......
   return {
     ...state,
     [action.name]: action.value,
   }
 }
+
+export default function isEmpty(value) {
+  return !value;
+}
+
+
 const SignUp = () => {
   const [isClickSubmitButton, setIsClickSubmitButton] = useState(false)
   const [state, dispatch] = useReducer(reducer, {
@@ -42,17 +46,19 @@ const SignUp = () => {
   } = state
 
   const requestRegister = async () => {
+    // FIXME validation 통과하지 못했을 경우, 서버로 요청을 하지 말아야 함.
     const result = await register(state)
-    if (result.code === 'SUCCESS') {
-      alert('회원가입 완료되었습니다.')
-      document.location.href = '/signIn'
-    } else {
-      if (result.message === '이미 가입된 아이디입니다.')
-        alert('회원가입 실패: 이미 가입된 아이디입니다.')
+    if (isFailureStatus(result.code)) {
+      return alert(result.message);
     }
+
+    alert('회원가입 완료되었습니다.')
+    document.location.href = '/signIn'
   }
+
   return (
 		<>
+      {/* FIXME component 추상화 */}
       <Template title="회원가입">
         <Input
           placeholder="아이디"

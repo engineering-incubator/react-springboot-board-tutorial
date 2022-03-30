@@ -1,25 +1,32 @@
 import React, {useEffect, useState} from "react";
+import { useParams } from "react-router-dom";
 import Template from "../../components/common/Template";
 import ArticleDetail from "../../components/article/ArticleDetail";
 import { getArticle } from "../../api/articleApi";
 
-const Article = ({ match }) => {
+function useFetchArticle() {
+	const params = useParams()
 	const [article, setArticle] = useState({});
-	 useEffect(() => {
-    async function getItem() {
-      const item = await getArticle(match.params.article_id);
+	useEffect(function fetchArticle () {
+		(async function getItem() {
+			const item = await getArticle(params.article_id);
 			setArticle(item);
-    }
-		console.log('article', article)
-    getItem();
-	 }, []);
+		})();
+	}, []);
+
+	return article;
+}
+
+const Article = () => {
+	const article = useFetchArticle();
 	return (
 		<>
 			<Template title="글 상세">
-				<p>{match.params.article_id}</p>
-				<ArticleDetail data={article}></ArticleDetail>			
+				<p>{article.id}</p>
+				<ArticleDetail data={article} />
 			</Template>
 		</>
 	);
 };
+
 export default Article;

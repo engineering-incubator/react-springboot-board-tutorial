@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 const ArticleList = () => {
 	const [articleList, setArticleList] = useState([]);
+	// FIXME useHook 으로 추상화
 	 useEffect(() => {
     async function getList() {
       const list = await getArticleList();
