@@ -20,6 +20,7 @@ import { colors } from '_/styles/variables';
 import { API_URLS } from '_/config';
 import Loading from '_/components/common/Loading';
 import axios from 'axios';
+import { isSuccessStatus } from '_/config/status.code.config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -95,23 +96,23 @@ const SignUp = () => {
       setIsLoding(true);
       const response = await axios.post<string, ResponseSignup>(API_URLS.SIGNUP, input);
       const { code, message } = response.data;
-      // console.log(response);
 
-      if (code === 'SUCCESS') {
+      if (isSuccessStatus(code)) {
         setIsLoding(false);
         // window.location.href = "";
-      } else if (code === 'FAILURE') {
-        toast.error(message, {
-          position: 'top-center',
-          theme: 'dark',
-          autoClose: false,
-          closeButton: CloseButton,
-        });
+        return;
       }
+
+      toast.error(message, {
+        position: 'top-center',
+        theme: 'dark',
+        autoClose: false,
+        closeButton: CloseButton,
+      });
     })();
   };
 
-  const CloseButton = ({ closeToast }: { closeToast: any }) => {
+  const CloseButton = ({ closeToast }: { closeToast: () => void }) => {
     const onClickClose = () => {
       setIsLoding((prev) => {
         closeToast();
