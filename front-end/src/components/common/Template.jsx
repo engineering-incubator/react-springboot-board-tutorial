@@ -15,6 +15,7 @@ const TemplateContainer = styled.div`
 const MainContainer = styled.div`
 	padding: 2rem;
 	width: 500px;
+	height: 100%;
 	background: #fff;
 	box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
 	border-radius: 2px;
