@@ -17,7 +17,7 @@ public class AuthenticationController {
     private final CustomUserDetailsService userService;
 
     @PostMapping("/sign-up")
-    public WrappedResponseDto signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
+    public WrappedResponseDto signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
         log.info("###################################################{}", signUpRequestDto);
         userService.signUp(signUpRequestDto);
         return WrappedResponseDto.success(null);

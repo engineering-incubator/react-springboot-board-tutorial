@@ -10,7 +10,6 @@ import {
   isPhoneNumberPattern,
 } from '../../validation/SignUpRegEx'
 import { register } from '../../api/authApi'
-import Navigation from '../../components/common/Navigation'
 
 const PERMISSIONS = [
   { value: 'ADMIN', name: 'admin' },

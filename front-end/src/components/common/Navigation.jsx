@@ -24,7 +24,7 @@ const Navigation = () => {
     <>
       <Header>
         <Category>
-          <Link to="/">홈으로 이동</Link>
+          <Link to="/">Home</Link>
         </Category>
         <Category>
           <Link to="/signUp">회원가입</Link>
@@ -33,10 +33,7 @@ const Navigation = () => {
           <Link to="/signIn">로그인</Link>
         </Category>
         <Category>
-          <Link to="/article">게시글 목록</Link>
-        </Category>
-        <Category>
-          <Link to="/article/:article_id">게시글 상세</Link>
+          <Link to="/article">게시글로 이동</Link>
         </Category>
       </Header>
       <Route path="/" element={Home} exact></Route>

@@ -4,7 +4,8 @@ import Template from "../components/common/Template";
 const Home = () => {
 	return (
 		<>
-			<Template title="홈"></Template>
+			<Template title="홈">
+			</Template>
 		</>
 	);
 };
