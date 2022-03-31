@@ -17,6 +17,7 @@ public class ArticleDetailsDto {
   private Long article_id;
   private String title;
   private String content;
+  private String author;
   private String created_at;
   private String modified_at;
 
@@ -25,6 +26,7 @@ public class ArticleDetailsDto {
         .article_id(article.getId())
         .title(article.getTitle())
         .content(article.getContent())
+        .author(article.getAuthor())
         .created_at(article.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
         .modified_at(article.getModifiedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
         .build();
