@@ -28,4 +28,7 @@ public class Article extends BaseTimeEntity {
 
   @Column(columnDefinition = "TEXT", nullable = false)
   private String content;
+
+  @Column(columnDefinition = "VARCHAR(50)", nullable = false)
+  private String author;
 }

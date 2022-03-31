@@ -29,11 +29,12 @@ public class ArticleService {
     return ArticleDetailsDto.of(article);
   }
 
-  public ArticleDetailsDto saveArticle(ArticleCreateDto articleCreateDto) {
+  public ArticleDetailsDto saveArticle(ArticleCreateDto articleCreateDto, String author) {
     Article article = new Article();
 
     article.setTitle(articleCreateDto.getTitle());
     article.setContent(articleCreateDto.getContent());
+    article.setAuthor(author);
 
     return ArticleDetailsDto.of(articleRepository.save(article));
   }
