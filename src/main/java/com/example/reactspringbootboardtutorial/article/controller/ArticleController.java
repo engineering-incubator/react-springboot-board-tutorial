@@ -2,21 +2,16 @@ package com.example.reactspringbootboardtutorial.article.controller;
 
 import com.example.reactspringbootboardtutorial.article.dto.ArticleCreateDto;
 import com.example.reactspringbootboardtutorial.article.dto.ArticleDetailsDto;
+import com.example.reactspringbootboardtutorial.article.dto.ArticlesRequestDto;
 import com.example.reactspringbootboardtutorial.article.service.ArticleService;
+import com.example.reactspringbootboardtutorial.common.dto.PageableDto;
 import com.example.reactspringbootboardtutorial.common.dto.WrappedResponseDto;
-import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -28,8 +23,8 @@ public class ArticleController {
   private final ArticleService articleService;
 
   @GetMapping
-  public WrappedResponseDto<List<ArticleDetailsDto>> getArticleList() {
-    return WrappedResponseDto.success(articleService.getArticleList());
+  public WrappedResponseDto<PageableDto<ArticleDetailsDto>> getArticleList(@ModelAttribute ArticlesRequestDto dto) {
+    return WrappedResponseDto.success(articleService.getArticleList(dto));
   }
 
   @GetMapping("/{articleId}")

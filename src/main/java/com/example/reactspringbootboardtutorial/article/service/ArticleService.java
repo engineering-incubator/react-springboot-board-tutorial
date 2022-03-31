@@ -1,14 +1,19 @@
 package com.example.reactspringbootboardtutorial.article.service;
 
+import com.example.reactspringbootboardtutorial.article.converter.ArticleConverter;
 import com.example.reactspringbootboardtutorial.article.dto.ArticleCreateDto;
 import com.example.reactspringbootboardtutorial.article.dto.ArticleDetailsDto;
+import com.example.reactspringbootboardtutorial.article.dto.ArticlesRequestDto;
 import com.example.reactspringbootboardtutorial.article.model.Article;
 import com.example.reactspringbootboardtutorial.article.repository.ArticleRepository;
+import com.example.reactspringbootboardtutorial.common.dto.PageableDto;
 import com.example.reactspringbootboardtutorial.common.exception.CustomException;
-import java.util.List;
-import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,17 +21,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ArticleService {
   private final ArticleRepository articleRepository;
+  private final ArticleConverter articleConverter;
 
-  public List<ArticleDetailsDto> getArticleList() {
-    List<Article> articles = articleRepository.findAll();
-    return articles.stream().map(ArticleDetailsDto::of).collect(Collectors.toList());
+  public PageableDto<ArticleDetailsDto> getArticleList(ArticlesRequestDto dto) {
+    Pageable pageable = PageRequest.of(dto.getCurrentPage(), dto.getSize());
+    Page<Article> articles = articleRepository.findAll(pageable);
+    return articleConverter.convert(articles);
   }
 
   public ArticleDetailsDto getArticle(Long articleId) {
     Article article = articleRepository.findById(articleId)
         .orElseThrow(() -> new CustomException("No article with that number."));
 
-    return ArticleDetailsDto.of(article);
+    return articleConverter.convert(article);
   }
 
   public ArticleDetailsDto saveArticle(ArticleCreateDto articleCreateDto, String author) {
@@ -36,7 +43,7 @@ public class ArticleService {
     article.setContent(articleCreateDto.getContent());
     article.setAuthor(author);
 
-    return ArticleDetailsDto.of(articleRepository.save(article));
+    return articleConverter.convert(articleRepository.save(article));
   }
 
   public void deleteArticle(Long articleId) {
@@ -57,6 +64,6 @@ public class ArticleService {
     article.setTitle(articleUpdateDto.getTitle());
     article.setContent(articleUpdateDto.getContent());
 
-    return ArticleDetailsDto.of(articleRepository.save(article));
+    return articleConverter.convert(articleRepository.save(article));
   }
 }
