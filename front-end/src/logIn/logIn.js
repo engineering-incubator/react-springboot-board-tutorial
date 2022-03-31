@@ -69,7 +69,7 @@ export default function LogIn() {
         return;
       }
       alert("로그인되었습니다.");
-      history.push("/article");
+      history.replace("/article");
     } catch (error) {
       alert("다시 한번 시도해주세요.");
     }
