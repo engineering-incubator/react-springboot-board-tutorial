@@ -2,12 +2,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { Link, useHistory } from "react-router-dom";
-import Pagination from "react-js-pagination";
+import ReactPaginate from "react-paginate";
 
 export default function ArticleList() {
   const [articles, setArticles] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const history = useHistory();
+
+  const itemsCountPerPage = 10;
+  const offset = currentPage * itemsCountPerPage;
+  // const currentPageData = articles.slice(offset, offset + itemsCountPerPage);
 
   useEffect(() => {
     (async function () {
@@ -23,7 +27,9 @@ export default function ArticleList() {
     })();
   }, []);
 
-  const handlePageClick = () => {};
+  const handlePageClick = () => {
+    setCurrentPage(2);
+  };
 
   return (
     <>
@@ -37,17 +43,16 @@ export default function ArticleList() {
           글쓰기
         </button>
       </div>
-      {!isEmpty(articles) && (
-        <Pagination
-          activePage={currentPage}
-          itemsCountPerPage={10}
-          totalItemsCount={articles.length}
-          pageRangeDisplayed={5}
-          prevPageText="‹ 이전"
-          nextPageText="다음 ›"
-          onChange={handlePageClick}
-        />
-      )}
+      {/*{!isEmpty(articles) && (*/}
+      {/*  <ReactPaginate*/}
+      {/*    itemsCountPerPage={itemsCountPerPage}*/}
+      {/*    totalItemsCount={articles.length}*/}
+      {/*    pageRangeDisplayed={10}*/}
+      {/*    prevPageText="‹ 이전"*/}
+      {/*    nextPageText="다음 ›"*/}
+      {/*    onChange={handlePageClick}*/}
+      {/*  />*/}
+      {/*)}*/}
       <table>
         <thead>
           <tr>
@@ -59,20 +64,20 @@ export default function ArticleList() {
           </tr>
         </thead>
         <tbody>
-          {!isEmpty(articles) &&
-            articles.map((article) => (
-              <tr key={article.article_id}>
-                <td>{article.article_id}</td>
-                <td>
-                  <Link to={`/article/${article.article_id}`}>
-                    {article.title}
-                  </Link>
-                </td>
-                <td>{article.modified_at}</td>
-                <td>김모찌</td>
-                <td>0</td>
-              </tr>
-            ))}
+          {/*{!isEmpty(articles) &&*/}
+          {/*  currentPageData.map((article) => (*/}
+          {/*    <tr key={article.article_id}>*/}
+          {/*      <td>{article.article_id}</td>*/}
+          {/*      <td>*/}
+          {/*        <Link to={`/article/${article.article_id}`}>*/}
+          {/*          {article.title}*/}
+          {/*        </Link>*/}
+          {/*      </td>*/}
+          {/*      <td>{article.modified_at}</td>*/}
+          {/*      <td>김모찌</td>*/}
+          {/*      <td>0</td>*/}
+          {/*    </tr>*/}
+          {/*  ))}*/}
         </tbody>
       </table>
       {isEmpty(articles) && <h5>불러오는 중입니다...</h5>}
