@@ -12,7 +12,7 @@ interface InputRadioProps {
 }
 
 const InputRadio = ({ name, text, isInValid, isChecked, onChangeRadio }: InputRadioProps) => (
-  <StyledLabel htmlFor={text} isChecked={isChecked} isInValid={isInValid}>
+  <StyledWrap isChecked={isChecked} isInValid={isInValid}>
     <StyledInputRadio
       type="radio"
       name={name}
@@ -20,11 +20,13 @@ const InputRadio = ({ name, text, isInValid, isChecked, onChangeRadio }: InputRa
       checked={isChecked}
       onChange={onChangeRadio}
     />
-    {text}
-  </StyledLabel>
+    <StyledLabel htmlFor={text} tabIndex={1}>
+      {text}
+    </StyledLabel>
+  </StyledWrap>
 );
 
-const StyledLabel = styled.label<{ isChecked: boolean; isInValid: boolean }>`
+const StyledWrap = styled.label<{ isChecked: boolean; isInValid: boolean }>`
   position: relative;
   padding-left: 18px;
   color: ${({ isChecked, isInValid }) =>
@@ -62,6 +64,8 @@ const StyledLabel = styled.label<{ isChecked: boolean; isInValid: boolean }>`
     content: '';
   }
 `;
+
+const StyledLabel = styled.label``;
 
 const StyledInputRadio = styled.input`
   ${blind}

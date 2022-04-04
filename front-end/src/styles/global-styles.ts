@@ -106,7 +106,6 @@ select {
   border: 0;
   border-radius: 0;
   font-family: system-ui;
-  outline: none;
 }
 
 caption {

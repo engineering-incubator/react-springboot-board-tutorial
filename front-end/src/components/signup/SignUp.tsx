@@ -21,7 +21,7 @@ import { API_URLS } from '_/config';
 import { fetchApi } from '_/api';
 import Loading from '_/components/common/Loading';
 import { isSuccessStatus } from '_/config/status.code.config';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = () => {
@@ -88,46 +88,48 @@ const SignUp = () => {
       setIsLoding(true);
       const response = await fetchApi({ method: 'post', url: API_URLS.SIGNUP, data: input });
       const { code, message } = response;
+      const isSuccess = isSuccessStatus(code);
 
-      if (isSuccessStatus(code)) {
-        toast.success('회원가입에 성공하였습니다. 잠시후 메인으로 이동 합니다.', {
-          position: 'top-center',
-          theme: 'dark',
-          closeButton: successCloseButton,
-        });
-        // window.location.href = "";
-        return;
-      }
+      const CloseButton = ({ closeToast }: { closeToast: () => void }) => {
+        const onClickClose = () => {
+          setIsLoding((prev) => {
+            closeToast();
+            if (isSuccess) {
+              window.location.href = '/';
+            }
+            return !prev;
+          });
+        };
+        return <StyledClosePopup onClick={onClickClose}>X</StyledClosePopup>;
+      };
 
-      toast.error(message, {
+      const toastMessage = isSuccess
+        ? '회원가입에 성공하였습니다. 잠시후 메인으로 이동 합니다.'
+        : message;
+
+      const toastOptions: ToastOptions = {
         position: 'top-center',
         theme: 'dark',
         autoClose: false,
-        closeButton: failureCloseButton,
+      };
+
+      if (isSuccess) {
+        toast.success(toastMessage, {
+          ...toastOptions,
+          closeButton: CloseButton,
+          onOpen: () => setTimeout((window.location.href = '/'), 2000),
+        });
+
+        return;
+      }
+
+      toast.error(toastMessage, {
+        ...toastOptions,
+        closeButton: CloseButton,
       });
+
+      // if (isSuccess) window.location.href = '/';
     })();
-  };
-
-  const successCloseButton = ({ closeToast }: { closeToast: () => void }) => {
-    const onClickClose = () => {
-      setIsLoding((prev) => {
-        closeToast();
-        window.location.href = '/';
-        return !prev;
-      });
-    };
-    return <StyledClosePopup onClick={onClickClose}>X</StyledClosePopup>;
-  };
-
-  const failureCloseButton = ({ closeToast }: { closeToast: () => void }) => {
-    const onClickClose = () => {
-      setIsLoding((prev) => {
-        closeToast();
-        return !prev;
-      });
-    };
-
-    return <StyledClosePopup onClick={onClickClose}>X</StyledClosePopup>;
   };
 
   const isPermissionInvalid = useMemo(
