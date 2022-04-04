@@ -18,19 +18,11 @@ import { useSignupDispatch, useSignupState } from '_/context/signContext';
 import ErrorNotice from '_/components/common/ErrorNotice';
 import { colors } from '_/styles/variables';
 import { API_URLS } from '_/config';
+import { fetchApi } from '_/api';
 import Loading from '_/components/common/Loading';
-import axios from 'axios';
 import { isSuccessStatus } from '_/config/status.code.config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-interface ResponseSignup {
-  data: {
-    code: 'FAILURE' | 'SUCCESS';
-    content: string | null;
-    message: string;
-  };
-}
 
 const SignUp = () => {
   const [isLoading, setIsLoding] = useState(false);
@@ -39,7 +31,7 @@ const SignUp = () => {
   const dispatch = useSignupDispatch();
   const { username, password, email, phoneNumber, permission } = input;
   const {
-    username: validusername,
+    username: validUsername,
     password: validPassword,
     email: validEmail,
     phoneNumber: validPhoneNumber,
@@ -94,11 +86,15 @@ const SignUp = () => {
 
     (async () => {
       setIsLoding(true);
-      const response = await axios.post<string, ResponseSignup>(API_URLS.SIGNUP, input);
-      const { code, message } = response.data;
+      const response = await fetchApi({ method: 'post', url: API_URLS.SIGNUP, data: input });
+      const { code, message } = response;
 
       if (isSuccessStatus(code)) {
-        setIsLoding(false);
+        toast.success('회원가입에 성공하였습니다. 잠시후 메인으로 이동 합니다.', {
+          position: 'top-center',
+          theme: 'dark',
+          closeButton: successCloseButton,
+        });
         // window.location.href = "";
         return;
       }
@@ -107,12 +103,23 @@ const SignUp = () => {
         position: 'top-center',
         theme: 'dark',
         autoClose: false,
-        closeButton: CloseButton,
+        closeButton: failureCloseButton,
       });
     })();
   };
 
-  const CloseButton = ({ closeToast }: { closeToast: () => void }) => {
+  const successCloseButton = ({ closeToast }: { closeToast: () => void }) => {
+    const onClickClose = () => {
+      setIsLoding((prev) => {
+        closeToast();
+        window.location.href = '/';
+        return !prev;
+      });
+    };
+    return <StyledClosePopup onClick={onClickClose}>X</StyledClosePopup>;
+  };
+
+  const failureCloseButton = ({ closeToast }: { closeToast: () => void }) => {
     const onClickClose = () => {
       setIsLoding((prev) => {
         closeToast();
@@ -123,6 +130,33 @@ const SignUp = () => {
     return <StyledClosePopup onClick={onClickClose}>X</StyledClosePopup>;
   };
 
+  const isPermissionInvalid = useMemo(
+    () => permission === PERMISSIONS.NONE && isClicked,
+    [permission, isClicked],
+  );
+  const isPermissionInvalidNotice = useMemo(
+    () => permission !== PERMISSIONS.NONE && !validPermission && isClicked,
+    [permission, validPermission, isClicked],
+  );
+
+  const usernameInvalid = useMemo(() => !!username && !validUsername, [username, validUsername]);
+  const usernameInvalidNotice = useMemo(() => !username && isClicked, [username, isClicked]);
+
+  const passwordInvalid = useMemo(() => !!password && !validPassword, [password, validPassword]);
+  const passwordInvalidNotice = useMemo(() => !password && isClicked, [password, isClicked]);
+
+  const emailInvalid = useMemo(() => !!email && !validEmail, [email, validEmail]);
+  const emailInvalidNotice = useMemo(() => !email && isClicked, [email, isClicked]);
+
+  const phoneNumberInvalid = useMemo(
+    () => !!phoneNumber && !validPhoneNumber,
+    [phoneNumber, validPhoneNumber],
+  );
+  const phoneNumberInvalidNotice = useMemo(
+    () => !phoneNumber && isClicked,
+    [phoneNumber, isClicked],
+  );
+
   return (
     <>
       {isLoading && <Loading msg={'요청을 처리중입니다.'} />}
@@ -131,7 +165,7 @@ const SignUp = () => {
         <StyledCommonTitle>회원가입</StyledCommonTitle>
         <StyledSignupWrap>
           <StyledArea>
-            <StyledCommonLabel as={'span'} isError={permission === PERMISSIONS.NONE && isClicked}>
+            <StyledCommonLabel as={'span'} isError={isPermissionInvalid}>
               권한
             </StyledCommonLabel>
             <StyledPermission>
@@ -139,35 +173,31 @@ const SignUp = () => {
                 <InputRadio
                   name="permission"
                   text={PERMISSIONS[i]}
-                  isInValid={permission === PERMISSIONS.NONE && isClicked}
+                  isInValid={isPermissionInvalid}
                   isChecked={permission === PERMISSIONS[i]}
                   onChangeRadio={onChangeRadio(PERMISSIONS[i])}
                   key={i}
                 />
               ))}
             </StyledPermission>
-            {permission === PERMISSIONS.NONE && isClicked && (
-              <ErrorNotice text="필수 선택 항목입니다" />
-            )}
-            <StyledNotice
-              isNotice={permission !== PERMISSIONS.NONE && !validPermission && isClicked}>
+            {isPermissionInvalid && <ErrorNotice text="필수 선택 항목입니다" />}
+            <StyledNotice isInvalidNotice={isPermissionInvalidNotice}>
               {SIGNUP_PLACEHOLDER['PERMISSION']}
             </StyledNotice>
           </StyledArea>
-
           <StyledArea>
             <StyledInputWrap>
               <InputText
                 ref={elRef}
                 type="text"
-                isInValid={(!!username && !validusername) || (!username && isClicked)}
+                isInValid={usernameInvalid || usernameInvalidNotice}
                 value={username}
                 name="username"
                 text="아이디"
                 onChangeInput={onChangeInput}
               />
-              {!username && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
-              <StyledNotice isNotice={!!username && !validusername && isClicked}>
+              {usernameInvalidNotice && <ErrorNotice text="필수 입력 항목입니다" />}
+              <StyledNotice isInvalidNotice={usernameInvalid && isClicked}>
                 {SIGNUP_PLACEHOLDER['USERNAME']}
               </StyledNotice>
             </StyledInputWrap>
@@ -177,50 +207,48 @@ const SignUp = () => {
               <InputText
                 ref={elRef}
                 type="password"
-                isInValid={(!!password && !validPassword) || (!password && isClicked)}
+                isInValid={passwordInvalid || passwordInvalidNotice}
                 value={password}
                 name="password"
                 text="비밀번호"
                 onChangeInput={onChangeInput}
               />
-              {!password && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
-              <StyledNotice isNotice={!!password && !validPassword && isClicked}>
+              {passwordInvalidNotice && <ErrorNotice text="필수 입력 항목입니다" />}
+              <StyledNotice isInvalidNotice={passwordInvalid && isClicked}>
                 {SIGNUP_PLACEHOLDER['PASSWORD']}
               </StyledNotice>
             </StyledInputWrap>
           </StyledArea>
-
           <StyledArea>
             <StyledInputWrap>
               <InputText
                 ref={elRef}
                 type="text"
-                isInValid={(!!email && !validEmail) || (!email && isClicked)}
+                isInValid={emailInvalid || emailInvalidNotice}
                 value={email}
                 name="email"
                 text="이메일"
                 onChangeInput={onChangeInput}
               />
-              {!email && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
-              <StyledNotice isNotice={!!email && !validEmail && isClicked}>
+              {emailInvalidNotice && <ErrorNotice text="필수 입력 항목입니다" />}
+              <StyledNotice isInvalidNotice={emailInvalid && isClicked}>
                 {SIGNUP_PLACEHOLDER['EMAIL']}
               </StyledNotice>
             </StyledInputWrap>
           </StyledArea>
-
           <StyledArea>
             <StyledInputWrap>
               <InputText
                 ref={elRef}
                 type="text"
-                isInValid={(!!phoneNumber && !validPhoneNumber) || (!phoneNumber && isClicked)}
+                isInValid={phoneNumberInvalid || phoneNumberInvalidNotice}
                 value={phoneNumber}
                 name="phoneNumber"
                 text="전화번호"
                 onChangeInput={onChangeInput}
               />
-              {!phoneNumber && isClicked && <ErrorNotice text="필수 입력 항목입니다" />}
-              <StyledNotice isNotice={!!phoneNumber && !validPhoneNumber && isClicked}>
+              {phoneNumberInvalidNotice && <ErrorNotice text="필수 입력 항목입니다" />}
+              <StyledNotice isInvalidNotice={phoneNumberInvalid && isClicked}>
                 {SIGNUP_PLACEHOLDER['PHONENUMBER']}
               </StyledNotice>
             </StyledInputWrap>
@@ -252,10 +280,10 @@ const StyledSignupWrap = styled.article`
   box-sizing: border-box;
 `;
 
-const StyledNotice = styled.p<{ isNotice: boolean }>`
+const StyledNotice = styled.p<{ isInvalidNotice: boolean }>`
   margin: 8px 4px;
   font-size: 12px;
-  color: ${({ isNotice }) => (isNotice ? `${colors.warning}` : `${colors.gray1}`)};
+  color: ${({ isInvalidNotice }) => (isInvalidNotice ? `${colors.warning}` : `${colors.gray1}`)};
 `;
 
 const StyledInputWrap = styled.div`

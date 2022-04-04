@@ -35,5 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
 
 node_modules
+=======
+node_modules
+>>>>>>> 5c5972210b7aa4174c461af5523ac753d97a976a

@@ -2,16 +2,16 @@ import React, { useReducer, useContext, createContext } from 'react';
 import { reducer, SignupDispatch } from '_/reduce/signupReducer';
 import { PERMISSION_TYPE, PERMISSIONS } from '_/constants';
 
-export interface InitialStateInput {
+export type InitialStateType = {
   input: {
-    [key: string]: string | PERMISSION_TYPE;
+    permission: PERMISSION_TYPE;
+    username: string;
+    password: string;
+    email: string;
+    phoneNumber: string;
   };
-}
-export interface InitialStateType extends InitialStateInput {
-  valid: {
-    [key: string]: boolean;
-  };
-}
+  valid: { [key: string]: boolean };
+};
 
 const SignupStateContext = createContext<InitialStateType | null>(null);
 const SignupDispatchContext = createContext<SignupDispatch | null>(null);
