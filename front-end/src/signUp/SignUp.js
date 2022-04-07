@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import SignUpForm from "./components/signUpForm";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { isSuccess } from "../utilites/validates/httpValidation";
 
 export default function SignUp() {
   const formRef = useRef();
@@ -31,12 +32,12 @@ export default function SignUp() {
         "/api/v1/authentication/sign-up",
         submitUserSignUpData,
       );
-      if (res.data.code !== "SUCCESS") {
+      if (!isSuccess(res)) {
         alert(res.data.message);
         return;
       }
       history.replace("/login");
-      alert("고객님, 환영합니다!");
+      alert("회원가입 되었습니다.");
     } catch (error) {
       console.log(error);
     }

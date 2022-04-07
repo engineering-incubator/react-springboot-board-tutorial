@@ -44,7 +44,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "express": "^4.17.3",
     "prettier": "2.5.1",
-    "react-paginate": "^8.1.2",
+    "react-paginate": "github:AdeleD/react-paginate#v9",
     "react-router-dom": "5.3"
   },
   "proxy": "http://localhost:11001"

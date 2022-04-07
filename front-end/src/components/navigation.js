@@ -7,7 +7,7 @@ export default function Navigation() {
       <h1>네비게이션</h1>
       <ol>
         <li>
-          <Link to="/article">홈</Link>
+          <Link to="/articles?page=1">게시판</Link>
         </li>
         <li>
           <Link to="/signup">회원가입</Link>
