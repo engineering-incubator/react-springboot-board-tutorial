@@ -9,7 +9,7 @@ import qs from "qs";
 
 export default function ArticleList() {
   const [articles, setArticles] = useState([]);
-  const [totalPages, setTotalPages] = useState(2);
+  const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const history = useHistory();
   const location = useLocation();
