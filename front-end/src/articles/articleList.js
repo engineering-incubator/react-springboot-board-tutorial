@@ -74,7 +74,7 @@ export default function ArticleList() {
                   </Link>
                 </td>
                 <td>{article.modified_at}</td>
-                <td>김모찌</td>
+                <td>{article.author}</td>
                 <td>0</td>
               </tr>
             ))}

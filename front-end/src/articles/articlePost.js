@@ -44,7 +44,7 @@ export default function ArticlePost() {
               <strong>변경일</strong> {article.modified_at}
             </li>
             <li>
-              <strong>작성자</strong> 김모찌
+              <strong>작성자</strong> {article.author}
             </li>
             <li>
               <strong>조회수</strong> 0
