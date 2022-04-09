@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { isSuccess } from "../utilites/validates/httpValidation";
 
 export default function ArticlePost() {
   const param = useParams();
+  const history = useHistory();
   const [article, setArticle] = useState();
 
   useEffect(() => {
@@ -22,11 +23,31 @@ export default function ArticlePost() {
     })();
   }, []);
 
+  const onDelete = async () => {
+    try {
+      const res = await axios.delete(`/api/v1/articles/${article.article_id}`);
+      if (isSuccess(res)) {
+        alert("글이 삭제되었습니다.");
+        history.replace("/articles?page=1");
+        return;
+      }
+      return alert(res.data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div>
-        <button>수정</button>
-        <button>삭제</button>
+        <button
+          onClick={() => {
+            history.push(`/articles/${param.articleId}/change`);
+          }}
+        >
+          수정
+        </button>
+        <button onClick={onDelete}>삭제</button>
       </div>
       {/* FIXME 정말 컨텐츠가 없는 경우는 어떻게 처리할 것인지. */}
       {isEmpty(article) && <h5>불러오는 중입니다...</h5>}

@@ -72,7 +72,7 @@ export function validatePasswordConfirm(value, source) {
     } else {
       result = "";
     }
-    return isValid;
+    return result;
   });
   return result;
 }

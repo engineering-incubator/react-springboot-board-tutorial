@@ -18,11 +18,11 @@ export default function ArticleList() {
     const query = qs.parse(location.search, {
       ignoreQueryPrefix: true,
     });
-    setCurrentPage(query.page);
+    setCurrentPage(query.page || 1);
     (async function () {
       try {
         const res = await axios.get(
-          `/api/v1/articles?currentPage=${query.page}`,
+          `/api/v1/articles?currentPage=${query.page || 1}`,
         );
         if (isSuccess(res)) {
           setArticles(res.data.content.items);

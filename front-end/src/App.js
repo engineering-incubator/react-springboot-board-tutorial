@@ -7,6 +7,7 @@ import ArticleList from "./articles/articleList";
 import ArticlePost from "./articles/articlePost";
 import ArticleCreate from "./articles/articleCreate";
 import Home from "./Home/home";
+import ArticlePut from "./articles/articlePut";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Navigation />
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route path="/articles/:articleId/change" component={ArticlePut} />
         <Route path="/articles/:articleId" component={ArticlePost} />
         <Route path="/articles" component={ArticleList} />
         <Route path="/signup" component={SignUp} />
