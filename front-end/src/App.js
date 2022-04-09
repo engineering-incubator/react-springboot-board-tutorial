@@ -4,19 +4,23 @@ import { Route, Switch } from "react-router-dom";
 import LogIn from "./logIn/logIn";
 import Navigation from "./components/navigation";
 import ArticleList from "./articles/articleList";
-import Article from "./articles/article";
 import ArticlePost from "./articles/articlePost";
+import ArticleCreate from "./articles/articleCreate";
+import Home from "./Home/home";
+import ArticlePut from "./articles/articlePut";
 
 function App() {
   return (
     <div>
       <Navigation />
       <Switch>
-        <Route path="/article" exact={true} component={ArticleList} />
+        <Route exact path="/" component={Home} />
+        <Route path="/articles/:articleId/change" component={ArticlePut} />
+        <Route path="/articles/:articleId" component={ArticlePost} />
+        <Route path="/articles" component={ArticleList} />
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={LogIn} />
-        <Route path="/article/post" exact={true} component={ArticlePost} />
-        <Route path="/article/:articleId" component={Article} />
+        <Route path="/create" component={ArticleCreate} />
       </Switch>
     </div>
   );
