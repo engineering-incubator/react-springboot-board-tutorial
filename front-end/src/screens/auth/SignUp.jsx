@@ -21,7 +21,7 @@ const reducer = (state, action) => {
   }
 }
 
-export default function isEmpty(value) {
+export function isEmpty(value) {
   return !value;
 }
 

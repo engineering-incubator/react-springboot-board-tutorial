@@ -6,20 +6,25 @@ const client = axios.create({
     withCredentials: true
 });
 
-export async function requestClientService (method, url, data) {
+export async function requestClientService(method, url) {
     try {
-
-        const response = await client({
-            method,
-            url,
-        })
+        let response;
+        if (method === 'get') {
+            response = await client.get(url);
+        } else if (method === 'post') {
+            response = await client.post(url);
+        }
+        // const response = await client({
+        //     method,
+        //     url,
+        // })
         if (isFailureStatus(response.data.content.code)) {
             // TODO error log
-            // errorLog("uri : " + uri, "method: " + method);
+            console.log("errorLog/ uri : " + url, "method: " + method)
         }
         return response.data.content
     } catch (e) {
-        // errorLog("uri : " + uri, "method: " + method + "message :" + e.getMessage());
+        console.log("errorLog/ uri : " + url, "method: " + method + "message :" + e.getMessage())
     }
 
 }
