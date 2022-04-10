@@ -55,8 +55,9 @@ export default function ArticleList() {
           글쓰기
         </button>
       </div>
-      {isEmpty(articles) ||
-        (isEmpty(totalArticles) && <p>등록된 게시글이 없습니다.</p>)}
+      {(isEmpty(articles) || isEmpty(totalArticles)) && (
+        <p>등록된 게시글이 없습니다.</p>
+      )}
       <table>
         <thead>
           <tr>
@@ -68,13 +69,17 @@ export default function ArticleList() {
           </tr>
         </thead>
         <tbody>
-          {/*FIXME success 이후 아티클 랭스 체크*/}
           {!isEmpty(articles) &&
             articles.map((article) => (
               <tr key={article.article_id}>
                 <td>{article.article_id}</td>
                 <td>
-                  <Link to={`/articles/${article.article_id}`}>
+                  <Link
+                    to={{
+                      pathname: `/articles/${article.article_id}`,
+                      state: { page: currentPage },
+                    }}
+                  >
                     {article.title}
                   </Link>
                 </td>

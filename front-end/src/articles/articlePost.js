@@ -33,8 +33,7 @@ export default function ArticlePost() {
       const res = await axios.delete(`/api/v1/articles/${article.article_id}`);
       if (isSuccess(res)) {
         alert("글이 삭제되었습니다.");
-        //TODO 이전 보던 페이지 가져오기
-        history.replace(`/articles?page=1`);
+        history.replace(`/articles?page=${location.state.page}`);
         return;
       }
       return alert(res.data.message);
@@ -42,8 +41,6 @@ export default function ArticlePost() {
       console.log(error);
     }
   };
-
-  console.log(location.state);
 
   return (
     <>
