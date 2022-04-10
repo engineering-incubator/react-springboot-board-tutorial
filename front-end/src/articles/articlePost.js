@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { isSuccess } from "../utilites/validates/httpValidation";
 
 export default function ArticlePost() {
   const param = useParams();
   const history = useHistory();
+  const location = useLocation();
   const [article, setArticle] = useState();
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function ArticlePost() {
       if (isSuccess(res)) {
         alert("글이 삭제되었습니다.");
         //TODO 이전 보던 페이지 가져오기
-        history.goBack();
+        history.replace(`/articles?page=1`);
         return;
       }
       return alert(res.data.message);
@@ -41,6 +42,8 @@ export default function ArticlePost() {
       console.log(error);
     }
   };
+
+  console.log(location.state);
 
   return (
     <>
