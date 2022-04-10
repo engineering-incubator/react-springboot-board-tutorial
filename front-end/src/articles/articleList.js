@@ -11,6 +11,8 @@ export default function ArticleList() {
   const [articles, setArticles] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalArticles, setTotalArticles] = useState(0);
+
   const history = useHistory();
   const location = useLocation();
 
@@ -27,6 +29,7 @@ export default function ArticleList() {
         if (isSuccess(res)) {
           setArticles(res.data.content.items);
           setTotalPages(res.data.content.totalPages);
+          setTotalArticles(res.data.content.totalElements);
           return;
         }
         alert(res.data.message);
@@ -46,12 +49,14 @@ export default function ArticleList() {
         <h1>안녕하세요! 게시판입니다.</h1>
         <button
           onClick={() => {
-            history.push("/create");
+            history.push("/article-write");
           }}
         >
           글쓰기
         </button>
       </div>
+      {isEmpty(articles) ||
+        (isEmpty(totalArticles) && <p>등록된 게시글이 없습니다.</p>)}
       <table>
         <thead>
           <tr>
@@ -73,7 +78,7 @@ export default function ArticleList() {
                     {article.title}
                   </Link>
                 </td>
-                <td>{article.modified_at}</td>
+                <td>{article.created_at}</td>
                 <td>{article.author}</td>
                 <td>0</td>
               </tr>
@@ -94,7 +99,6 @@ export default function ArticleList() {
           page={currentPage - 1}
         />
       )}
-      {isEmpty(articles) && <p>불러오는 중입니다...</p>}
     </>
   );
 }

@@ -27,7 +27,6 @@ export default function Article() {
         <button>수정</button>
         <button>삭제</button>
       </div>
-      {/* FIXME 정말 컨텐츠가 없는 경우는 어떻게 처리할 것인지. */}
       {isEmpty(article) && <h5>불러오는 중입니다...</h5>}
       {!isEmpty(article) && (
         <article>

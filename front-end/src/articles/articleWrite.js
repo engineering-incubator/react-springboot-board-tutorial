@@ -7,7 +7,7 @@ import {
   titleValidation,
 } from "./utilities/articleValidation";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
-export default function ArticleCreate() {
+export default function ArticleWrite() {
   const history = useHistory();
   const [articleData, setArticleData] = useState({
     title: "",

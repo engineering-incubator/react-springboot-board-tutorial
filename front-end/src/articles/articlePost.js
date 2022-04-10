@@ -23,12 +23,17 @@ export default function ArticlePost() {
     })();
   }, []);
 
+  const onUpdate = () => {
+    history.push(`/articles/${param.articleId}/edit`);
+  };
+
   const onDelete = async () => {
     try {
       const res = await axios.delete(`/api/v1/articles/${article.article_id}`);
       if (isSuccess(res)) {
         alert("글이 삭제되었습니다.");
-        history.replace("/articles?page=1");
+        //TODO 이전 보던 페이지 가져오기
+        history.goBack();
         return;
       }
       return alert(res.data.message);
@@ -39,17 +44,6 @@ export default function ArticlePost() {
 
   return (
     <>
-      <div>
-        <button
-          onClick={() => {
-            history.push(`/articles/${param.articleId}/change`);
-          }}
-        >
-          수정
-        </button>
-        <button onClick={onDelete}>삭제</button>
-      </div>
-      {/* FIXME 정말 컨텐츠가 없는 경우는 어떻게 처리할 것인지. */}
       {isEmpty(article) && <h5>불러오는 중입니다...</h5>}
       {!isEmpty(article) && (
         <article>
@@ -71,6 +65,10 @@ export default function ArticlePost() {
               <strong>조회수</strong> 0
             </li>
           </ol>
+          <div>
+            <button onClick={onUpdate}>수정</button>
+            <button onClick={onDelete}>삭제</button>
+          </div>
           <p>{article.content}</p>
         </article>
       )}

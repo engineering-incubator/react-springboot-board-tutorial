@@ -8,10 +8,11 @@ import {
 } from "./utilities/articleValidation";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 
-export default function ArticlePut() {
+export default function ArticleEdit() {
   const param = useParams();
   const history = useHistory();
-  const [articleData, setArticleData] = useState({
+
+  const [article, setArticle] = useState({
     title: "",
     content: "",
   });
@@ -23,9 +24,8 @@ export default function ArticlePut() {
       try {
         const res = await axios.get(`/api/v1/articles/${param.articleId}`);
         if (isSuccess(res)) {
-          //batch로 돌면서 최종 수정된 내용만 반영
-          setArticleData({
-            ...articleData,
+          setArticle({
+            ...article,
             title: res.data.content.title,
             content: res.data.content.content,
           });
@@ -39,23 +39,23 @@ export default function ArticlePut() {
   }, []);
 
   const onChangeTitle = (e) => {
-    setArticleData({
-      ...articleData,
+    setArticle({
+      ...article,
       title: e.currentTarget.value,
     });
   };
 
   const onChangeContent = (e) => {
-    setArticleData({
-      ...articleData,
+    setArticle({
+      ...article,
       content: e.currentTarget.value,
     });
   };
 
   const isValid = () => {
-    const titleErrorMessage = titleValidation(articleData.title);
+    const titleErrorMessage = titleValidation(article.title);
     setTitleErrorMessage(titleErrorMessage);
-    const contentErrorMessage = contentValidation(articleData.content);
+    const contentErrorMessage = contentValidation(article.content);
     setContentErrorMessage(contentErrorMessage);
 
     return isEmpty(titleErrorMessage) && isEmpty(contentErrorMessage);
@@ -70,7 +70,7 @@ export default function ArticlePut() {
       }
       const res = await axios.put(
         `/api/v1/articles/${param.articleId}`,
-        articleData,
+        article,
       );
       if (isSuccess(res)) {
         alert("글이 변경되었습니다.");
@@ -89,16 +89,12 @@ export default function ArticlePut() {
         <h1>글 수정하기</h1>
         <div>
           <h4>제목</h4>
-          <input
-            type="text"
-            value={articleData.title}
-            onChange={onChangeTitle}
-          />
+          <input type="text" value={article.title} onChange={onChangeTitle} />
           {!isEmpty(titleErrorMessage) && <p>{titleErrorMessage}</p>}
         </div>
         <div>
           <h4>내용</h4>
-          <textarea value={articleData.content} onChange={onChangeContent} />
+          <textarea value={article.content} onChange={onChangeContent} />
           {!isEmpty(contentErrorMessage) && <p>{contentErrorMessage}</p>}
         </div>
         <button type="submit">수정하기</button>
