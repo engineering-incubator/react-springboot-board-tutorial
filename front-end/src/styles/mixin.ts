@@ -1,4 +1,5 @@
-import { colors } from '_/styles/variables';
+import { keyframes } from '@emotion/react';
+import { colors } from '../styles/variables';
 
 export const blind = () => `
   overflow: hidden;
@@ -23,3 +24,25 @@ export const mixinPlaceholder = (color = `${colors.gray3}`) => `
     color: ${color};
   }
 `;
+
+export const barLoadingAnimation = keyframes`
+  from, 0% {
+    height: 5px;
+    transform: translateY(0px);
+    background: rgba(255, 255, 255, 0.25);
+  }
+  25% {
+    height: 30px;
+    transform: translateY(15px);
+    background: white;
+  }
+  50% {
+    height: 5px;
+    transform: translateY(0px);
+    background: rgba(255, 255, 255, 0.25);
+  }
+  100% {
+    height: 5px;
+    transform: translateY(0px);
+    background: rgba(255, 255, 255, 0.25);
+}`;

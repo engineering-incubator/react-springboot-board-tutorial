@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
-import { SIGNUP_CHANGE, SIGNUP_CHANGE_TYPE } from '_/reduce/actions';
-import { InitialStateType } from '_/context/signContext';
+import { SIGNUP_CHANGE, SIGNUP_CHANGE_TYPE } from '../reduce/actions';
+import { InitialStateType } from '../context/signContext';
 
 export interface StateType {
   name: string;

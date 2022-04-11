@@ -3,7 +3,7 @@ import {
   PASSWORD_VALIDATION,
   EMAIL_VALIDATION,
   PHONENUMBER_VALIDATION,
-} from '_/config';
+} from '../config';
 
 export const inputValidation = (value: string, regType: RegExp) => new RegExp(regType).test(value);
 

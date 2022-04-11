@@ -1,27 +1,26 @@
 import React, { useMemo, useState, useRef } from 'react';
 import styled from '@emotion/styled';
-import InputText, { focusRef } from '_/components/common/InputText';
-import InputRadio from '_/components/common/InputRadio';
-import { inputValidation } from '_/utils/validation';
-import { USERNAME_VALIDATION } from '_/config';
-import { PERMISSIONS, PERMISSION_KIND, PERMISSION_TYPE, SIGNUP_PLACEHOLDER } from '_/constants';
-import { getValidationReg, typeValidation } from '_/utils/validation';
-import { SIGNUP_CHANGE } from '_/reduce/actions';
+import InputText, { focusRef } from '../../components/common/InputText';
+import InputRadio from '../../components/common/InputRadio';
+import { inputValidation, getValidationReg, typeValidation } from '../../utils/validation';
+import { USERNAME_VALIDATION } from '../../config';
+import { PERMISSIONS, PERMISSION_KIND, PERMISSION_TYPE, SIGNUP_PLACEHOLDER } from '../../constants';
+import { SIGNUP_CHANGE } from '../../reduce/actions';
 import {
   StyledCommonWrap,
   StyledCommonCenter,
   StyledCommonTitle,
   StyledCommonButton,
   StyledCommonLabel,
-} from '_/styles/common';
-import { useSignupDispatch, useSignupState } from '_/context/signContext';
-import ErrorNotice from '_/components/common/ErrorNotice';
-import { colors } from '_/styles/variables';
-import { API_URLS } from '_/config';
-import { fetchApi } from '_/api';
-import Loading from '_/components/common/Loading';
-import { isSuccessStatus } from '_/config/status.code.config';
-import { ToastContainer, toast, ToastOptions } from 'react-toastify';
+} from '../../styles/common';
+import { useSignupDispatch, useSignupState } from '../../context/signContext';
+import ErrorNotice from '../../components/common/ErrorNotice';
+import { colors } from '../../styles/variables';
+import { API_URLS } from '../../config';
+import { fetchClient } from '../../api';
+import Loading from '../../components/common/Loading';
+import { isSuccessStatus } from '../../config/status.code.config';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = () => {
@@ -86,7 +85,7 @@ const SignUp = () => {
 
     (async () => {
       setIsLoding(true);
-      const response = await fetchApi({ method: 'post', url: API_URLS.SIGNUP, data: input });
+      const response = await fetchClient({ method: 'post', url: API_URLS.SIGNUP, data: input });
       const { code, message } = response;
       const isSuccess = isSuccessStatus(code);
 
@@ -106,29 +105,15 @@ const SignUp = () => {
       const toastMessage = isSuccess
         ? '회원가입에 성공하였습니다. 잠시후 메인으로 이동 합니다.'
         : message;
+      const toastMehod = isSuccess ? 'success' : 'error';
 
-      const toastOptions: ToastOptions = {
+      toast[toastMehod](toastMessage, {
         position: 'top-center',
         theme: 'dark',
-        autoClose: false,
-      };
-
-      if (isSuccess) {
-        toast.success(toastMessage, {
-          ...toastOptions,
-          closeButton: CloseButton,
-          onOpen: () => setTimeout((window.location.href = '/'), 2000),
-        });
-
-        return;
-      }
-
-      toast.error(toastMessage, {
-        ...toastOptions,
+        autoClose: isSuccess ? 2000 : false,
+        onClose: isSuccess ? () => (window.location.href = '/') : undefined,
         closeButton: CloseButton,
       });
-
-      // if (isSuccess) window.location.href = '/';
     })();
   };
 

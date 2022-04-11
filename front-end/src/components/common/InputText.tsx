@@ -1,8 +1,8 @@
 import React, { forwardRef, useRef, useImperativeHandle, RefObject } from 'react';
 import styled from '@emotion/styled';
-import { StyledCommonLabel } from '_/styles/common';
-import { colors } from '_/styles/variables';
-import { mixinPlaceholder } from '_/styles/mixin';
+import { StyledCommonLabel } from '../../styles/common';
+import { colors } from '../../styles/variables';
+import { mixinPlaceholder } from '../../styles/mixin';
 
 export type InputTypes = {
   type: string;

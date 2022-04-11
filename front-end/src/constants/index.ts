@@ -25,6 +25,6 @@ export const SIGNUP_PLACEHOLDER = {
   [ERROR_SIGNUP.PERMISSION]: '권한을 선택해주세요.',
   [ERROR_SIGNUP.USERNAME]: '5자 이상 15자 이하 영문+숫자만 가능합니다.',
   [ERROR_SIGNUP.PASSWORD]: '최소8자 특수문자, 대문자, 숫자를 각각 최소 1개 이상 포함하여야 합니다.',
-  [ERROR_SIGNUP.PHONENUMBER]: `"-" 제외 숫자만 입력해주세요.`,
+  [ERROR_SIGNUP.PHONENUMBER]: `"-" 포함 입력해주세요.(ex. 010-0000-0000)`,
   [ERROR_SIGNUP.EMAIL]: `특수문자는 '_', '.' 만 포함 가능합니다`,
 } as const;

@@ -12,7 +12,7 @@ export function generateUrl(path: string, params = {}) {
   return `${path}?${query ? `&${query}` : ''}`;
 }
 
-export const fetchApi = async (config: AxiosRequestConfig) => {
+export const fetchClient = async (config: AxiosRequestConfig) => {
   try {
     const response = await httpClient()({
       ...config,

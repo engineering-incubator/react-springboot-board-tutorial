@@ -1,6 +1,6 @@
 import React, { useReducer, useContext, createContext } from 'react';
-import { reducer, SignupDispatch } from '_/reduce/signupReducer';
-import { PERMISSION_TYPE, PERMISSIONS } from '_/constants';
+import { reducer, SignupDispatch } from '../reduce/signupReducer';
+import { PERMISSION_TYPE, PERMISSIONS } from '../constants';
 
 export type InitialStateType = {
   input: {

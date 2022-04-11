@@ -1,13 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Board from '_/components/board/Board';
-import SignupContainer from '_/components/signup/Signup.Container';
+import Articles from './components/article/Articles';
+import ArticleView from './components/article/ArticleView';
+import SignupContainer from './components/signup/Signup.Container';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Board />} />
+        <Route path="/articles" element={<Articles />} />
+        <Route path="/article/:article_id" element={<ArticleView />} />
         <Route path="/signup" element={<SignupContainer />} />
       </Routes>
     </BrowserRouter>

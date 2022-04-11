@@ -3,7 +3,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from './Router';
 import Header from './components/common/Header';
 import { Global } from '@emotion/react';
-import { globalStyles } from '_/styles/global-styles';
+import { globalStyles } from './styles/global-styles';
+import { QueryParamProvider } from 'use-query-params';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,9 +21,11 @@ export const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Global styles={globalStyles} />
-      <Header />
-      <Router />
+      <QueryParamProvider>
+        <Global styles={globalStyles} />
+        <Header />
+        <Router />
+      </QueryParamProvider>
     </QueryClientProvider>
   );
 }

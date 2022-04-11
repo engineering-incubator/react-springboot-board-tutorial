@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { colors } from '_/styles/variables';
+import { colors } from '../styles/variables';
 
 export const StyledCommonWrap = styled.main`
   padding: 0 10px;
