@@ -3,6 +3,8 @@ package com.example.reactspringbootboardtutorial.authentication.dto;
 import com.example.reactspringbootboardtutorial.constants.Permission;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,8 +28,10 @@ public class SignUpRequestDto {
     private String email;
 
     @NotBlank(message = "휴대전화 번호는 필수 입력사항입니다.")
+    @Pattern(regexp = "010-[0-9]{3,4}-[0-9]{4}", message = "휴대전화 번호는 010-0000-0000 형태로 입력해 주세요.")
     private String phoneNumber;
 
+    @NotNull
     private Permission permission;
 
     public void setPassword(String password) {

@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/authentication")
 @Slf4j
+@RequiredArgsConstructor
+
 public class AuthenticationController {
     private final CustomUserDetailsService userService;
+
 
     @PostMapping("/sign-up")
     public WrappedResponseDto signUp(@RequestBody SignUpRequestDto signUpRequestDto) {

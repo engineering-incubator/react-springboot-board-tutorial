@@ -15,7 +15,7 @@
       "password": "example-password",
       "permission": "ADMIN | MANAGER | USER",
       "email": "example@example.com",
-      "phone_number": "010-xxxx-xxxx"
+      "phoneNumber": "010-xxxx-xxxx"
     }
     ```
   - [ ] 계정 아이디, 비밀번호, 이메일, 전화번호, 권한 등을 통해 가입할 수 있다.
