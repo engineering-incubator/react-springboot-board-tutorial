@@ -1,4 +1,4 @@
-package com.example.reactspringbootboardtutorial.articles.model;
+package com.example.reactspringbootboardtutorial.article.model;
 
 import com.example.reactspringbootboardtutorial.common.BaseTimeEntity;
 import javax.persistence.Column;
@@ -28,4 +28,7 @@ public class Article extends BaseTimeEntity {
 
   @Column(columnDefinition = "TEXT", nullable = false)
   private String content;
+
+  @Column(columnDefinition = "VARCHAR(50)", nullable = false)
+  private String author;
 }
