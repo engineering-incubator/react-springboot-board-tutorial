@@ -44,8 +44,9 @@ public class ArticleController {
   }
 
   @DeleteMapping("/{articleId}")
-  public void deleteArticle(@PathVariable Long articleId) {
-      articleService.deleteArticle(articleId);
+  public WrappedResponseDto deleteArticle(@PathVariable Long articleId) {
+    articleService.deleteArticle(articleId);
+    return WrappedResponseDto.success(null);
   }
 
   @PutMapping("/{articleId}")

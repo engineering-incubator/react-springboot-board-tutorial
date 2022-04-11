@@ -2,6 +2,8 @@ package com.example.reactspringbootboardtutorial.common.exception;
 
 import com.example.reactspringbootboardtutorial.common.dto.WrappedResponseDto;
 import java.security.SignatureException;
+
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

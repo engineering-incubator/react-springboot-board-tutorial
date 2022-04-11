@@ -12,28 +12,28 @@ import java.util.stream.Collectors;
 
 @Component
 public class ArticleConverter {
-    public ArticleDetailsDto convert(Article article) {
-        return ArticleDetailsDto.builder()
-                .article_id(article.getId())
-                .author(article.getAuthor())
-                .content(article.getContent())
-                .title(article.getTitle())
-                .created_at(article.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")))
-                .modified_at(article.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")))
-                .build();
-    }
+	public ArticleDetailsDto convert(Article article) {
+		return ArticleDetailsDto.builder()
+			.article_id(article.getId())
+			.author(article.getAuthor())
+			.content(article.getContent())
+			.title(article.getTitle())
+			.created_at(article.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")))
+			.modified_at(article.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")))
+			.build();
+	}
 
-    public List<ArticleDetailsDto> convert(List<Article> articles) {
-        return articles.stream().map(this::convert).collect(Collectors.toList());
-    }
+	public List<ArticleDetailsDto> convert(List<Article> articles) {
+		return articles.stream().map(this::convert).collect(Collectors.toList());
+	}
 
-    public PageableDto<ArticleDetailsDto> convert(Page<Article> pageableArticles) {
-        List<ArticleDetailsDto> items = pageableArticles.getContent()
-                .stream()
-                .map(this::convert)
-                .collect(Collectors.toList());
+	public PageableDto<ArticleDetailsDto> convert(Page<Article> pageableArticles) {
+		List<ArticleDetailsDto> items = pageableArticles.getContent()
+			.stream()
+			.map(this::convert)
+			.collect(Collectors.toList());
 
-        return new PageableDto<>(items, pageableArticles.getTotalPages(),
-                pageableArticles.getNumber(), pageableArticles.getSize(), pageableArticles.getTotalElements());
-    }
+		return new PageableDto(items, pageableArticles.getTotalPages(),
+			pageableArticles.getNumber(), pageableArticles.getSize(), pageableArticles.getTotalElements());
+	}
 }
