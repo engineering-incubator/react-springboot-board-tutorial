@@ -6,11 +6,11 @@ import java.util.List;
 
 @Getter
 public class PageableDto<T> {
-	private List<T> items;
-	private int totalPages;
-	private int currentPage;
-	private int size;
-	private Long totalElements;
+	private final List<T> items;
+	private final int totalPages;
+	private final int currentPage;
+	private final int size;
+	private final Long totalElements;
 
 	public PageableDto(List<T> items, int totalPages, int currentPage, int size, Long totalElements) {
 		this.items = items;
