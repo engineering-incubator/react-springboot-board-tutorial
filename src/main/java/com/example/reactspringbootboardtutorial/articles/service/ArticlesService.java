@@ -1,9 +1,9 @@
-package com.example.reactspringbootboardtutorial.article.service;
+package com.example.reactspringbootboardtutorial.articles.service;
 
-import com.example.reactspringbootboardtutorial.article.dto.ArticleCreateDto;
-import com.example.reactspringbootboardtutorial.article.dto.ArticleDetailsDto;
-import com.example.reactspringbootboardtutorial.article.model.Article;
-import com.example.reactspringbootboardtutorial.article.repository.ArticleRepository;
+import com.example.reactspringbootboardtutorial.articles.dto.ArticleCreateDto;
+import com.example.reactspringbootboardtutorial.articles.dto.ArticleDetailsDto;
+import com.example.reactspringbootboardtutorial.articles.model.Article;
+import com.example.reactspringbootboardtutorial.articles.repository.ArticlesRepository;
 import com.example.reactspringbootboardtutorial.common.exception.CustomException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ArticleService {
-  private final ArticleRepository articleRepository;
+public class ArticlesService {
+  private final ArticlesRepository articleRepository;
 
   public List<ArticleDetailsDto> getArticleList() {
     List<Article> articles = articleRepository.findAll();

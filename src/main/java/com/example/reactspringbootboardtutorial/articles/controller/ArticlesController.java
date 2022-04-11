@@ -1,8 +1,8 @@
-package com.example.reactspringbootboardtutorial.article.controller;
+package com.example.reactspringbootboardtutorial.articles.controller;
 
-import com.example.reactspringbootboardtutorial.article.dto.ArticleCreateDto;
-import com.example.reactspringbootboardtutorial.article.dto.ArticleDetailsDto;
-import com.example.reactspringbootboardtutorial.article.service.ArticleService;
+import com.example.reactspringbootboardtutorial.articles.dto.ArticleCreateDto;
+import com.example.reactspringbootboardtutorial.articles.dto.ArticleDetailsDto;
+import com.example.reactspringbootboardtutorial.articles.service.ArticlesService;
 import com.example.reactspringbootboardtutorial.common.dto.WrappedResponseDto;
 import java.util.List;
 import javax.validation.Valid;
@@ -21,31 +21,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/v1/articles")
-public class ArticleController {
-  private final ArticleService articleService;
+public class ArticlesController {
+  private final ArticlesService articlesService;
 
   @GetMapping
   public WrappedResponseDto<List<ArticleDetailsDto>> getArticleList() {
-    return WrappedResponseDto.success(articleService.getArticleList());
+    return WrappedResponseDto.success(articlesService.getArticleList());
   }
 
   @GetMapping("/{articleId}")
   public WrappedResponseDto<ArticleDetailsDto> getArticle(@PathVariable Long articleId) {
-    return WrappedResponseDto.success(articleService.getArticle(articleId));
+    return WrappedResponseDto.success(articlesService.getArticle(articleId));
   }
 
   @PostMapping
   public WrappedResponseDto<ArticleDetailsDto> createArticle(@Valid @RequestBody ArticleCreateDto articleCreateDto) {
-    return WrappedResponseDto.success(articleService.saveArticle(articleCreateDto));
+    return WrappedResponseDto.success(articlesService.saveArticle(articleCreateDto));
   }
 
   @DeleteMapping("/{articleId}")
   public void deleteArticle(@PathVariable Long articleId) {
-      articleService.deleteArticle(articleId);
+      articlesService.deleteArticle(articleId);
   }
 
   @PutMapping("/{articleId}")
   public WrappedResponseDto<ArticleDetailsDto> updateArticle(@PathVariable Long articleId, @Valid @RequestBody ArticleCreateDto articleUpdateDto) {
-    return WrappedResponseDto.success(articleService.updateArticle(articleId, articleUpdateDto));
+    return WrappedResponseDto.success(articlesService.updateArticle(articleId, articleUpdateDto));
   }
 }

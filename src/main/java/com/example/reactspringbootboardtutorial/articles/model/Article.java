@@ -1,4 +1,4 @@
-package com.example.reactspringbootboardtutorial.article.model;
+package com.example.reactspringbootboardtutorial.articles.model;
 
 import com.example.reactspringbootboardtutorial.common.BaseTimeEntity;
 import javax.persistence.Column;

@@ -1,6 +1,6 @@
-package com.example.reactspringbootboardtutorial.article.dto;
+package com.example.reactspringbootboardtutorial.articles.dto;
 
-import com.example.reactspringbootboardtutorial.article.model.Article;
+import com.example.reactspringbootboardtutorial.articles.model.Article;
 import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

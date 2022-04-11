@@ -1,4 +1,4 @@
-package com.example.reactspringbootboardtutorial.article.dto;
+package com.example.reactspringbootboardtutorial.articles.dto;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;
