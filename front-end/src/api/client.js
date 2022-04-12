@@ -14,10 +14,11 @@ export async function requestClientService(method, url) {
         } else if (method === 'post') {
             response = await client.post(url);
         }
-        // const response = await client({
-        //     method,
-        //     url,
-        // })
+        console.log(response)
+            // const response = await client({
+            //     method,
+            //     url,
+            // })
         if (isFailureStatus(response.data.content.code)) {
             // TODO error log
             console.log("errorLog/ uri : " + url, "method: " + method)

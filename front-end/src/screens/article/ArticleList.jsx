@@ -9,8 +9,8 @@ const ArticleList = () => {
 	// FIXME useHook 으로 추상화
 	 useEffect(() => {
     async function getList() {
-      const list = await getArticleList();
-			setArticleList(list);
+      const data = await getArticleList();
+			setArticleList(data.items);
     }
 		console.log(articleList)
     getList();
