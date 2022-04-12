@@ -31,20 +31,19 @@ public class ArticleController {
 
   @GetMapping("/{articleId}")
   public WrappedResponseDto<ArticleDetailsDto> getArticle(@PathVariable Long articleId) {
-    return WrappedResponseDto.success(articleService.getArticle(articleId));
+    HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+    String ip = request.getHeader("X-FORWARDED-FOR");
+
+    if (ip == null)
+      ip = request.getRemoteAddr();
+
+    return WrappedResponseDto.success(articleService.getArticle(articleId, ip));
   }
 
   @PostMapping
   public WrappedResponseDto<ArticleDetailsDto> createArticle(@Valid @RequestBody ArticleCreateDto articleCreateDto) {
     return WrappedResponseDto.success(articleService.saveArticle(articleCreateDto,
-            (
-                    (CustomUserDetails)SecurityContextHolder
-                            .getContext()
-                            .getAuthentication()
-                            .getPrincipal()
-            )
-                    .getUsername()
-            )
+            ((CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername())
     );
   }
 
