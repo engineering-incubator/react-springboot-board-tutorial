@@ -19,6 +19,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
         }
 
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(objectMapper.writeValueAsString(WrappedResponseDto.success("Successfully logged out.")));
+        response.getWriter().write(objectMapper.writeValueAsString(WrappedResponseDto.success("Successfully logged out. :D")));
     }
 }
