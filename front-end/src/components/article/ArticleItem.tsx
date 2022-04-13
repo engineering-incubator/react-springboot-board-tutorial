@@ -3,6 +3,7 @@ import { ArticleItemType } from '../../hooks/useArticles';
 import dayjs from 'dayjs';
 import styled from '@emotion/styled';
 import minMax from 'dayjs/plugin/minMax';
+import { StyledArticleRow } from '../../styles/common';
 dayjs.extend(minMax);
 
 const ArticleItem = ({ data }: { data: ArticleItemType }) => {
@@ -11,13 +12,14 @@ const ArticleItem = ({ data }: { data: ArticleItemType }) => {
   const newDate = date.format('YY-MM-DD HH:mm');
 
   return (
-    <div role="row">
+    <StyledArticleRow role="row">
+      <span role="cell">{article_id}</span>
       <span role="cell">
         <a href={`article/${article_id}`}>{title}</a>
       </span>
       <span role="cell">{author}</span>
       <span role="cell">{newDate}</span>
-    </div>
+    </StyledArticleRow>
   );
 };
 

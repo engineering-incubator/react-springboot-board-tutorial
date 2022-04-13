@@ -67,3 +67,32 @@ export const StyledCommonLabel = styled.label<{ isError?: boolean }>`
   font-weight: bold;
   color: ${({ isError }) => (isError ? `${colors.warning}` : 'inherit')};
 `;
+
+// article common components
+export const StyledArticleRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  span {
+    flex-grow: 1;
+    flex-shrink: 1;
+    &:nth-of-type(1) {
+      flex-basis: 8%;
+      text-align: center;
+    }
+    &:nth-of-type(2) {
+      flex-basis: 50%;
+      padding-left: 10px;
+    }
+    &:nth-of-type(3) {
+      flex-basis: 20%;
+      text-align: center;
+    }
+    &:nth-of-type(4) {
+      flex-basis: 22%;
+      text-align: center;
+    }
+  }
+`;

@@ -25,11 +25,11 @@ export const mixinPlaceholder = (color = `${colors.gray3}`) => `
   }
 `;
 
-export const barLoadingAnimation = keyframes`
+export const loadingBarAnimation = (color = 'black') => keyframes`
   from, 0% {
     height: 5px;
     transform: translateY(0px);
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(${color}, 0.25);
   }
   25% {
     height: 30px;
@@ -39,10 +39,10 @@ export const barLoadingAnimation = keyframes`
   50% {
     height: 5px;
     transform: translateY(0px);
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(${color}, 0.25);
   }
   100% {
     height: 5px;
     transform: translateY(0px);
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(${color}, 0.25);
 }`;

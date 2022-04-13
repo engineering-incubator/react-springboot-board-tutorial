@@ -9,6 +9,7 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/articles" element={<Articles />} />
+        {/* NOTE article id 를 param 으로 넘길지 path로 넘길지.. */}
         <Route path="/article/:article_id" element={<ArticleView />} />
         <Route path="/signup" element={<SignupContainer />} />
       </Routes>
