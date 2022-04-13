@@ -1,13 +1,13 @@
 import React from "react";
-import SignUp from "./signUp/SignUp";
 import { Route, Switch } from "react-router-dom";
-import LogIn from "./logIn/logIn";
-import Navigation from "./components/navigation";
+import ArticleEdit from "./articles/articleEdit";
 import ArticleList from "./articles/articleList";
 import ArticlePost from "./articles/articlePost";
 import ArticleWrite from "./articles/articleWrite";
+import Navigation from "./components/navigation";
 import Home from "./Home/home";
-import ArticleEdit from "./articles/articleEdit";
+import LogIn from "./logIn/logIn";
+import SignUp from "./signUp/SignUp";
 
 function App() {
   return (

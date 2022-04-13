@@ -1,12 +1,13 @@
-import React, { useState } from "react";
 import axios from "axios";
-import { isSuccess } from "../utilites/validates/httpValidation";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { isEmpty } from "../utilites/typeGuard/typeGuard";
+import { isSuccess } from "../utilites/validates/httpValidation";
 import {
   contentValidation,
   titleValidation,
 } from "./utilities/articleValidation";
-import { isEmpty } from "../utilites/typeGuard/typeGuard";
+
 export default function ArticleWrite() {
   const history = useHistory();
   const [articleData, setArticleData] = useState({
@@ -17,12 +18,11 @@ export default function ArticleWrite() {
   const [titleErrorMessage, setTitleErrorMessage] = useState("");
   const [contentErrorMessage, setContentErrorMessage] = useState("");
 
-  const onChangeTitle = (e) => {
-    setArticleData({ ...articleData, title: e.currentTarget.value });
-  };
-
-  const onChangeContent = (e) => {
-    setArticleData({ ...articleData, content: e.currentTarget.value });
+  const onChangeInput = (e) => {
+    setArticleData({
+      ...articleData,
+      [e.currentTarget.name]: e.currentTarget.value,
+    });
   };
 
   const isValid = () => {
@@ -60,9 +60,10 @@ export default function ArticleWrite() {
         <h4>제목</h4>
         <input
           type="text"
+          name="title"
           placeholder="제목을 입력해주세요."
           value={articleData.title}
-          onChange={onChangeTitle}
+          onChange={onChangeInput}
           onFocus={() => {
             setTitleErrorMessage("");
           }}
@@ -72,9 +73,10 @@ export default function ArticleWrite() {
       <div>
         <h4>내용</h4>
         <textarea
+          name="content"
           placeholder="글 내용을 입력해주세요."
           value={articleData.content}
-          onChange={onChangeContent}
+          onChange={onChangeInput}
           onFocus={() => {
             setContentErrorMessage("");
           }}

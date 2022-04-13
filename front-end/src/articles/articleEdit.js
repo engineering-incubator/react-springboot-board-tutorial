@@ -1,42 +1,21 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { isSuccess } from "../utilites/validates/httpValidation";
+import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { isEmpty } from "../utilites/typeGuard/typeGuard";
+import { isSuccess } from "../utilites/validates/httpValidation";
+import { useFetchPostById } from "./hooks/useFetchPostById";
 import {
   contentValidation,
   titleValidation,
 } from "./utilities/articleValidation";
-import { isEmpty } from "../utilites/typeGuard/typeGuard";
 
 export default function ArticleEdit() {
   const param = useParams();
   const history = useHistory();
 
-  const [article, setArticle] = useState({
-    title: "",
-    content: "",
-  });
   const [titleErrorMessage, setTitleErrorMessage] = useState("");
   const [contentErrorMessage, setContentErrorMessage] = useState("");
-
-  useEffect(() => {
-    (async function () {
-      try {
-        const res = await axios.get(`/api/v1/articles/${param.articleId}`);
-        if (isSuccess(res)) {
-          setArticle({
-            ...article,
-            title: res.data.content.title,
-            content: res.data.content.content,
-          });
-          return;
-        }
-        return alert(res.data.message);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  const [article, setArticle] = useFetchPostById(param.articleId);
 
   const onChangeTitle = (e) => {
     setArticle({
@@ -82,6 +61,10 @@ export default function ArticleEdit() {
       console.log(error);
     }
   };
+
+  if (!article) {
+    return null;
+  }
 
   return (
     <>

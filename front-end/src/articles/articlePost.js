@@ -1,28 +1,15 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { isSuccess } from "../utilites/validates/httpValidation";
+import { useFetchPostById } from "./hooks/useFetchPostById";
 
 export default function ArticlePost() {
   const param = useParams();
   const history = useHistory();
   const location = useLocation();
-  const [article, setArticle] = useState();
-
-  useEffect(() => {
-    (async function () {
-      try {
-        const res = await axios.get(`/api/v1/articles/${param.articleId}`);
-        if (isSuccess(res)) {
-          return setArticle(res.data.content);
-        }
-        alert(res.data.message);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  const article = useFetchPostById(param.articleId);
 
   const onUpdate = () => {
     history.push(`/articles/${param.articleId}/edit`);

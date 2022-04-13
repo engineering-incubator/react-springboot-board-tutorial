@@ -1,13 +1,13 @@
 .color {
-    color: #333333;
+  color: #333333;
 }
 .active {
-    color: #F24A72;
-    font-weight: 700;
+  color: #f24a72;
+  font-weight: 700;
 }
 
 .li {
-    list-style: none;
-    float: left;
-    margin-right: 20px;
+  list-style: none;
+  float: left;
+  margin-right: 20px;
 }

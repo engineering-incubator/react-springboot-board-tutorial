@@ -1,59 +1,54 @@
 import axios from "axios";
+import qs from "qs";
 import { useEffect, useState } from "react";
-import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import ReactPaginate from "react-paginate";
+import Pagination from "../components/pagination";
+import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { isSuccess } from "../utilites/validates/httpValidation";
 import "./pagination.css";
-import qs from "qs";
 
 export default function ArticleList() {
+  const history = useHistory();
+  const location = useLocation();
   const [articles, setArticles] = useState([]);
+  // TODO pagination state -> useReducer 로 통합(custom hook으로 분리하면 좀더 좋을 듯.
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalArticles, setTotalArticles] = useState(0);
 
-  const history = useHistory();
-  const location = useLocation();
+  const onPageChange = (currentPage) => {
+    history.push(`/articles?page=${currentPage.selected + 1}`);
+  };
+  const onMoveWritePage = () => history.push("/article-write");
 
   useEffect(() => {
     const query = qs.parse(location.search, {
       ignoreQueryPrefix: true,
     });
-    setCurrentPage(query.page || 1);
+    const page = Number(query.page) || 1;
+    setCurrentPage(page);
     (async function () {
       try {
-        const res = await axios.get(
-          `/api/v1/articles?currentPage=${query.page || 1}`,
-        );
-        if (isSuccess(res)) {
-          setArticles(res.data.content.items);
-          setTotalPages(res.data.content.totalPages);
-          setTotalArticles(res.data.content.totalElements);
+        const res = await axios.get(`/api/v1/articles?currentPage=${page}`);
+        if (!isSuccess(res)) {
+          alert(res.data.message);
           return;
         }
-        alert(res.data.message);
+
+        setArticles(res.data.content.items);
+        setTotalPages(res.data.content.totalPages);
+        setTotalArticles(res.data.content.totalElements);
       } catch (error) {
         console.log(error);
       }
     })();
   }, [location]);
 
-  const onPageChange = (currentPage) => {
-    history.push(`/articles?page=${currentPage.selected + 1}`);
-  };
-
   return (
     <>
       <div>
         <h1>안녕하세요! 게시판입니다.</h1>
-        <button
-          onClick={() => {
-            history.push("/article-write");
-          }}
-        >
-          글쓰기
-        </button>
+        <button onClick={onMoveWritePage}>글쓰기</button>
       </div>
       {(isEmpty(articles) || isEmpty(totalArticles)) && (
         <p>등록된 게시글이 없습니다.</p>
@@ -90,18 +85,12 @@ export default function ArticleList() {
             ))}
         </tbody>
       </table>
+
       {!isEmpty(articles) && (
-        <ReactPaginate
-          className="color"
-          activeClassName="active"
-          previousClassName="li"
-          nextClassName="li"
-          pageClassName="li"
+        <Pagination
           pageCount={totalPages}
-          previousLabel="‹ 이전"
-          nextLabel="다음 ›"
           onPageChange={onPageChange}
-          page={currentPage - 1}
+          currentPage={currentPage}
         />
       )}
     </>
