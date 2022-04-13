@@ -19,7 +19,7 @@ const ArticleList = () => {
     console.log(articleList);
     getList();
   }, []);
-  
+  const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   useEffect(() => {
