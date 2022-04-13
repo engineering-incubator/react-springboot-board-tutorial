@@ -6,8 +6,6 @@ import {
   userName,
 } from "../../utilites/validates/rules/userValidationsRules";
 
-// TODO 분리 여부 정하기
-
 export const userNameValidates = [
   {
     validation: required,
