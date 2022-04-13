@@ -31,4 +31,7 @@ public class Article extends BaseTimeEntity {
 
   @Column(columnDefinition = "VARCHAR(50)", nullable = false)
   private String author;
+
+  @Column(columnDefinition = "TINYINT(4)", nullable = false)
+  private Boolean deleted;
 }
