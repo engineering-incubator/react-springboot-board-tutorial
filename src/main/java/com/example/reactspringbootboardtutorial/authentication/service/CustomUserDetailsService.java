@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             .orElseThrow(() -> new UsernameNotFoundException(username));
 
     Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-    grantedAuthorities.add(new SimpleGrantedAuthority(user.getPermission().getName()));
+    grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + user.getPermission().getName()));
     return new CustomUserDetails(user.getUsername(), user.getPassword(), grantedAuthorities);
   }
 

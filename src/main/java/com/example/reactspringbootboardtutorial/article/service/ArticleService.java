@@ -56,7 +56,7 @@ public class ArticleService {
   }
 
   public void deleteArticle(Long articleId) {
-    Article article = articleRepository.findById(articleId)
+    Article article = articleRepository.findByIdAndDeletedIsFalse(articleId)
             .orElseThrow(() -> new CustomException("No article with that number."));
 
     article.setDeleted(true);
