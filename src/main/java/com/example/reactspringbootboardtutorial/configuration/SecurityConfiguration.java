@@ -2,6 +2,7 @@ package com.example.reactspringbootboardtutorial.configuration;
 
 import com.example.reactspringbootboardtutorial.authentication.CustomLogoutSuccessHandler;
 import com.example.reactspringbootboardtutorial.authentication.service.CustomUserDetailsService;
+import com.example.reactspringbootboardtutorial.constants.Permission;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,11 +10,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
           .antMatchers(HttpMethod.GET, "/v1/articles")
             .permitAll()
           .antMatchers(HttpMethod.DELETE, "/v1/articles/**")
-            .hasRole("ADMIN")
+            .hasRole(Permission.ADMIN.getName())
           .anyRequest().authenticated()
         .and()
         .csrf()
