@@ -27,7 +27,7 @@ public class ArticleService {
 
   public PageableDto<ArticleDetailsDto> getArticleList(ArticlesRequestDto dto) {
     Pageable pageable = PageRequest.of(dto.getCurrentPage(), dto.getSize());
-    Page<Article> articles = articleRepository.findAllByOrderByIdDesc(pageable);
+    Page<Article> articles = articleRepository.findAllByDeletedIsFalseOrderByIdDesc(pageable);
     return articleConverter.convert(articles);
   }
 
@@ -39,7 +39,6 @@ public class ArticleService {
       View view = new View();
       view.setArticle(article);
       view.setIp(ip);
-
       viewRepository.save(view);
     }
 
@@ -60,8 +59,10 @@ public class ArticleService {
     Article article = articleRepository.findById(articleId)
             .orElseThrow(() -> new CustomException("No article with that number."));
 
+    article.setDeleted(true);
+
     try {
-      articleRepository.delete(article);
+      articleRepository.save(article);
     } catch(Exception e) {
       throw new CustomException(e.getMessage());
     }
