@@ -6,6 +6,7 @@ import SignUp from "../../screens/auth/SignUp";
 import SignIn from "../../screens/auth/SignIn";
 import ArticleList from "../../screens/article/ArticleList";
 import Article from "../../screens/article/Article";
+import CreateArticle from '../../screens/article/CreateArticle';
 const Header = styled.div``
 
 const Category = styled.div`
@@ -41,6 +42,7 @@ const Navigation = () => {
       <Route path="/signIn" component={SignIn} />
       <Route path="/article" component={ArticleList} />
       <Route path="/article/:article_id" component={Article} />
+      <Route path="/article/create" component={CreateArticle} />
     </>
   )
 }

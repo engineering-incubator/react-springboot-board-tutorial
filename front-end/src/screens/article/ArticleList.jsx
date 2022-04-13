@@ -3,6 +3,7 @@ import Template from "../../components/common/Template";
 import ArticleItem from "../../components/article/ArticleItem";
 import { getArticleList } from "../../api/articleApi";
 import { Link } from "react-router-dom";
+import WritingButton from "../../components/article/WritingButton";
 
 const ArticleList = () => {
 	const [articleList, setArticleList] = useState([]);
@@ -21,6 +22,8 @@ const ArticleList = () => {
 			<Template title="게시글 둘러보기">
 				{articleList.map((article) => <Link to={`/article/` + article.article_id} key={article.article_id}><ArticleItem data={article} /></Link>)}
 			</Template>
+			
+			<WritingButton onClick={() => document.location.href = '/article/create'}/>
 		</>
 	);
 };
