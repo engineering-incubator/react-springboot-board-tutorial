@@ -5,10 +5,11 @@ import { colors } from '../../styles/variables';
 import { mixinPlaceholder } from '../../styles/mixin';
 
 export type InputTypes = {
-  type: string;
+  type?: string | undefined;
   name: string;
   value: string;
   text: string;
+  placeholder?: string;
   isInValid: boolean;
   disabled?: boolean;
   onChangeInput(e: React.FormEvent<HTMLInputElement>): void;
@@ -19,8 +20,20 @@ export interface focusRef {
 }
 
 const InputText = forwardRef(
-  // NOTE 여기 ref 의 type이 뭔지 도저히 모르겠습니다..! somebody help me!
-  ({ type, value, isInValid, name, text, disabled, onChangeInput }: InputTypes, ref: any) => {
+  // FIXME any
+  (
+    {
+      type = 'text',
+      value,
+      isInValid,
+      name,
+      text,
+      placeholder,
+      disabled,
+      onChangeInput,
+    }: InputTypes,
+    ref: any,
+  ) => {
     const inputRef = useRef<HTMLInputElement>(null);
     useImperativeHandle(ref, () => ({
       ...ref.current,
@@ -30,7 +43,7 @@ const InputText = forwardRef(
     return (
       <>
         {text && (
-          <StyledCommonLabel isError={isInValid} htmlFor={text}>
+          <StyledCommonLabel isError={isInValid} htmlFor={name}>
             {text}
           </StyledCommonLabel>
         )}
@@ -41,7 +54,7 @@ const InputText = forwardRef(
           name={name}
           isInValid={isInValid}
           disabled={disabled}
-          placeholder={text}
+          placeholder={placeholder || text}
           onChange={onChangeInput}
           id={name}
         />

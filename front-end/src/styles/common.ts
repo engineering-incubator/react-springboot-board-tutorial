@@ -1,3 +1,4 @@
+import { CSSProperties } from '@emotion/serialize';
 import styled from '@emotion/styled';
 import { colors } from '../styles/variables';
 
@@ -11,21 +12,40 @@ export const StyledCommonTitle = styled.h2`
   padding: 20px;
 `;
 
-export const StyledCommonCenter = styled.div`
+export const StyledCommonFlexContainer = styled.div<{
+  align?: CSSProperties['alignItems'];
+  justify?: CSSProperties['justifyContent'];
+  padding?: CSSProperties['padding'];
+}>`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: ${({ align }) => (align ? align : 'center')};
+  justify-content: ${({ justify }) => (justify ? justify : 'center')};
+  padding: ${({ padding }) => (padding ? padding : '0')};
 `;
 
-export const StyledCommonButton = styled.button<{ isPositive: boolean }>`
-  width: 100%;
-  height: 35px;
+const StyledCommonButton = styled.button<{
+  width?: CSSProperties['width'];
+  height?: CSSProperties['height'];
+}>`
+  width: ${({ width }) => (width ? width : 'auto')};
+  height: ${({ height }) => (height ? height : '35px')};
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 0 12px;
   border-radius: 4px;
+`;
+
+export const StyledCommonPositiveButton = styled(StyledCommonButton)<{
+  isPositive?: boolean;
+}>`
   color: white;
   background-color: ${({ isPositive }) => (isPositive ? `${colors.black}` : `${colors.gray}`)};
+`;
+
+export const StyledCommonNegativeButton = styled(StyledCommonButton)`
+  color: white;
+  background-color: ${colors.gray};
 `;
 
 export const StyledCommonSelectWrap = styled.div`

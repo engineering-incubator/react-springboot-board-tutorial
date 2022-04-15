@@ -8,16 +8,19 @@ import { PERMISSIONS, PERMISSION_KIND, PERMISSION_TYPE, SIGNUP_PLACEHOLDER } fro
 import { SIGNUP_CHANGE } from '../../reduce/actions';
 import {
   StyledCommonWrap,
-  StyledCommonCenter,
+  StyledCommonPositiveButton,
   StyledCommonTitle,
-  StyledCommonButton,
   StyledCommonLabel,
+  StyledCommonFlexContainer,
 } from '../../styles/common';
-import { useSignupDispatch, useSignupState } from '../../context/signContext';
+import {
+  InitialStateSignupInputType,
+  useSignupDispatch,
+  useSignupState,
+} from '../../context/signupContext';
 import ErrorNotice from '../../components/common/ErrorNotice';
 import { colors } from '../../styles/variables';
-import { API_URLS } from '../../config';
-import { fetchClient } from '../../api';
+import { postSignup } from '../../api';
 import Loading from '../../components/common/Loading';
 import { isSuccessStatus } from '../../config/status.code.config';
 import { ToastContainer, toast } from 'react-toastify';
@@ -85,7 +88,7 @@ const SignUp = () => {
 
     (async () => {
       setIsLoding(true);
-      const response = await fetchClient({ method: 'post', url: API_URLS.SIGNUP, data: input });
+      const response = await postSignup<InitialStateSignupInputType>(input);
       const { code, message } = response;
       const isSuccess = isSuccessStatus(code);
 
@@ -146,7 +149,7 @@ const SignUp = () => {
 
   return (
     <>
-      {isLoading && <Loading msg={'요청을 처리중입니다.'} />}
+      {isLoading && <Loading isFull={true} msg={'요청을 처리중입니다.'} />}
       <StyledToastContainer />
       <StyledCommonWrap>
         <StyledCommonTitle>회원가입</StyledCommonTitle>
@@ -155,7 +158,7 @@ const SignUp = () => {
             <StyledCommonLabel as={'span'} isError={isPermissionInvalid}>
               권한
             </StyledCommonLabel>
-            <StyledPermission>
+            <StyledCommonFlexContainer justify={'space-between'}>
               {PERMISSION_KIND.map((i) => (
                 <InputRadio
                   name="permission"
@@ -166,7 +169,7 @@ const SignUp = () => {
                   key={i}
                 />
               ))}
-            </StyledPermission>
+            </StyledCommonFlexContainer>
             {isPermissionInvalid && <ErrorNotice text="필수 선택 항목입니다" />}
             <StyledNotice isInvalidNotice={isPermissionInvalidNotice}>
               {SIGNUP_PLACEHOLDER['PERMISSION']}
@@ -176,7 +179,6 @@ const SignUp = () => {
             <StyledInputWrap>
               <InputText
                 ref={elRef}
-                type="text"
                 isInValid={usernameInvalid || usernameInvalidNotice}
                 value={username}
                 name="username"
@@ -210,7 +212,6 @@ const SignUp = () => {
             <StyledInputWrap>
               <InputText
                 ref={elRef}
-                type="text"
                 isInValid={emailInvalid || emailInvalidNotice}
                 value={email}
                 name="email"
@@ -227,7 +228,6 @@ const SignUp = () => {
             <StyledInputWrap>
               <InputText
                 ref={elRef}
-                type="text"
                 isInValid={phoneNumberInvalid || phoneNumberInvalidNotice}
                 value={phoneNumber}
                 name="phoneNumber"
@@ -241,18 +241,16 @@ const SignUp = () => {
             </StyledInputWrap>
           </StyledArea>
 
-          <StyledCommonButton isPositive={isCompleted} onClick={handleSubmit}>
-            회원가입
-          </StyledCommonButton>
+          <StyledCommonFlexContainer align="center">
+            <StyledCommonPositiveButton isPositive={isCompleted} onClick={handleSubmit}>
+              회원가입
+            </StyledCommonPositiveButton>
+          </StyledCommonFlexContainer>
         </StyledSignupWrap>
       </StyledCommonWrap>
     </>
   );
 };
-
-const StyledPermission = styled(StyledCommonCenter)`
-  justify-content: space-between;
-`;
 
 const StyledArea = styled.div`
   margin-bottom: 20px;

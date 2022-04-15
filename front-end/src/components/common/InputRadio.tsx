@@ -30,7 +30,7 @@ const StyledWrap = styled.label<{ isChecked: boolean; isInValid: boolean }>`
   position: relative;
   padding-left: 18px;
   color: ${({ isChecked, isInValid }) =>
-    isChecked ? '#0078ff' : isInValid ? `${colors.warning}` : `${colors.gray1}`};
+    isChecked ? `${colors.blue}` : isInValid ? `${colors.warning}` : `${colors.gray1}`};
   cursor: pointer;
 
   &::before {
@@ -42,7 +42,7 @@ const StyledWrap = styled.label<{ isChecked: boolean; isInValid: boolean }>`
     border-radius: 10px;
     border: 1px solid
       ${({ isChecked, isInValid }) =>
-        isChecked ? '#0078ff' : isInValid ? `${colors.warning}` : `${colors.gray1}`};
+        isChecked ? `${colors.blue}` : isInValid ? `${colors.warning}` : `${colors.gray1}`};
     box-sizing: border-box;
     background-color: white;
     transform: translateY(-50%);
@@ -57,7 +57,7 @@ const StyledWrap = styled.label<{ isChecked: boolean; isInValid: boolean }>`
     width: 6px;
     height: 6px;
     border-radius: 4px;
-    background-color: #0078ff;
+    background-color: ${colors.blue};
     transition: transform 0.3s ease-in-out;
     transform: translateY(-50%) scale(${({ isChecked }) => (isChecked ? '1' : '0')});
     will-change: transform;

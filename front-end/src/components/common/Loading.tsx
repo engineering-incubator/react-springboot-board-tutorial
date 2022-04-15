@@ -1,19 +1,22 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { css } from '@emotion/css';
 import { loadingBarAnimation } from '../../styles/mixin';
+import { CSSProperties } from '@emotion/serialize';
 
+type StylesType = {
+  padding?: CSSProperties['padding'];
+};
 interface LoadingType {
   msg: string;
   isFull?: boolean;
+  styles?: StylesType;
 }
 
-const Loading = ({ msg, isFull = false }: LoadingType) => {
+const Loading = ({ msg, isFull = false, styles }: LoadingType) => {
   const loadingBars = Array.from({ length: 5 }, (_, i) => i);
-  const color = isFull ? 'black' : 'white';
-  // NOTE dim 을 flexible 하게..
+
   return (
-    <StyledWrap isFull={isFull}>
+    <StyledWrap isFull={isFull} styles={styles}>
       <StyledText isFull={isFull}>{msg}</StyledText>
       <StyledLoadingBars>
         {loadingBars.map((i) => (
@@ -24,7 +27,7 @@ const Loading = ({ msg, isFull = false }: LoadingType) => {
   );
 };
 
-const StyledWrap = styled.div<{ isFull: boolean }>`
+const StyledWrap = styled.div<{ isFull: boolean; styles?: StylesType }>`
   position: ${({ isFull }) => (isFull ? 'fixed' : 'static')};
   inset: 0;
   display: flex;
@@ -34,10 +37,12 @@ const StyledWrap = styled.div<{ isFull: boolean }>`
   flex-direction: column;
   background-color: ${({ isFull }) => (isFull ? 'rgba(0, 0, 0, 0.4)' : 'transparent')};
   z-index: 100;
+
+  ${({ styles }) => styles && styles}
 `;
 
 const StyledText = styled.p<{ isFull: boolean }>`
-  padding: 0 20px;
+  padding: 0 12px;
   font-size: 15px;
   color: ${({ isFull }) => (isFull ? 'white' : 'black')};
   white-space: normal;

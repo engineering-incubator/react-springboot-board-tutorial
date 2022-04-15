@@ -1,6 +1,6 @@
 import React from 'react';
-import { SignupProvider } from '../../context/signContext';
-import SignUp from '../../components/signup/SignUp';
+import { SignupProvider } from '../context/signupContext';
+import SignUp from '../components/signup/Signup';
 
 const SignupContainer = () => {
   return (

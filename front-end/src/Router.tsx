@@ -1,17 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Articles from './components/article/Articles';
-import ArticleView from './components/article/ArticleView';
-import SignupContainer from './components/signup/Signup.Container';
+import Articles from './pages/Articles';
+import ArticleView from './pages/ArticleView';
+import ArticlePost from './pages/ArticlePost';
+import SignupProvider from './provider/SignupProvider';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/articles" element={<Articles />} />
-        {/* NOTE article id 를 param 으로 넘길지 path로 넘길지.. */}
-        <Route path="/article/:article_id" element={<ArticleView />} />
-        <Route path="/signup" element={<SignupContainer />} />
+        <Route path="/article/:articleNumber" element={<ArticleView />} />
+        <Route path="/article/write" element={<ArticlePost />} />
+        <Route path="/signup" element={<SignupProvider />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,23 +1,42 @@
-import React, { useEffect } from 'react';
-import useArticles from '../../hooks/useArticles';
-import { useQueryParam, NumberParam, withDefault } from 'use-query-params';
-import Loading from '../common/Loading';
-import ArticleItem from './ArticleItem';
+import React, { useEffect, useState } from 'react';
+import useArticles from '../hooks/api/useArticles';
+import { useQueryParam, withDefault, NumberParam } from 'use-query-params';
+import Loading from '../components/common/Loading';
+import ArticleItem from '../components/article/ArticleItem';
 import styled from '@emotion/styled';
-import { StyledCommonTitle, StyledArticleRow } from '../../styles/common';
+import {
+  StyledCommonTitle,
+  StyledArticleRow,
+  StyledCommonFlexContainer,
+  StyledCommonPositiveButton,
+} from '../styles/common';
+import Pagination from '../components/common/Pagination';
 
 const Articles = () => {
   const [query, setQuery] = useQueryParam('currentPage', withDefault(NumberParam, 1));
+  const [currentPage, setCurrentPage] = useState(query);
+  const [totalElements, setTotalElements] = useState(0);
   const size = 10;
   const params = {
-    currentPage: Number(query) || 1,
+    currentPage: query,
     size,
   };
   const { isSuccess, isLoading, isError, data } = useArticles(params);
 
   useEffect(() => {
-    setQuery(query, 'replaceIn');
-  }, [query, setQuery]);
+    if (!data?.content || !isSuccess) return;
+    const { totalPages } = data.content;
+
+    setQuery(currentPage, 'replaceIn');
+    setTotalElements(totalPages);
+  }, [query, setQuery, data, isSuccess, setCurrentPage, currentPage, setTotalElements]);
+
+  const onClickPagination = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    setQuery(pageNumber);
+  };
+
+  const onClickGoToPostPage = () => (window.location.href = '/article/write');
 
   return (
     <>
@@ -25,7 +44,7 @@ const Articles = () => {
       <StyledWrap>
         <StyledCommonTitle>게시글</StyledCommonTitle>
         {isLoading ? (
-          <Loading isFull={false} msg="게시글을 불러오는 중입니다" />
+          <Loading isFull={false} msg="게시글을 불러오는 중입니다" styles={{ padding: '30px 0' }} />
         ) : isSuccess && data?.content.items ? (
           <>
             <StyledArticles role="table" aria-label="게시글" aria-rowcount={size}>
@@ -47,6 +66,16 @@ const Articles = () => {
         ) : (
           <StyledEmpty>게시글이 없습니다</StyledEmpty>
         )}
+        <Pagination
+          pageCount={totalElements}
+          onClickPagination={onClickPagination}
+          currentPage={currentPage}
+        />
+        <StyledCommonFlexContainer justify={'flex-end'} padding={'12px 12px'}>
+          <StyledCommonPositiveButton as={'a'} isPositive={true} onClick={onClickGoToPostPage}>
+            글쓰기
+          </StyledCommonPositiveButton>
+        </StyledCommonFlexContainer>
       </StyledWrap>
     </>
   );
@@ -55,7 +84,7 @@ const Articles = () => {
 const StyledWrap = styled.section``;
 
 const StyledArticles = styled.article`
-  padding: 0 20px;
+  padding: 0 12px;
 `;
 
 const StyledArticlesHeader = styled.div`
