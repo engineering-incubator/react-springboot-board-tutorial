@@ -42,6 +42,7 @@ public class ArticleService {
     article.setTitle(articleCreateDto.getTitle());
     article.setContent(articleCreateDto.getContent());
     article.setAuthor(author);
+    article.setDeleted(false);
 
     return articleConverter.convert(articleRepository.save(article));
   }
