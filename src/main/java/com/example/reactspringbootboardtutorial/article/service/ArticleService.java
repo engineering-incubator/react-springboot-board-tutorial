@@ -25,7 +25,7 @@ public class ArticleService {
 
   public PageableDto<ArticleDetailsDto> getArticleList(ArticlesRequestDto dto) {
     Pageable pageable = PageRequest.of(dto.getCurrentPage(), dto.getSize());
-    Page<Article> articles = articleRepository.findAllByOrderByIdDesc(pageable);
+    Page<Article> articles = articleRepository.findAllByDeletedIsFalseOrderByIdDesc(pageable);
     return articleConverter.convert(articles);
   }
 
