@@ -38,7 +38,7 @@ const StyledPaginate = styled(ReactPaginate)`
     height: 30px;
     padding: 0 4px;
     box-sizing: border-box;
-    color: ${colors.gray1};
+    color: ${colors.whiteGray};
 
     &.selected {
       font-weight: bold;
@@ -49,10 +49,10 @@ const StyledPaginate = styled(ReactPaginate)`
     &.next {
       position: absolute;
       top: 0px;
-      color: black;
+      color: ${colors.gray1};
 
       &.disabled {
-        color: ${colors.gray2};
+        color: ${colors.whiteGray};
       }
     }
 

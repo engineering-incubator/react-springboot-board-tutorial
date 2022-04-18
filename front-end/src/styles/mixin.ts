@@ -10,7 +10,7 @@ export const blind = () => `
   clip: rect(0 0 0 0);
 `;
 
-export const mixinPlaceholder = (color = `${colors.gray3}`) => `
+export const mixinPlaceholder = (color = `${colors.gray2}`) => `
   &::-webkit-input-placeholder {
     color: ${color};
   }

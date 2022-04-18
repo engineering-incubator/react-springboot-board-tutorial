@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { loadingBarAnimation } from '../../styles/mixin';
 import { CSSProperties } from '@emotion/serialize';
+import { colors } from '../../styles/variables';
 
 type StylesType = {
   padding?: CSSProperties['padding'];
@@ -44,7 +45,7 @@ const StyledWrap = styled.div<{ isFull: boolean; styles?: StylesType }>`
 const StyledText = styled.p<{ isFull: boolean }>`
   padding: 0 12px;
   font-size: 15px;
-  color: ${({ isFull }) => (isFull ? 'white' : 'black')};
+  color: ${colors.whiteGray};
   white-space: normal;
   word-break: break-all;
 `;
@@ -62,11 +63,8 @@ const StyledLoadingBar = styled.span<{ position: number; delay: number; isFull: 
   bottom: 10px;
   width: 9px;
   height: 5px;
-  background: ${({ isFull }) => (isFull ? 'white' : 'black')};
-  animation: ${loadingBarAnimation(
-      `${({ isFull }: { isFull: boolean }) => (isFull ? 'black' : 'white')}`,
-    )}
-    1.5s infinite ease-in-out;
+  background: ${colors.whiteGray};
+  animation: ${loadingBarAnimation(`${colors.whiteGray}`)} 1.5s infinite ease-in-out;
   animation-delay: ${({ delay }) => `0.${delay}`}s;
 `;
 

@@ -55,12 +55,13 @@ small {
 html,
 body {
   min-height: 100%;
+  background-color: #222;
+  color: #E0E0E0;
 }
 
 body {
   font-family: system-ui;
   font-size: 14px;
-  color: black;
   line-height: 1.5;
 }
 

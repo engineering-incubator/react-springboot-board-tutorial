@@ -1,9 +1,13 @@
 export const colors = {
-  warning: '#ff7777',
+  warning: '#D7625E',
   gray: '#ddd',
   gray1: '#757575',
   gray2: '#bdbdbd',
-  gray3: '#bdbdbd',
-  black: 'black',
-  blue: '#0078ff',
+  gray3: '#3f3f3f',
+  gray4: '#2A2A2A',
+  gray5: '#696969',
+  black: '#222',
+  blue: '#4C7AA2',
+  darkBlue: '#37475A',
+  whiteGray: '#E0E0E0',
 };

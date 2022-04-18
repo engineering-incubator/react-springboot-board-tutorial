@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useRef } from 'react';
 import styled from '@emotion/styled';
-import InputText, { focusRef } from '../../components/common/InputText';
-import InputRadio from '../../components/common/InputRadio';
-import { inputValidation, getValidationReg, typeValidation } from '../../utils/validation';
+import InputText, { focusRef } from '../common/InputText';
+import InputRadio from '../common/InputRadio';
+import { inputValidation, getValidationReg, typeValidation } from '../../utils/index';
 import { USERNAME_VALIDATION } from '../../config';
 import { PERMISSIONS, PERMISSION_KIND, PERMISSION_TYPE, SIGNUP_PLACEHOLDER } from '../../constants';
 import { SIGNUP_CHANGE } from '../../reduce/actions';
@@ -18,10 +18,10 @@ import {
   useSignupDispatch,
   useSignupState,
 } from '../../context/signupContext';
-import ErrorNotice from '../../components/common/ErrorNotice';
+import ErrorNotice from '../common/ErrorNotice';
 import { colors } from '../../styles/variables';
 import { postSignup } from '../../api';
-import Loading from '../../components/common/Loading';
+import Loading from '../common/Loading';
 import { isSuccessStatus } from '../../config/status.code.config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -88,6 +88,7 @@ const SignUp = () => {
 
     (async () => {
       setIsLoding(true);
+      // TODO fetchClient 를 한번 wrapping 해서~
       const response = await postSignup<InitialStateSignupInputType>(input);
       const { code, message } = response;
       const isSuccess = isSuccessStatus(code);
@@ -179,6 +180,7 @@ const SignUp = () => {
             <StyledInputWrap>
               <InputText
                 ref={elRef}
+                type="text"
                 isInValid={usernameInvalid || usernameInvalidNotice}
                 value={username}
                 name="username"
@@ -212,6 +214,7 @@ const SignUp = () => {
             <StyledInputWrap>
               <InputText
                 ref={elRef}
+                type="text"
                 isInValid={emailInvalid || emailInvalidNotice}
                 value={email}
                 name="email"
@@ -228,6 +231,7 @@ const SignUp = () => {
             <StyledInputWrap>
               <InputText
                 ref={elRef}
+                type="text"
                 isInValid={phoneNumberInvalid || phoneNumberInvalidNotice}
                 value={phoneNumber}
                 name="phoneNumber"
@@ -259,7 +263,6 @@ const StyledArea = styled.div`
 const StyledSignupWrap = styled.article`
   max-width: 400px;
   margin: 0 auto;
-  border: 1px solid #eee;
   border-radius: 4px;
   padding: 10px;
   box-sizing: border-box;

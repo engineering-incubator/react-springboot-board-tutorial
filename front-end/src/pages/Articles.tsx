@@ -5,10 +5,11 @@ import Loading from '../components/common/Loading';
 import ArticleItem from '../components/article/ArticleItem';
 import styled from '@emotion/styled';
 import {
+  StyledCommonWrap,
   StyledCommonTitle,
-  StyledArticleRow,
   StyledCommonFlexContainer,
   StyledCommonPositiveButton,
+  StyledCommonBlind,
 } from '../styles/common';
 import Pagination from '../components/common/Pagination';
 
@@ -41,22 +42,22 @@ const Articles = () => {
   return (
     <>
       {isError && '에러에러'}
-      <StyledWrap>
+      <StyledCommonWrap>
         <StyledCommonTitle>게시글</StyledCommonTitle>
         {isLoading ? (
           <Loading isFull={false} msg="게시글을 불러오는 중입니다" styles={{ padding: '30px 0' }} />
         ) : isSuccess && data?.content.items ? (
           <>
             <StyledArticles role="table" aria-label="게시글" aria-rowcount={size}>
-              <StyledArticlesHeader role="rowgroup">
-                <StyledArticleRow role="row">
+              <StyledCommonBlind role="rowgroup">
+                <div role="row">
                   <span role="columnheader">번호</span>
                   <span role="columnheader">제목</span>
                   <span role="columnheader">작성자</span>
                   <span role="columnheader">작성일</span>
-                </StyledArticleRow>
-              </StyledArticlesHeader>
-              <div role="rouwgroup">
+                </div>
+              </StyledCommonBlind>
+              <div role="rowgroup">
                 {data?.content.items.map((item, idx) => (
                   <ArticleItem key={idx} data={item} />
                 ))}
@@ -76,16 +77,12 @@ const Articles = () => {
             글쓰기
           </StyledCommonPositiveButton>
         </StyledCommonFlexContainer>
-      </StyledWrap>
+      </StyledCommonWrap>
     </>
   );
 };
 
-const StyledWrap = styled.section``;
-
-const StyledArticles = styled.article`
-  padding: 0 12px;
-`;
+const StyledArticles = styled.article``;
 
 const StyledArticlesHeader = styled.div`
   width: 100%;
