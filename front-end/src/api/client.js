@@ -14,6 +14,8 @@ export async function requestClientService(method, url, data) {
         } else if (method === 'post') {
             response = await client.post(url, data);
             console.log(data)
+        } else if (method === 'delete') {
+            response = await client.delete(url);
         }
         console.log(response)
             // const response = await client({

@@ -37,9 +37,4 @@ public class SignUpRequestDto {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String toString() {
-        return "username: " + username + ", password: " + password + ", email: " +  email 
-        + ", phoneNumber: " + phoneNumber + ", permission: " + permission;
-    }
 }
