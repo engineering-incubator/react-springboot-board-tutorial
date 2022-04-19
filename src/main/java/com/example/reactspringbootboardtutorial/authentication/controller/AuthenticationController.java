@@ -1,13 +1,26 @@
 package com.example.reactspringbootboardtutorial.authentication.controller;
 
-import com.example.reactspringbootboardtutorial.authentication.dto.SignUpDto;
+import com.example.reactspringbootboardtutorial.authentication.dto.SignInRequestDto;
 import com.example.reactspringbootboardtutorial.authentication.dto.SignUpRequestDto;
 import com.example.reactspringbootboardtutorial.authentication.service.CustomUserDetailsService;
 import com.example.reactspringbootboardtutorial.common.dto.WrappedResponseDto;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/v1/authentication")
@@ -15,25 +28,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 
 public class AuthenticationController {
+    private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService userService;
-
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/sign-up")
-    public WrappedResponseDto signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
-        log.info("###################################################{}", signUpRequestDto);
+    public WrappedResponseDto signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
         userService.signUp(signUpRequestDto);
         return WrappedResponseDto.success(null);
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        log.info("###################################################");
-        return "hi";
-    }
-
-    @PostMapping("/real-test")
-    public SignUpRequestDto signUpTest(@RequestBody SignUpRequestDto signUpRequestDto) {
-        log.info("################# {}", signUpRequestDto);
-        return signUpRequestDto;
     }
 }

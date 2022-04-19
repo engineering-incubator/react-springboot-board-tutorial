@@ -5,10 +5,11 @@ import com.example.reactspringbootboardtutorial.article.dto.ArticleCreateDto;
 import com.example.reactspringbootboardtutorial.article.dto.ArticleDetailsDto;
 import com.example.reactspringbootboardtutorial.article.dto.ArticlesRequestDto;
 import com.example.reactspringbootboardtutorial.article.model.Article;
+import com.example.reactspringbootboardtutorial.article.model.View;
 import com.example.reactspringbootboardtutorial.article.repository.ArticleRepository;
+import com.example.reactspringbootboardtutorial.article.repository.ViewRepository;
 import com.example.reactspringbootboardtutorial.common.dto.PageableDto;
 import com.example.reactspringbootboardtutorial.common.exception.CustomException;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ArticleService {
   private final ArticleRepository articleRepository;
+  private final ViewRepository viewRepository;
   private final ArticleConverter articleConverter;
 
   public PageableDto<ArticleDetailsDto> getArticleList(ArticlesRequestDto dto) {
@@ -29,9 +31,16 @@ public class ArticleService {
     return articleConverter.convert(articles);
   }
 
-  public ArticleDetailsDto getArticle(Long articleId) {
+  public ArticleDetailsDto getArticle(Long articleId, String ip) {
     Article article = articleRepository.findById(articleId)
-        .orElseThrow(() -> new CustomException("No article with that number."));
+            .orElseThrow(() -> new CustomException("No article with that number."));
+
+    if (!viewRepository.findAllByArticleAndIp(article, ip).isPresent()) {
+      View view = new View();
+      view.setArticle(article);
+      view.setIp(ip);
+      viewRepository.save(view);
+    }
 
     return articleConverter.convert(article);
   }
@@ -48,11 +57,13 @@ public class ArticleService {
   }
 
   public void deleteArticle(Long articleId) {
-    Article article = articleRepository.findById(articleId)
-        .orElseThrow(() -> new CustomException("No article with that number."));
+    Article article = articleRepository.findByIdAndDeletedIsFalse(articleId)
+            .orElseThrow(() -> new CustomException("No article with that number."));
+
+    article.setDeleted(true);
 
     try {
-      articleRepository.delete(article);
+      articleRepository.save(article);
     } catch(Exception e) {
       throw new CustomException(e.getMessage());
     }
@@ -60,7 +71,7 @@ public class ArticleService {
 
   public ArticleDetailsDto updateArticle(Long articleId, ArticleCreateDto articleUpdateDto) {
     Article article = articleRepository.findById(articleId)
-        .orElseThrow(() -> new CustomException("No article with that number."));
+            .orElseThrow(() -> new CustomException("No article with that number."));
 
     article.setTitle(articleUpdateDto.getTitle());
     article.setContent(articleUpdateDto.getContent());
