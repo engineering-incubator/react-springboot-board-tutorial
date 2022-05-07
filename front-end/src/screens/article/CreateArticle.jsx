@@ -18,7 +18,7 @@ const CreateArticle = () => {
   const requestCreate = async () => {
     // FIXME validation 통과하지 못했을 경우, 서버로 요청을 하지 말아야 함.
     const result = await createArticle(article);
-    console.log(result)
+    console.log('>>' ,result)
     if (isFailureStatus(result.code)) {
       return alert(result.message);
     }

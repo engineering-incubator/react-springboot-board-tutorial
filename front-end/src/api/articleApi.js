@@ -15,7 +15,7 @@ export const createArticle = async(article) => {
             title: article.title,
         });
         console.log(article.content, article.title, response)
-        return response.data.content;
+        return response.data;
     } catch (e) {
         return e;
     }
@@ -29,7 +29,7 @@ export const updateArticle = async(articleId, article) => {
             title: article.title,
         });
         console.log(article.content, article.title, response)
-        return response.data.content;
+        return response.data;
     } catch (e) {
         return e;
     }
