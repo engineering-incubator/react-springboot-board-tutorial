@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Template from '../../components/common/Template';
 import ArticleDetail from '../../components/article/ArticleDetail';
 import { getArticle, deleteArticle } from '../../api/articleApi';
@@ -39,7 +39,7 @@ const Article = () => {
       <Template title="글 상세">
         <p>{article.id}</p>
         <ArticleDetail data={article} />
-        <Button style={{ width: '48%', marginRight: '4%' }}>수정</Button>
+        <Link to={{ pathname: `/article/update/` + article.article_id, state: {article} }}><Button style={{ width: '48%', marginRight: '4%' }}>수정</Button></Link>
 				<Button style={{ width: '48%' }} onClick={()=>requestDelete()}>삭제</Button>
       </Template>
     </>
