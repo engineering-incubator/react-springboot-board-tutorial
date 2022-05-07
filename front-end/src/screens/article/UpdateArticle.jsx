@@ -5,23 +5,9 @@ import Button from '../../components/common/Button';
 import { isFailureStatus } from '../../api/config/status-code.config';
 
 import { useParams } from 'react-router-dom';
-// customHook으로 import해서 쓰기
-function useFetchArticle() {
-  const params = useParams();
-  const [article, setArticle] = useState({});
-  useEffect(function fetchArticle() {
-    (async function getItem() {
-      const item = await getArticle(params.article_id);
-      setArticle(item);
-    })();
-  }, []);
-
-  return article;
-}
 
 const UpdateArticle = (props) => {
-  const [article, setArticle] = useState({ title: '', content: '' });
-  const previusArticle = useFetchArticle();
+  const [article, setArticle] = useState( props.location.state.article );
   const params = useParams();
 
   const getValue = (e) => {
@@ -43,9 +29,6 @@ const UpdateArticle = (props) => {
     document.location.href = `/article/${params.article_id}`;
   };
   
-  console.log('>', props)
-  console.log('>previusArticle:', previusArticle)
-
   return (
     <>
       <Template title="글수정">
@@ -55,10 +38,8 @@ const UpdateArticle = (props) => {
           placeholder="제목"
           name="title"
           onChange={getValue}
-          defaultValue={previusArticle.title}
+          value={article.title}
         >
-          {/* {previusArticle.title} */}
-          {props.location.state.article.title}
         </textarea>
         <textarea
           cols="60"
@@ -66,11 +47,8 @@ const UpdateArticle = (props) => {
           placeholder="본문"
           name="content"
           onChange={getValue}
-          defaultValue={previusArticle.content}
+          value={article.content}
         >
-          {/* {previusArticle.content} */}
-          {props.location.state.article.content}
-
         </textarea>
         <Button
           onClick={() => {
