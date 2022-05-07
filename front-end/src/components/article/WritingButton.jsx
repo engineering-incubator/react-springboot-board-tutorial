@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-export const StyledWritingButton = styled.button`
+export const StyledFloatingButton = styled.button`
 	color: #fff;
 	background: #000;
 	border: none;
@@ -17,6 +17,6 @@ export const StyledWritingButton = styled.button`
   margin-bottom: 40px;
 `;
 
-const WritingButton = (props) => <StyledWritingButton {...props}>글쓰기</StyledWritingButton>;
+const FloatingButton = (props) => <StyledFloatingButton {...props}>{props.text}</StyledFloatingButton>;
 
-export default WritingButton;
+export default FloatingButton;

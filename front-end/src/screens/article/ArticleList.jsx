@@ -3,18 +3,18 @@ import Template from '../../components/common/Template';
 import ArticleItem from '../../components/article/ArticleItem';
 import { getArticleList } from '../../api/articleApi';
 import { Link } from 'react-router-dom';
-import WritingButton from '../../components/article/WritingButton';
+import FloatingButton from '../../components/article/WritingButton';
 import ReactPaginate from 'react-paginate';
 import '../../styles/pagination.css';
 const ArticleList = () => {
   const [articleList, setArticleList] = useState([]);
-	const itemsPerPage = 5;
+  const itemsPerPage = 5;
   // FIXME useHook 으로 추상화
   useEffect(() => {
     async function getList() {
       const data = await getArticleList();
-			setArticleList(data.items);
-			setPageCount(data.totalPages)
+      setArticleList(data.items);
+      setPageCount(data.totalPages);
     }
     console.log(articleList);
     getList();
@@ -55,10 +55,22 @@ const ArticleList = () => {
         subContainerClassName={'pages pagination'}
         activeClassName={'active'}
       />
-      <WritingButton
+      <FloatingButton
+        text="홈"
+        onClick={() => (document.location.href = '/')}
+        style={{bottom: 160}}
+      />
+      <FloatingButton
+        text="글목록"
+        onClick={() => (document.location.href = '/article')}
+        style={{bottom: 80}}
+      />
+      <FloatingButton
+        text="글쓰기"
         onClick={() => (document.location.href = '/article/create')}
       />
     </>
   );
 };
 export default ArticleList;
+
