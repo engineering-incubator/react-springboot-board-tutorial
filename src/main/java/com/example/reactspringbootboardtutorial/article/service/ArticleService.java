@@ -31,9 +31,10 @@ public class ArticleService {
 
   public ArticleDetailsDto getArticle(Long articleId) {
     Article article = articleRepository.findById(articleId)
-        .orElseThrow(() -> new CustomException("No article with that number."));
+            .orElseThrow(() -> new CustomException("No article with that number."));
+    article.setViews(article.getViews() + 1);
 
-    return articleConverter.convert(article);
+    return articleConverter.convert(articleRepository.save(article));
   }
 
   public ArticleDetailsDto saveArticle(ArticleCreateDto articleCreateDto, String author) {
@@ -42,6 +43,7 @@ public class ArticleService {
     article.setTitle(articleCreateDto.getTitle());
     article.setContent(articleCreateDto.getContent());
     article.setAuthor(author);
+    article.setViews(0L);
     article.setDeleted(false);
 
     return articleConverter.convert(articleRepository.save(article));

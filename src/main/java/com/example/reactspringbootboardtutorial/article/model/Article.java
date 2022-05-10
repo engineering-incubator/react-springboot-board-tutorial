@@ -34,4 +34,7 @@ public class Article extends BaseTimeEntity {
 
   @Column(columnDefinition = "TINYINT(4)", nullable = false)
   private Boolean deleted;
+  
+  @Column(columnDefinition = "BIGINT", nullable = false)
+  private Long views;
 }

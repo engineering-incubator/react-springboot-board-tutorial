@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
   Page<Article> findAllByDeletedIsFalseOrderByIdDesc(Pageable pageable);
+  Optional<Article> findByIdAndDeletedIsFalse(Long id);
 }
