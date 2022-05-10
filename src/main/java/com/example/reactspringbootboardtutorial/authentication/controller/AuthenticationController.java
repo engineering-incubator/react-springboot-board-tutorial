@@ -26,7 +26,6 @@ import javax.validation.Valid;
 @RequestMapping("/v1/authentication")
 @RequiredArgsConstructor
 public class AuthenticationController {
-    private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService userService;
     private final PasswordEncoder passwordEncoder;
 
@@ -34,24 +33,5 @@ public class AuthenticationController {
     public WrappedResponseDto<?> signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
         userService.signUp(signUpRequestDto, passwordEncoder);
         return WrappedResponseDto.success(null);
-    }
-
-    @PostMapping("/sign-in")
-    public WrappedResponseDto<?> signIn(@Valid @RequestBody SignInRequestDto signInRequestDto, HttpSession session) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(signInRequestDto.getUsername(), signInRequestDto.getPassword());
-        Authentication authentication = authenticationManager.authenticate(token);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
-
-        return WrappedResponseDto.success(SecurityContextHolder.getContext().getAuthentication());
-    }
-
-    @PostMapping("/sign-out")
-    public String signOut(HttpServletRequest request, HttpServletResponse response) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.isAuthenticated()) {
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
-        }
-        return "redirect:/";
     }
 }

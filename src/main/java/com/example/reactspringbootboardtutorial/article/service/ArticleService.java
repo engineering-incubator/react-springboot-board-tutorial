@@ -5,9 +5,7 @@ import com.example.reactspringbootboardtutorial.article.dto.ArticleCreateDto;
 import com.example.reactspringbootboardtutorial.article.dto.ArticleDetailsDto;
 import com.example.reactspringbootboardtutorial.article.dto.ArticlesRequestDto;
 import com.example.reactspringbootboardtutorial.article.model.Article;
-import com.example.reactspringbootboardtutorial.article.model.View;
 import com.example.reactspringbootboardtutorial.article.repository.ArticleRepository;
-import com.example.reactspringbootboardtutorial.article.repository.ViewRepository;
 import com.example.reactspringbootboardtutorial.common.dto.PageableDto;
 import com.example.reactspringbootboardtutorial.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ArticleService {
   private final ArticleRepository articleRepository;
-  private final ViewRepository viewRepository;
   private final ArticleConverter articleConverter;
 
   public PageableDto<ArticleDetailsDto> getArticleList(ArticlesRequestDto dto) {
@@ -34,15 +31,9 @@ public class ArticleService {
   public ArticleDetailsDto getArticle(Long articleId, String ip) {
     Article article = articleRepository.findById(articleId)
             .orElseThrow(() -> new CustomException("No article with that number."));
+    article.setViews(article.getViews() + 1);
 
-    if (!viewRepository.findAllByArticleAndIp(article, ip).isPresent()) {
-      View view = new View();
-      view.setArticle(article);
-      view.setIp(ip);
-      viewRepository.save(view);
-    }
-
-    return articleConverter.convert(article);
+    return articleConverter.convert(articleRepository.save(article));
   }
 
   public ArticleDetailsDto saveArticle(ArticleCreateDto articleCreateDto, String author) {
@@ -51,6 +42,8 @@ public class ArticleService {
     article.setTitle(articleCreateDto.getTitle());
     article.setContent(articleCreateDto.getContent());
     article.setAuthor(author);
+    article.setViews(0L);
+    article.setDeleted(false);
 
     return articleConverter.convert(articleRepository.save(article));
   }
