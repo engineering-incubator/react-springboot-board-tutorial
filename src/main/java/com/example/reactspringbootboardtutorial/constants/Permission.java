@@ -3,9 +3,9 @@ package com.example.reactspringbootboardtutorial.constants;
 public enum Permission {
     ADMIN("ADMIN"),
     MANAGER("MANAGER"),
-    USER("MANAGER");
+    USER("USER");
 
-    private String name;
+    private final String name;
 
     Permission(String name) {
         this.name = name;

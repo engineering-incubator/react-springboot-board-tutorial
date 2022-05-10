@@ -19,22 +19,26 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-security:2.6.3'
-	implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
+	implementation 'org.springframework.boot:spring-boot-starter-security:2.6.7'
+	implementation 'org.springframework.boot:spring-boot-starter-web:2.6.7'
 	// Springboot 버전과의 버전과 맞지 않을 수 있으나, 그럴 경우 swagger configuration 을 수정해준다.(참고 https://jackyee.tistory.com/24)
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
-	implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.3'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
+	implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.7'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.7'
 
-	implementation 'org.projectlombok:lombok:1.18.22'
-	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+	implementation 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-	developmentOnly 'org.springframework.boot:spring-boot-devtools:2.6.3'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools:2.6.7'
 
-	implementation 'mysql:mysql-connector-java:8.0.25'
+	implementation 'mysql:mysql-connector-java:8.0.29'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
-	testImplementation 'org.springframework.security:spring-security-test:5.5.1'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
+	testImplementation 'org.springframework.security:spring-security-test:5.6.3'
+
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 }
 
 tasks.named('test') {

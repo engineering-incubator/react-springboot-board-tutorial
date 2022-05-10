@@ -14,14 +14,16 @@ public class ArticleDetailsDto {
   private String author;
   private String created_at;
   private String modified_at;
+  private Long views;
 
   @Builder
-  public ArticleDetailsDto(Long article_id, String title, String content, String author, String created_at, String modified_at) {
+  public ArticleDetailsDto(Long article_id, String title, String content, String author, String created_at, String modified_at, Long views) {
     this.article_id = article_id;
     this.title = title;
     this.content = content;
     this.author = author;
     this.created_at = created_at;
     this.modified_at = modified_at;
+    this.views = views;
   }
 }

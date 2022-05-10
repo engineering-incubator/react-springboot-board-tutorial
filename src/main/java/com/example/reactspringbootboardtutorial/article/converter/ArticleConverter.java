@@ -20,6 +20,7 @@ public class ArticleConverter {
 			.title(article.getTitle())
 			.created_at(article.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")))
 			.modified_at(article.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")))
+			.views(article.getViews())
 			.build();
 	}
 
@@ -33,7 +34,7 @@ public class ArticleConverter {
 			.map(this::convert)
 			.collect(Collectors.toList());
 
-		return new PageableDto(items, pageableArticles.getTotalPages(),
+		return new PageableDto<>(items, pageableArticles.getTotalPages(),
 			pageableArticles.getNumber(), pageableArticles.getSize(), pageableArticles.getTotalElements());
 	}
 }
