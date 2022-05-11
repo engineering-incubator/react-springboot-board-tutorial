@@ -60,15 +60,18 @@ export default function LogIn() {
         alert("모든 값을 제대로 입력해주세요.");
         return;
       }
-      const res = await axios.post("/api", userLogInData);
+      const res = await axios.post(
+        "/api/v1/authentication/sign-in",
+        userLogInData,
+      );
       if (res.data.code !== "SUCCESS") {
         alert(res.data.message);
         return;
       }
       alert("로그인되었습니다.");
-      history.push("/article");
+      history.replace("/article");
     } catch (error) {
-      console.log(error);
+      alert("다시 한번 시도해주세요.");
     }
   };
 
