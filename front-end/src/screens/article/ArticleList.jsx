@@ -5,8 +5,22 @@ import { getArticleList } from '../../api/articleApi';
 import { Link } from 'react-router-dom';
 import FloatingButton from '../../components/article/WritingButton';
 import ReactPaginate from 'react-paginate';
-import { useFetchArticleList } from '../../hooks/useFetchArticle';
+//import { useFetchArticleList } from '../../hooks/useFetchArticle';
 import '../../styles/pagination.css';
+
+export function useFetchArticleList() {
+  const [articleList, setArticleList] = useState([]);
+  useEffect(() => {
+    async function getList() {
+      const data = await getArticleList();
+      // setArticleList(data.items);
+    }
+    console.log(articleList);
+    getList();
+  }, []);
+}
+
+
 const ArticleList = () => {
   const articleList = useFetchArticleList();
   const itemsPerPage = 5;
@@ -18,7 +32,7 @@ const ArticleList = () => {
     const endOffset = itemOffset + itemsPerPage;
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     setCurrentItems(articleList.slice(itemOffset, endOffset));
-    setPageCount(data.totalPages);
+    setPageCount(articleList.totalPages);
   }, [itemOffset, itemsPerPage]);
 
   const handlePageClick = (event) => {
