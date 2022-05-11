@@ -5,20 +5,12 @@ import { getArticleList } from '../../api/articleApi';
 import { Link } from 'react-router-dom';
 import FloatingButton from '../../components/article/WritingButton';
 import ReactPaginate from 'react-paginate';
+import { useFetchArticleList } from '../../hooks/useFetchArticle';
 import '../../styles/pagination.css';
 const ArticleList = () => {
-  const [articleList, setArticleList] = useState([]);
+  const articleList = useFetchArticleList();
   const itemsPerPage = 5;
-  // FIXME useHook 으로 추상화
-  useEffect(() => {
-    async function getList() {
-      const data = await getArticleList();
-      setArticleList(data.items);
-      setPageCount(data.totalPages);
-    }
-    console.log(articleList);
-    getList();
-  }, []);
+
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
@@ -26,6 +18,7 @@ const ArticleList = () => {
     const endOffset = itemOffset + itemsPerPage;
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     setCurrentItems(articleList.slice(itemOffset, endOffset));
+    setPageCount(data.totalPages);
   }, [itemOffset, itemsPerPage]);
 
   const handlePageClick = (event) => {
@@ -58,12 +51,12 @@ const ArticleList = () => {
       <FloatingButton
         text="홈"
         onClick={() => (document.location.href = '/')}
-        style={{bottom: 160}}
+        style={{ bottom: 160 }}
       />
       <FloatingButton
         text="글목록"
         onClick={() => (document.location.href = '/article')}
-        style={{bottom: 80}}
+        style={{ bottom: 80 }}
       />
       <FloatingButton
         text="글쓰기"
@@ -73,4 +66,3 @@ const ArticleList = () => {
   );
 };
 export default ArticleList;
-

@@ -5,19 +5,7 @@ import ArticleDetail from '../../components/article/ArticleDetail';
 import { getArticle, deleteArticle } from '../../api/articleApi';
 import Button from '../../components/common/Button';
 import { isFailureStatus } from "../../api/config/status-code.config";
-
-function useFetchArticle() {
-  const params = useParams();
-  const [article, setArticle] = useState({});
-  useEffect(function fetchArticle() {
-    (async function getItem() {
-      const item = await getArticle(params.article_id);
-      setArticle(item);
-    })();
-  }, []);
-
-  return article;
-}
+import { useFetchArticle } from '../../hooks/useFetchArticle';
 
 const Article = () => {
 	const article = useFetchArticle();
