@@ -3,7 +3,6 @@ import Template from '../../components/common/Template';
 import { updateArticle, getArticle } from '../../api/articleApi';
 import Button from '../../components/common/Button';
 import { isFailureStatus } from '../../api/config/status-code.config';
-
 import { useParams } from 'react-router-dom';
 
 const UpdateArticle = (props) => {
@@ -19,7 +18,6 @@ const UpdateArticle = (props) => {
   };
 
   const requestUpdate = async () => {
-    // FIXME validation 통과하지 못했을 경우, 서버로 요청을 하지 말아야 함.
     const result = await updateArticle(params.article_id, article);
     console.log(result);
     if (isFailureStatus(result.code)) {

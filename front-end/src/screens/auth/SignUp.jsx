@@ -45,8 +45,6 @@ const SignUp = () => {
   } = state;
 
   const requestRegister = async () => {
-    // FIXME validation 통과하지 못했을 경우, 서버로 요청을 하지 말아야 함.
-    console.log('서버로 요청');
     const result = await register(state);
     if (isFailureStatus(result.code)) {
       return alert(result.message);
