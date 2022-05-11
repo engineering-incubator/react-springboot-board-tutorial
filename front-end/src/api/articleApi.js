@@ -1,7 +1,18 @@
-import client, { requestClientService } from './client';
+import client, { requestClientService } from "./client";
 
 export const getArticleList = async() => {
-    return requestClientService('get', `/api/v1/articles?currentPage=1&size=8`);
+    try {
+        const response= await requestClientService('get', `/api/v1/articles`);
+        return {
+            isSuccess: true,
+            data: response.items,
+        }
+    } catch (e) {
+        return {
+            isSuccess: false,
+            message: e.message,
+        }
+    }
 };
 
 export const getArticle = async(articleId) => {

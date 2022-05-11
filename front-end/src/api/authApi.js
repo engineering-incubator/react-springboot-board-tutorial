@@ -1,4 +1,4 @@
-import client from './client'
+import client from "./client";
 
 export const register = async(
     data
@@ -16,5 +16,23 @@ export const register = async(
         return response.data;
     } catch (e) {
         return e;
+    }
+}
+
+export const signInApi = async ({ username, password }) => {
+    try {
+        void await client.post('/api/v1/authentication/sign-in', {
+            username, password
+        });
+
+        return {
+            isSuccess: true,
+            data: null,
+        }
+    } catch (e) {
+        return {
+            isSuccess: false,
+            message: e.message,
+        }
     }
 }

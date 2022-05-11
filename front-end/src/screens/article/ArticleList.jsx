@@ -1,23 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import Template from '../../components/common/Template';
-import ArticleItem from '../../components/article/ArticleItem';
-import { getArticleList } from '../../api/articleApi';
-import { Link } from 'react-router-dom';
-import FloatingButton from '../../components/article/WritingButton';
-import ReactPaginate from 'react-paginate';
+import React, { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
+import { Link } from "react-router-dom";
+import { getArticleList } from "../../api/articleApi";
+import ArticleItem from "../../components/article/ArticleItem";
+import FloatingButton from "../../components/article/WritingButton";
+import Template from "../../components/common/Template";
 //import { useFetchArticleList } from '../../hooks/useFetchArticle';
-import '../../styles/pagination.css';
+import "../../styles/pagination.css";
 
 export function useFetchArticleList() {
   const [articleList, setArticleList] = useState([]);
   useEffect(() => {
-    async function getList() {
-      const data = await getArticleList();
-      // setArticleList(data.items);
-    }
-    console.log(articleList);
-    getList();
+    (async function getList() {
+      const response = await getArticleList();
+      if (!response.isSuccess) {
+        return;
+      }
+
+      setArticleList(response.data);
+    })();
   }, []);
+
+  return articleList;
 }
 
 
