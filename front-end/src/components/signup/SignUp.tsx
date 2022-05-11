@@ -12,6 +12,8 @@ import {
   StyledCommonTitle,
   StyledCommonLabel,
   StyledCommonFlexContainer,
+  StyledCommonToastContainer,
+  StyledCommonClosePopup,
 } from '../../styles/common';
 import {
   InitialStateSignupInputType,
@@ -23,11 +25,11 @@ import { colors } from '../../styles/variables';
 import { postSignup } from '../../api';
 import Loading from '../common/Loading';
 import { isSuccessStatus } from '../../config/status.code.config';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = () => {
-  const [isLoading, setIsLoding] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const elRef = useRef<focusRef>(null);
   const { input, valid } = useSignupState();
   const dispatch = useSignupDispatch();
@@ -87,7 +89,7 @@ const SignUp = () => {
     }
 
     (async () => {
-      setIsLoding(true);
+      setIsLoading(true);
       // TODO fetchClient 를 한번 wrapping 해서~
       const response = await postSignup<InitialStateSignupInputType>(input);
       const { code, message } = response;
@@ -95,7 +97,7 @@ const SignUp = () => {
 
       const CloseButton = ({ closeToast }: { closeToast: () => void }) => {
         const onClickClose = () => {
-          setIsLoding((prev) => {
+          setIsLoading((prev) => {
             closeToast();
             if (isSuccess) {
               window.location.href = '/';
@@ -103,7 +105,7 @@ const SignUp = () => {
             return !prev;
           });
         };
-        return <StyledClosePopup onClick={onClickClose}>X</StyledClosePopup>;
+        return <StyledCommonClosePopup onClick={onClickClose}>X</StyledCommonClosePopup>;
       };
 
       const toastMessage = isSuccess
@@ -151,7 +153,7 @@ const SignUp = () => {
   return (
     <>
       {isLoading && <Loading isFull={true} msg={'요청을 처리중입니다.'} />}
-      <StyledToastContainer />
+      <StyledCommonToastContainer />
       <StyledCommonWrap>
         <StyledCommonTitle>회원가입</StyledCommonTitle>
         <StyledSignupWrap>
@@ -278,27 +280,6 @@ const StyledInputWrap = styled.div`
   flex: 1;
   overflow: hidden;
   box-sizing: border-box;
-`;
-
-const StyledToastContainer = styled(ToastContainer)`
-  // https://styled-components.com/docs/faqs#how-can-i-override-styles-with-higher-specificity
-  &&&.Toastify__toast-container {
-  }
-  .Toastify__toast {
-    max-width: 80%;
-    margin: 0 auto;
-    word-break: break-all;
-    overflow: auto;
-  }
-`;
-
-const StyledClosePopup = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  color: white;
 `;
 
 SignUp.displayName = 'signUp';

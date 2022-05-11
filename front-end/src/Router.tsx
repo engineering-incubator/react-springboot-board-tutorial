@@ -4,15 +4,26 @@ import Articles from './pages/Articles';
 import ArticleView from './pages/ArticleView';
 import ArticlePost from './pages/ArticlePost';
 import SignupProvider from './provider/SignupProvider';
+import { LANDING_PATH, LANDING_PATH_NAME } from './config';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/articles" element={<Articles />} />
-        <Route path="/article/:articleNumber" element={<ArticleView />} />
-        <Route path="/article/write" element={<ArticlePost />} />
-        <Route path="/signup" element={<SignupProvider />} />
+        <Route path={`${LANDING_PATH[LANDING_PATH_NAME.ARTICLES]}`} element={<Articles />} />
+        <Route
+          path={`${LANDING_PATH[LANDING_PATH_NAME.ARTICLE]}/:articleId`}
+          element={<ArticleView />}
+        />
+        <Route
+          path={`${LANDING_PATH[LANDING_PATH_NAME.ARTICLE_WRITE]}`}
+          element={<ArticlePost />}
+        />
+        <Route
+          path={`${LANDING_PATH[LANDING_PATH_NAME.ARTICLE_WRITE]}/:articleId`}
+          element={<ArticlePost />}
+        />
+        <Route path={`${LANDING_PATH[LANDING_PATH_NAME.SIGNUP]}`} element={<SignupProvider />} />
       </Routes>
     </BrowserRouter>
   );

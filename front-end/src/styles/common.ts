@@ -1,6 +1,7 @@
 import { CSSProperties } from '@emotion/serialize';
 import styled from '@emotion/styled';
 import { colors } from '../styles/variables';
+import { ToastContainer } from 'react-toastify';
 
 export const StyledCommonWrap = styled.main`
   padding: 0 10px;
@@ -49,7 +50,8 @@ export const StyledCommonPositiveButton = styled(StyledCommonButton)<{
   isPositive?: boolean;
 }>`
   color: white;
-  background-color: ${({ isPositive }) => (isPositive ? `${colors.darkBlue}` : `${colors.gray}`)};
+  background-color: ${({ isPositive = true }) =>
+    isPositive ? `${colors.darkBlue}` : `${colors.gray}`};
 `;
 
 export const StyledCommonNegativeButton = styled(StyledCommonButton)`
@@ -57,6 +59,10 @@ export const StyledCommonNegativeButton = styled(StyledCommonButton)`
   background-color: ${colors.gray1};
 `;
 
+export const StyledCommonWranningButton = styled(StyledCommonButton)`
+  color: white;
+  background-color: ${colors.warning};
+`;
 export const StyledCommonSelectWrap = styled.div`
   position: relative;
 
@@ -95,4 +101,25 @@ export const StyledCommonLabel = styled.label<{ isError?: boolean }>`
   height: 32px;
   font-weight: bold;
   color: ${({ isError }) => (isError ? `${colors.warning}` : 'inherit')};
+`;
+
+export const StyledCommonToastContainer = styled(ToastContainer)`
+  // https://styled-components.com/docs/faqs#how-can-i-override-styles-with-higher-specificity
+  &&&.Toastify__toast-container {
+  }
+  .Toastify__toast {
+    max-width: 80%;
+    margin: 0 auto;
+    word-break: break-all;
+    overflow: auto;
+  }
+`;
+
+export const StyledCommonClosePopup = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  color: white;
 `;

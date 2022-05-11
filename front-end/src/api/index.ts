@@ -1,7 +1,8 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, Method } from 'axios';
 import { API_URLS } from '../config';
 import qs from 'qs';
-import { ArticlesParams } from '../hooks/api/useArticles';
+import { ArticleItemType, ArticlesParams } from '../hooks/api/useArticles';
+import { ExternalResponse } from 'src/@types/response';
 
 const httpClient = () =>
   axios.create({
@@ -9,7 +10,7 @@ const httpClient = () =>
     timeout: 2000,
   });
 
-export function generateUrl(path: string, params = {}) {
+export function generateUrl(path: string, params: { [key: string]: string | number }) {
   const query = qs.stringify(params);
   return `${path}?${query ? `&${query}` : ''}`;
 }
@@ -36,9 +37,15 @@ export const postSignup = async <T>(data: T) =>
 export const requestArticles = async (params: ArticlesParams) =>
   await requestClient({ method: 'get', url: API_URLS.ARTICLES, params });
 
-export const requestArticleItem = async (articleId: number) =>
+export const requestArticleItem = async (articleId: string) =>
   await requestClient({ method: 'get', url: `${API_URLS.ARTICLES}/${articleId}` });
 
-export const postArticleItem = async <T>(data: T) => {
-  await requestClient({ method: 'post', url: `${API_URLS.ARTICLES}`, data });
-};
+export const postArticleItem = async <T>(
+  method: Method,
+  data: T,
+  articleId?: string,
+): Promise<ExternalResponse<ArticleItemType>> =>
+  await requestClient({ method, url: `${API_URLS.ARTICLES}/${articleId}`, data });
+
+export const deleteArticleItem = async <T>(articleId: string): Promise<ExternalResponse<any>> =>
+  await requestClient({ method: 'delete', url: `${API_URLS.ARTICLES}/${articleId}` });

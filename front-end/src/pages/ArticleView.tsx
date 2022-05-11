@@ -1,9 +1,11 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import useArticleItem from '../hooks/api/useArticleItem';
 import {
   StyledCommonFlexContainer,
   StyledCommonNegativeButton,
+  StyledCommonPositiveButton,
+  StyledCommonWranningButton,
   StyledCommonWrap,
 } from '../styles/common';
 import styled from '@emotion/styled';
@@ -11,10 +13,12 @@ import Loading from '../components/common/Loading';
 import DOMPurify from 'dompurify';
 import { generateDate } from '../utils';
 import { colors } from '../styles/variables';
+import { LANDING_PATH_NAME, LANDING_PATH } from '../config';
 
 const ArticleView = () => {
-  const { articleNumber } = useParams();
-  const { data, isSuccess, isLoading } = useArticleItem(Number(articleNumber) || 1);
+  const navigate = useNavigate();
+  const { articleId = '' } = useParams();
+  const { data, isSuccess, isLoading } = useArticleItem(articleId);
 
   if (isLoading) return <Loading msg="게시글을 불러오고 있습니다." isFull={true} />;
 
@@ -41,6 +45,14 @@ const ArticleView = () => {
       <StyledContent>
         <StyledTextarea dangerouslySetInnerHTML={{ __html: purifyingDom }} />
       </StyledContent>
+      <StyledCommonFlexContainer justify={'space-between'}>
+        {/* FIXME auth check 후 render */}
+        <StyledCommonPositiveButton
+          onClick={() => navigate(`${LANDING_PATH[LANDING_PATH_NAME.ARTICLE_WRITE]}/${articleId}`)}>
+          수정
+        </StyledCommonPositiveButton>
+        <StyledCommonWranningButton>삭제</StyledCommonWranningButton>
+      </StyledCommonFlexContainer>
       <StyledCommonFlexContainer>
         <StyledCommonNegativeButton role="link" onClick={onClickGoBack}>
           목록으로 돌아가기
