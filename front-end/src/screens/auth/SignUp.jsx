@@ -1,33 +1,32 @@
-import React, { useMemo, useReducer, useState } from "react";
-import { register } from "../../api/authApi";
-import { isFailureStatus } from "../../api/config/status-code.config";
-import Button from "../../components/common/Button";
-import ErrorMessage from "../../components/common/ErrorMessage";
-import Input from "../../components/common/Input";
-import Select from "../../components/common/Select";
-import Template from "../../components/common/Template";
-import { isEmailPattern, isPasswordPattern, isPhoneNumberPattern } from "../../validation/SignUpRegEx";
-
+import React, { useMemo, useReducer, useState } from 'react';
+import { register } from '../../api/authApi';
+import { isFailureStatus } from '../../api/config/status-code.config';
+import Button from '../../components/common/Button';
+import ErrorMessage from '../../components/common/ErrorMessage';
+import Input from '../../components/common/Input';
+import Select from '../../components/common/Select';
+import Template from '../../components/common/Template';
+import {
+  isEmailPattern,
+  isPasswordPattern,
+  isPhoneNumberPattern,
+} from '../../validation/SignUpRegEx';
+import { isAllFilled } from '../../validation/FilledCheck';
 const PERMISSIONS = [
   { value: 'ADMIN', name: 'admin' },
   { value: 'MANAGER', name: 'manager' },
   { value: 'USER', name: 'user' },
-]
+];
 const reducer = (state, action) => {
   // TODO reducer 의 철학에 위배 되는 듯 하다.. Plain object 형태를 넣어줘야 할듯 하다. DOM 을 넣는 건 쫌......
   return {
     ...state,
     [action.name]: action.value,
-  }
-}
-
-export function isEmpty(value) {
-  return !value;
-}
-
+  };
+};
 
 const SignUp = () => {
-  const [isClickSubmitButton, setIsClickSubmitButton] = useState(false)
+  const [isClickSubmitButton, setIsClickSubmitButton] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
     username: null,
     password: null,
@@ -35,7 +34,7 @@ const SignUp = () => {
     permission: 'ADMIN',
     email: null,
     phoneNumber: null,
-  })
+  });
   const {
     username,
     password,
@@ -43,21 +42,22 @@ const SignUp = () => {
     permission,
     email,
     phoneNumber,
-  } = state
+  } = state;
 
   const requestRegister = async () => {
     // FIXME validation 통과하지 못했을 경우, 서버로 요청을 하지 말아야 함.
-    const result = await register(state)
+    console.log('서버로 요청');
+    const result = await register(state);
     if (isFailureStatus(result.code)) {
       return alert(result.message);
     }
 
-    alert('회원가입 완료되었습니다.')
-    document.location.href = '/signIn'
-  }
+    alert('회원가입 완료되었습니다.');
+    document.location.href = '/signIn';
+  };
 
   return (
-		<>
+    <>
       {/* FIXME component 추상화 */}
       <Template title="회원가입">
         <Input
@@ -95,7 +95,7 @@ const SignUp = () => {
         권한
         <Select
           onChange={(e) => {
-            dispatch(e.target)
+            dispatch(e.target);
           }}
           name="permission"
         >
@@ -122,8 +122,8 @@ const SignUp = () => {
           placeholder="전화번호"
           name="phoneNumber"
           onChange={(e) => {
-            dispatch(e.target)
-            console.log(state)
+            dispatch(e.target);
+            console.log(state);
           }}
         />
         {phoneNumber && !isPhoneNumberPattern(phoneNumber) && (
@@ -134,14 +134,15 @@ const SignUp = () => {
         )}
         <Button
           onClick={() => {
-            setIsClickSubmitButton(true)
-            requestRegister()
+            console.log(isAllFilled(state))
+            if (isAllFilled(state) && isPasswordPattern(password) && isEmailPattern(email) && isPhoneNumberPattern(phoneNumber)) requestRegister();
+            else setIsClickSubmitButton(true);
           }}
         >
           완료
         </Button>
       </Template>
     </>
-  )
-}
-export default SignUp
+  );
+};
+export default SignUp;
