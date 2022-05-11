@@ -62,7 +62,7 @@ export default function LogIn() {
         return;
       }
       const res = await axios.post(
-        "/api/v1/authentication/login",
+        "/api/v1/authentication/sign-in",
         userLogInData,
       );
       if (isSuccess(res)) {
