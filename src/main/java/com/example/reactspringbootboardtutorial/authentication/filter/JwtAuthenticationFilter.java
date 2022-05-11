@@ -3,6 +3,7 @@ package com.example.reactspringbootboardtutorial.authentication.filter;
 import com.example.reactspringbootboardtutorial.authentication.JwtProvider;
 import com.example.reactspringbootboardtutorial.authentication.service.CustomUserDetailsService;
 import io.jsonwebtoken.JwtException;
+import java.util.Optional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,8 +27,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Cookie[] cookies = request.getCookies();
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, JwtException {
+        Cookie[] cookies = Optional.ofNullable(request.getCookies()).orElseThrow(() -> new JwtException("No JWT token provided."));
         String token = null;
 
         for (Cookie cookie : cookies) {
