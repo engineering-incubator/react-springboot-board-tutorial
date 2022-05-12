@@ -18,5 +18,5 @@ export function useFetchPostById(id) {
     })();
   }, [id]);
 
-  return [post, setPost];
+  return post;
 }

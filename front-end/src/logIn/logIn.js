@@ -6,6 +6,7 @@ import {
   userNameValidates,
 } from "../signUp/utilites/inputValidation";
 import axios from "axios";
+import { isSuccess } from "../utilites/validates/httpValidation";
 
 export default function LogIn() {
   const [userLogInData, setUserLogInData] = useState({
@@ -64,12 +65,12 @@ export default function LogIn() {
         "/api/v1/authentication/sign-in",
         userLogInData,
       );
-      if (res.data.code !== "SUCCESS") {
+      if (!isSuccess(res)) {
         alert(res.data.message);
         return;
       }
       alert("로그인되었습니다.");
-      history.replace("/article");
+      history.replace("/articles");
     } catch (error) {
       alert("다시 한번 시도해주세요.");
     }
