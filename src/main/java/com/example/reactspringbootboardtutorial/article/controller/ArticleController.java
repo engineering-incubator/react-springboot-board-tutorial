@@ -31,13 +31,7 @@ public class ArticleController {
 
   @GetMapping("/{articleId}")
   public WrappedResponseDto<ArticleDetailsDto> getArticle(@PathVariable Long articleId) {
-    HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-    String ip = request.getHeader("X-FORWARDED-FOR");
-
-    if (ip == null)
-      ip = request.getRemoteAddr();
-
-    return WrappedResponseDto.success(articleService.getArticle(articleId, ip));
+    return WrappedResponseDto.success(articleService.getArticle(articleId));
   }
 
   @PostMapping
@@ -54,7 +48,9 @@ public class ArticleController {
   }
 
   @PutMapping("/{articleId}")
-  public WrappedResponseDto<ArticleDetailsDto> updateArticle(@PathVariable Long articleId, @Valid @RequestBody ArticleCreateDto articleUpdateDto) {
+  public WrappedResponseDto<ArticleDetailsDto> updateArticle(@PathVariable Long articleId,
+                                                             @Valid @RequestBody ArticleCreateDto articleUpdateDto) {
+
     return WrappedResponseDto.success(articleService.updateArticle(articleId, articleUpdateDto));
   }
 }
