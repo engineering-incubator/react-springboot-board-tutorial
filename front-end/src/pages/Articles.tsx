@@ -23,7 +23,6 @@ const Articles = () => {
     size,
   };
   const { isSuccess, isLoading, isError, data } = useArticles(params);
-
   useEffect(() => {
     if (!data?.content || !isSuccess) return;
     const { totalPages } = data.content;

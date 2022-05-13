@@ -3,6 +3,7 @@
     "@types/dompurify": "^2.3.3",
     "dayjs": "^1.11.1",
     "dompurify": "^2.3.6",
-    "react-router-dom": "^6.2.1"
+    "react-router-dom": "^6.2.1",
+    "recoil": "^0.7.3-alpha.2"
   }
 }

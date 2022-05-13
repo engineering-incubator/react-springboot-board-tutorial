@@ -26,15 +26,15 @@ export interface ArticlesParams {
 
 const useArticles = (params: ArticlesParams) => {
   const { currentPage, size } = params;
-  const fetch = (): Promise<ExternalResponse<ArticleListType>> =>
+  const getArticleList = (): Promise<ExternalResponse<ArticleListType>> =>
     requestArticles({
       currentPage,
       size,
     });
 
-  return useQuery(['articles', currentPage, size], () => fetch(), {
-    staleTime: Infinity,
-    cacheTime: Infinity,
+  return useQuery(['articles', currentPage, size], () => getArticleList(), {
+    staleTime: 0,
+    cacheTime: 0,
   });
 };
 

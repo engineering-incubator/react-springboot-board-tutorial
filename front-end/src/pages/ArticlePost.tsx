@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { ExternalResponse } from '../@types/response';
 import styled from '@emotion/styled';
 import InputText, { focusRef } from '../components/common/InputText';
 import { useParams } from 'react-router-dom';
@@ -10,7 +11,7 @@ import {
   StyledCommonClosePopup,
 } from '../styles/common';
 import Textarea from '../components/common/Textarea';
-import { postArticleItem } from '../api';
+import { createArticleItem, updateArticleItem } from '../api';
 import ErrorNotice from '../components/common/ErrorNotice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -43,8 +44,6 @@ const ArticlePost = () => {
       content: true,
     },
   });
-  const isUpdate = useMemo(() => !!articleId, [articleId]);
-  const axiosMethod = useMemo(() => (isUpdate ? 'put' : 'post'), [isUpdate]);
 
   useEffect(() => {
     const { title, content } = data?.content || { title: '', content: '' };
@@ -100,13 +99,15 @@ const ArticlePost = () => {
       return;
     }
 
+    const requestArticle = async (data: PostContentValueType, articleId?: string) => {
+      if (!!articleId) return await updateArticleItem<PostContentValueType>(data, articleId);
+      return await createArticleItem<PostContentValueType>(data);
+    };
+
     (async () => {
       setIsLoading(true);
-      const { code, message } = await postArticleItem<PostContentValueType>(
-        axiosMethod,
-        value,
-        articleId,
-      );
+      const response = await requestArticle(value, articleId);
+      const { code, message } = response;
       const isSuccess = isSuccessStatus(code);
 
       const CloseButton = ({ closeToast }: { closeToast: () => void }) => {
@@ -123,7 +124,7 @@ const ArticlePost = () => {
       };
 
       const toastMessage = isSuccess
-        ? `게시물을 ${isUpdate ? '수정' : '작성'}하였습니다. \n 잠시후 목록으로 이동 합니다.`
+        ? `게시물을 ${!!articleId ? '수정' : '작성'}하였습니다. \n 잠시후 목록으로 이동 합니다.`
         : message;
       const toastMehod = isSuccess ? 'success' : 'error';
 

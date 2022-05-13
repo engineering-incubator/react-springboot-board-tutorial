@@ -60,5 +60,5 @@
     "prettier": "^2.5.1",
     "react-app-rewired": "^2.1.11"
   },
-  "proxy": "http://localhost:11001/api"
+  "proxy": "http://localhost:11001"
 }

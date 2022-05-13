@@ -13,7 +13,6 @@ import Loading from '../components/common/Loading';
 import DOMPurify from 'dompurify';
 import { generateDate } from '../utils';
 import { colors } from '../styles/variables';
-import { LANDING_PATH_NAME, LANDING_PATH } from '../config';
 
 const ArticleView = () => {
   const navigate = useNavigate();
@@ -47,8 +46,7 @@ const ArticleView = () => {
       </StyledContent>
       <StyledCommonFlexContainer justify={'space-between'}>
         {/* FIXME auth check 후 render */}
-        <StyledCommonPositiveButton
-          onClick={() => navigate(`${LANDING_PATH[LANDING_PATH_NAME.ARTICLE_WRITE]}/${articleId}`)}>
+        <StyledCommonPositiveButton onClick={() => navigate(`/article/write/${articleId}`)}>
           수정
         </StyledCommonPositiveButton>
         <StyledCommonWranningButton>삭제</StyledCommonWranningButton>

@@ -4,13 +4,12 @@ import styled from '@emotion/styled';
 import { StyledCommonBlind } from '../../styles/common';
 import { colors } from '../../styles/variables';
 import { generateDate } from '../../utils';
-import { LANDING_PATH, LANDING_PATH_NAME } from 'src/config';
 
 const ArticleItem = ({ data }: { data: ArticleItemType }) => {
   const { article_id, title, author, created_at, modified_at } = data;
 
   return (
-    <StyledArticleRow href={`${LANDING_PATH[LANDING_PATH_NAME.ARTICLE]}/${article_id}`} role="row">
+    <StyledArticleRow href={`/article/${article_id}`} role="row">
       <StyledCommonBlind as={'span'} role="cell">
         {article_id}
       </StyledCommonBlind>

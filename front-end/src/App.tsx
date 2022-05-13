@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from './Router';
 import Header from './components/common/Header';
 import { Global } from '@emotion/react';
 import { globalStyles } from './styles/global-styles';
 import { QueryParamProvider } from 'use-query-params';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,8 +25,11 @@ function App() {
       <QueryParamProvider>
         <Global styles={globalStyles} />
         <Header />
-        <Router />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Router />
+        </Suspense>
       </QueryParamProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
