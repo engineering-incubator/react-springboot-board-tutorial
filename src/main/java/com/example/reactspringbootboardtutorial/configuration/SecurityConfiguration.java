@@ -81,7 +81,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring()
                 .antMatchers("/v1/authentication/sign-up")
-                .antMatchers("/v1/articles")
                 .antMatchers("/swagger-ui/**")
                 .antMatchers("/webjars/**")
                 .antMatchers("/swagger-resources/**")
