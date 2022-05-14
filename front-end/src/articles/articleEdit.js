@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
@@ -8,6 +7,7 @@ import {
   contentValidation,
   titleValidation,
 } from "./utilities/articleValidation";
+import { requester } from "../configures/requestConfigures";
 
 export default function ArticleEdit() {
   const param = useParams();
@@ -47,8 +47,8 @@ export default function ArticleEdit() {
         alert("모든 값을 제대로 입력해주세요.");
         return;
       }
-      const res = await axios.put(
-        `/api/v1/articles/${param.articleId}`,
+      const res = await requester.put(
+        `/v1/articles/${param.articleId}`,
         article,
       );
       if (isSuccess(res)) {

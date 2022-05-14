@@ -5,8 +5,8 @@ import {
   passwordValidates,
   userNameValidates,
 } from "../signUp/utilites/inputValidation";
-import axios from "axios";
 import { isSuccess } from "../utilites/validates/httpValidation";
+import { requester } from "../configures/requestConfigures";
 
 export default function LogIn() {
   const [userLogInData, setUserLogInData] = useState({
@@ -61,9 +61,10 @@ export default function LogIn() {
         alert("모든 값을 제대로 입력해주세요.");
         return;
       }
-      const res = await axios.post(
-        "/api/v1/authentication/sign-in",
+      const res = await requester.post(
+        "/v1/authentication/sign-in",
         userLogInData,
+        { withCreadentials: true },
       );
       if (!isSuccess(res)) {
         alert(res.data.message);

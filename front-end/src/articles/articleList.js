@@ -1,100 +1,116 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { isEmpty } from "../utilites/typeGuard/typeGuard";
+import qs from "qs";
+import { useEffect, useReducer, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import ReactPaginate from "react-paginate";
+import Pagination from "../components/pagination";
+import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { isSuccess } from "../utilites/validates/httpValidation";
 import "./pagination.css";
-import qs from "qs";
+import { requester } from "../configures/requestConfigures";
 
 export default function ArticleList() {
-  const [articles, setArticles] = useState([]);
-  const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
   const history = useHistory();
   const location = useLocation();
+  const [articles, setArticles] = useState([]);
+
+  // TODO pagination state -> useReducer 로 통합(custom hook으로 분리하면 좀더 좋을 듯.
+  const reducer = (state, action) => {
+    if (action.type === "totalPages") {
+      return { ...state, totalPages: action.value };
+    }
+    if (action.type === "currentPage") {
+      return { ...state, currentPage: action.value };
+    } else {
+      return { ...state, totalArticles: action.value };
+    }
+  };
+
+  const [paginationState, paginationDispatch] = useReducer(reducer, {
+    totalPages: 1,
+    currentPage: 1,
+    totalArticles: 0,
+  });
+
+  const onPaginationChange = (type, value) => {
+    paginationDispatch({ type, value });
+  };
+
+  const onPageChange = (currentPage) => {
+    history.push(`/articles?page=${currentPage.selected + 1}`);
+  };
+
+  const onMoveWritePage = () => history.push("/article-write");
 
   useEffect(() => {
     const query = qs.parse(location.search, {
       ignoreQueryPrefix: true,
     });
-    setCurrentPage(query.page || 1);
+    const page = Number(query.page) || 1;
+    onPaginationChange("currentPage", page);
     (async function () {
       try {
-        const res = await axios.get(
-          `/api/v1/articles?currentPage=${query.page || 1}`,
-        );
-        if (isSuccess(res)) {
-          setArticles(res.data.content.items);
-          setTotalPages(res.data.content.totalPages);
+        const res = await requester.get(`/v1/articles?currentPage=${page}`);
+        if (!isSuccess(res)) {
+          alert(res.data.message);
           return;
         }
-        alert(res.data.message);
+        setArticles(res.data.content.items);
+        onPaginationChange("totalPages", res.data.content.totalPages);
+        onPaginationChange("totalArticles", res.data.content.totalElements);
       } catch (error) {
         console.log(error);
       }
     })();
   }, [location]);
 
-  const onPageChange = (currentPage) => {
-    history.push(`/articles?page=${currentPage.selected + 1}`);
-  };
-
   return (
     <>
       <div>
         <h1>안녕하세요! 게시판입니다.</h1>
-        <button
-          onClick={() => {
-            history.push("/create");
-          }}
-        >
-          글쓰기
-        </button>
+        <button onClick={onMoveWritePage}>글쓰기</button>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>게시글 번호</th>
-            <th>제목</th>
-            <th>날짜</th>
-            <th>작성자</th>
-            <th>조회수</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/*FIXME success 이후 아티클 랭스 체크*/}
-          {!isEmpty(articles) &&
-            articles.map((article) => (
+      {(isEmpty(articles) || isEmpty(paginationState.totalArticles)) && (
+        <p>등록된 게시글이 없습니다.</p>
+      )}
+      {!isEmpty(articles) && !isEmpty(paginationState.totalArticles) && (
+        <table>
+          <thead>
+            <tr>
+              <th>게시글 번호</th>
+              <th>제목</th>
+              <th>날짜</th>
+              <th>작성자</th>
+              <th>조회수</th>
+            </tr>
+          </thead>
+          <tbody>
+            {articles.map((article) => (
               <tr key={article.article_id}>
                 <td>{article.article_id}</td>
                 <td>
-                  <Link to={`/articles/${article.article_id}`}>
+                  <Link
+                    to={{
+                      pathname: `/articles/${article.article_id}`,
+                      state: { page: paginationState.currentPage },
+                    }}
+                  >
                     {article.title}
                   </Link>
                 </td>
-                <td>{article.modified_at}</td>
+                <td>{article.created_at}</td>
                 <td>{article.author}</td>
-                <td>0</td>
+                <td>{article.views}</td>
               </tr>
             ))}
-        </tbody>
-      </table>
-      {!isEmpty(articles) && (
-        <ReactPaginate
-          className="color"
-          activeClassName="active"
-          previousClassName="li"
-          nextClassName="li"
-          pageClassName="li"
-          pageCount={totalPages}
-          previousLabel="‹ 이전"
-          nextLabel="다음 ›"
+          </tbody>
+        </table>
+      )}
+      {!isEmpty(articles) && !isEmpty(paginationState.totalArticles) && (
+        <Pagination
+          pageCount={paginationState.totalPages}
           onPageChange={onPageChange}
-          page={currentPage - 1}
+          currentPage={paginationState.currentPage}
         />
       )}
-      {isEmpty(articles) && <p>불러오는 중입니다...</p>}
     </>
   );
 }

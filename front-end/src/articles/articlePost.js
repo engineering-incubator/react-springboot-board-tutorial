@@ -1,34 +1,26 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React from "react";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { isSuccess } from "../utilites/validates/httpValidation";
+import { useFetchPostById } from "./hooks/useFetchPostById";
+import { requester } from "../configures/requestConfigures";
 
 export default function ArticlePost() {
   const param = useParams();
   const history = useHistory();
-  const [article, setArticle] = useState();
+  const location = useLocation();
+  const article = useFetchPostById(param.articleId);
 
-  useEffect(() => {
-    (async function () {
-      try {
-        const res = await axios.get(`/api/v1/articles/${param.articleId}`);
-        if (isSuccess(res)) {
-          return setArticle(res.data.content);
-        }
-        alert(res.data.message);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  const onUpdate = () => {
+    history.push(`/articles/${param.articleId}/edit`);
+  };
 
   const onDelete = async () => {
     try {
-      const res = await axios.delete(`/api/v1/articles/${article.article_id}`);
+      const res = await requester.delete(`/v1/articles/${article.article_id}`);
       if (isSuccess(res)) {
         alert("글이 삭제되었습니다.");
-        history.replace("/articles?page=1");
+        history.replace(`/articles?page=${location.state.page}`);
         return;
       }
       return alert(res.data.message);
@@ -39,17 +31,6 @@ export default function ArticlePost() {
 
   return (
     <>
-      <div>
-        <button
-          onClick={() => {
-            history.push(`/articles/${param.articleId}/change`);
-          }}
-        >
-          수정
-        </button>
-        <button onClick={onDelete}>삭제</button>
-      </div>
-      {/* FIXME 정말 컨텐츠가 없는 경우는 어떻게 처리할 것인지. */}
       {isEmpty(article) && <h5>불러오는 중입니다...</h5>}
       {!isEmpty(article) && (
         <article>
@@ -68,9 +49,13 @@ export default function ArticlePost() {
               <strong>작성자</strong> {article.author}
             </li>
             <li>
-              <strong>조회수</strong> 0
+              <strong>조회수</strong> {article.views}
             </li>
           </ol>
+          <div>
+            <button onClick={onUpdate}>수정</button>
+            <button onClick={onDelete}>삭제</button>
+          </div>
           <p>{article.content}</p>
         </article>
       )}

@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
@@ -7,6 +6,7 @@ import {
   contentValidation,
   titleValidation,
 } from "./utilities/articleValidation";
+import { requester } from "../configures/requestConfigures";
 
 export default function ArticleWrite() {
   const history = useHistory();
@@ -41,7 +41,7 @@ export default function ArticleWrite() {
         alert("모든 값을 입력해주세요.");
         return;
       }
-      const res = await axios.post("/api/v1/articles", articleData);
+      const res = await requester.post("/v1/articles", articleData);
       if (isSuccess(res)) {
         alert("글이 등록되었습니다.");
         history.replace("/articles?page=1");
