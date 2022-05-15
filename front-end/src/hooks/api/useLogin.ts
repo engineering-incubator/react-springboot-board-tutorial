@@ -12,7 +12,6 @@ export interface LoginDataType {
 const useLogin = () => {
   return {
     requstLogin: async (params: LoginDataType) => {
-      console.log(1);
       return await queryClient.fetchQuery([cacheKey, params], () => loginRequest({ ...params }), {
         cacheTime: Infinity,
         staleTime: Infinity,

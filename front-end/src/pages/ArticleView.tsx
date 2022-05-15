@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useArticleItem from '../hooks/api/useArticleItem';
 import {
@@ -13,11 +13,25 @@ import Loading from '../components/common/Loading';
 import DOMPurify from 'dompurify';
 import { generateDate } from '../utils';
 import { colors } from '../styles/variables';
+import { useRecoilState } from 'recoil';
+import { signinState } from '../recoil/signin';
 
 const ArticleView = () => {
   const navigate = useNavigate();
+  const [{ isSignin }] = useRecoilState(signinState);
   const { articleId = '' } = useParams();
   const { data, isSuccess, isLoading } = useArticleItem(articleId);
+
+  useEffect(() => {
+    if (isSignin) return;
+    if (
+      !confirm('로그인을 하셔야 게시글을 열람하실 수 있습니다\n로그인 페이지로 이동하시겠습니까?')
+    ) {
+      window.history.back();
+      return;
+    }
+    navigate('/signin');
+  }, [isSignin, navigate]);
 
   if (isLoading) return <Loading msg="게시글을 불러오고 있습니다." isFull={true} />;
 
