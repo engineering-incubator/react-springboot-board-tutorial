@@ -1,8 +1,6 @@
 import { required } from "../../utilites/validates/utilityValidations";
 
-const title = (value) => {
-  return value.length >= 5;
-};
+const title = (value) => value.length >= 5;
 
 export const articleTitleValidates = [
   {

@@ -1,5 +1,10 @@
 import React from "react";
+import { Container } from "../components/style";
 
 export default function Home() {
-  return <h1>홈입니다.</h1>;
+  return (
+    <Container>
+      <h1>&#127752; 최근 게시글</h1>
+    </Container>
+  );
 }
