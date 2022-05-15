@@ -6,6 +6,9 @@ import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { isSuccess } from "../utilites/validates/httpValidation";
 import "./pagination.css";
 import { requester } from "../configures/requestConfigures";
+import styled from "styled-components";
+import { Button, Container, Title } from "../components/style";
+import { articleDate } from "../utilites/cast";
 
 export default function ArticleList() {
   const history = useHistory();
@@ -62,31 +65,46 @@ export default function ArticleList() {
     })();
   }, [location]);
 
+  const Table = styled.table`
+    border-collapse: collapse;
+  `;
+  const TableHeaderBorder = styled.th`
+    border-bottom: 1px solid #ccc;
+    padding: 16px 0;
+    text-align: left;
+    color: #202a43;
+  `;
+  const TableBorder = styled.td`
+    border-bottom: 1px solid #eee;
+    padding: 16px 0;
+    text-align: left;
+  `;
+
   return (
-    <>
+    <Container>
       <div>
-        <h1>안녕하세요! 게시판입니다.</h1>
-        <button onClick={onMoveWritePage}>글쓰기</button>
+        <Title>&#128221; 게시판</Title>
+        <Button onClick={onMoveWritePage}>글쓰기</Button>
       </div>
       {(isEmpty(articles) || isEmpty(paginationState.totalArticles)) && (
         <p>등록된 게시글이 없습니다.</p>
       )}
       {!isEmpty(articles) && !isEmpty(paginationState.totalArticles) && (
-        <table>
+        <Table>
           <thead>
             <tr>
-              <th>게시글 번호</th>
-              <th>제목</th>
-              <th>날짜</th>
-              <th>작성자</th>
-              <th>조회수</th>
+              <TableHeaderBorder>게시글 번호</TableHeaderBorder>
+              <TableHeaderBorder>제목</TableHeaderBorder>
+              <TableHeaderBorder>날짜</TableHeaderBorder>
+              <TableHeaderBorder>작성자</TableHeaderBorder>
+              <TableHeaderBorder>조회수</TableHeaderBorder>
             </tr>
           </thead>
           <tbody>
             {articles.map((article) => (
               <tr key={article.article_id}>
-                <td>{article.article_id}</td>
-                <td>
+                <TableBorder>{article.article_id}</TableBorder>
+                <TableBorder>
                   <Link
                     to={{
                       pathname: `/articles/${article.article_id}`,
@@ -95,14 +113,14 @@ export default function ArticleList() {
                   >
                     {article.title}
                   </Link>
-                </td>
-                <td>{article.created_at}</td>
-                <td>{article.author}</td>
-                <td>{article.views}</td>
+                </TableBorder>
+                <TableBorder>{articleDate(article.created_at)}</TableBorder>
+                <TableBorder>{article.author}</TableBorder>
+                <TableBorder>{article.views}</TableBorder>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
       {!isEmpty(articles) && !isEmpty(paginationState.totalArticles) && (
         <Pagination
@@ -111,6 +129,6 @@ export default function ArticleList() {
           currentPage={paginationState.currentPage}
         />
       )}
-    </>
+    </Container>
   );
 }

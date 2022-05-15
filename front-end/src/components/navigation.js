@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
-import { Container } from "./style";
 
 export default function Navigation() {
+  const Container = styled.div`
+    display: flex;
+    margin-bottom: 36px;
+    padding: 0px 32px;
+  `;
+
   const FlexItem = styled.div`
     margin-right: 60px;
     display: flex;
@@ -40,7 +45,7 @@ export default function Navigation() {
 
   const ListItem = styled.li`
     float: left;
-    margin-right: 20px;
+    margin-right: 32px;
   `;
 
   return (
