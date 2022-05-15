@@ -1,0 +1,25 @@
+
+
+server:
+  port: 11001
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://spring.rlta.dev:3306/board_example?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: example
+    password: a&Cq@oq%FNcY@Vf#&R41hSry04t%JE!*
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+logging:
+  level:
+    root: debug
+
