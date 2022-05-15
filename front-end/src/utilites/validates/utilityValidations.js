@@ -1,7 +1,3 @@
-export const required = (value) => {
-  return value.length > 0;
-};
+export const required = (value) => value.length > 0;
 
-export const isEqual = (target, source) => {
-  return target === source;
-};
+export const isEqual = (target, source) => target === source;

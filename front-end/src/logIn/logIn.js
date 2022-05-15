@@ -9,14 +9,14 @@ import { isSuccess } from "../utilites/validates/httpValidation";
 import { requester } from "../configures/requestConfigures";
 
 export default function LogIn() {
+  const history = useHistory();
+  const [usernameErrorMessage, setUsernameErrorMessage] = useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+
   const [userLogInData, setUserLogInData] = useState({
     username: "",
     password: "",
   });
-
-  const history = useHistory();
-  const [usernameErrorMessage, setUsernameErrorMessage] = useState("");
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
   const onChangeUserId = (e) => {
     setUserLogInData({ ...userLogInData, username: e.currentTarget.value });
