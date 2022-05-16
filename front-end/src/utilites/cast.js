@@ -1,3 +1,5 @@
+import React from "react";
+
 export const articleDate = (date) => {
   const year = date.substr(0, 4);
   const month = date.substr(5, 2);

@@ -8,6 +8,7 @@ import ArticlePost from "./articles/articlePost";
 import Home from "./Home/home";
 import ArticleEdit from "./articles/articleEdit";
 import ArticleWrite from "./articles/articleWrite";
+import Footer from "./components/footer";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" component={LogIn} />
         <Route path="/create" component={ArticleWrite} />
       </Switch>
+      <Footer />
     </div>
   );
 }
