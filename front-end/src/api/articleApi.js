@@ -2,7 +2,7 @@ import client, { requestClientService } from "./client";
 
 export const getArticleList = async() => {
     try {
-        const response = await requestClientService('get', `/api/v1/articles`);
+        const response = await requestClientService('get', `/api/v1/articles?currentPage=1&size=5`);
         return {
             isSuccess: true,
             data: response.items,

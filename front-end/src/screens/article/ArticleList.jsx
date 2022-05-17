@@ -1,34 +1,18 @@
-import React, { useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
-import { Link } from "react-router-dom";
-import { getArticleList } from "../../api/articleApi";
-import ArticleItem from "../../components/article/ArticleItem";
-import FloatingButton from "../../components/article/WritingButton";
-import Template from "../../components/common/Template";
+import React, { useEffect, useState, useRef } from 'react';
+import ReactPaginate from 'react-paginate';
+import Pagination from "react-js-pagination";
+import { Link } from 'react-router-dom';
+import { getArticleList } from '../../api/articleApi';
+import ArticleItem from '../../components/article/ArticleItem';
+import FloatingButton from '../../components/article/WritingButton';
+import Template from '../../components/common/Template';
 import { useFetchArticleList } from '../../api/hooks/useFetchArticle';
-import "../../styles/pagination.css";
-
+import '../../styles/pagination.css';
 const ArticleList = () => {
   const articleList = useFetchArticleList();
-  const itemsPerPage = 5;
+  const [page, setPage] = useState(1);
+ const handlePageChange = (page) => { setPage(page); console.log(page); };
 
-  const [currentItems, setCurrentItems] = useState(null);
-  const [pageCount, setPageCount] = useState(0);
-  const [itemOffset, setItemOffset] = useState(0);
-  useEffect(() => {
-    const endOffset = itemOffset + itemsPerPage;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    setCurrentItems(articleList.slice(itemOffset, endOffset));
-    setPageCount(articleList.totalPages);
-  }, [itemOffset, itemsPerPage]);
-
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % articleList.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`,
-    );
-    setItemOffset(newOffset);
-  };
 
   return (
     <>
@@ -39,16 +23,16 @@ const ArticleList = () => {
           </Link>
         ))}
       </Template>
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageCount={pageCount}
-        previousLabel="< previous"
-        containerClassName={'pagination'}
-        subContainerClassName={'pages pagination'}
-        activeClassName={'active'}
+      <Pagination
+        activePage={page}
+        itemsCountPerPage={10}
+        totalItemsCount={450}
+        pageRangeDisplayed={5}
+        prevPageText={'‹'}
+        nextPageText={'›'}
+        onChange={handlePageChange}
       />
+
       <FloatingButton
         text="홈"
         onClick={() => (document.location.href = '/')}
