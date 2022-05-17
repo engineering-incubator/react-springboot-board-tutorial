@@ -17,7 +17,7 @@ export async function requestClientService(method, url, data) {
         } else if (method === 'delete') {
             response = await client.delete(url);
         }
-        console.log(response)
+        console.log(response, url)
             // const response = await client({
             //     method,
             //     url,
@@ -29,6 +29,7 @@ export async function requestClientService(method, url, data) {
         return response.data.content
     } catch (e) {
         // console.log("errorLog/ url : " + url, "method: " + method + "message :" + e.getMessage)
+        console.log(e, url)
         return e;
     }
 
