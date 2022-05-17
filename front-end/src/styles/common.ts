@@ -123,3 +123,9 @@ export const StyledCommonClosePopup = styled.button`
   height: 30px;
   color: white;
 `;
+
+export const StyledCommonInputWrap = styled.div`
+  flex: 1;
+  overflow: hidden;
+  box-sizing: border-box;
+`;

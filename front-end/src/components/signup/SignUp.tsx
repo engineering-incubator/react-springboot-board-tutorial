@@ -14,6 +14,7 @@ import {
   StyledCommonFlexContainer,
   StyledCommonToastContainer,
   StyledCommonClosePopup,
+  StyledCommonInputWrap,
 } from '../../styles/common';
 import {
   InitialStateSignupInputType,
@@ -95,12 +96,13 @@ const SignUp = () => {
       const { code, message } = response;
       const isSuccess = isSuccessStatus(code);
 
+      // FIXME fail 일때 early return
       const CloseButton = ({ closeToast }: { closeToast: () => void }) => {
         const onClickClose = () => {
           setIsLoading((prev) => {
             closeToast();
             if (isSuccess) {
-              window.location.href = '/';
+              window.location.href = '/articles';
             }
             return !prev;
           });
@@ -109,7 +111,7 @@ const SignUp = () => {
       };
 
       const toastMessage = isSuccess
-        ? '회원가입에 성공하였습니다. 잠시후 메인으로 이동 합니다.'
+        ? '회원가입에 성공하였습니다. 잠시후 게시판으로 이동 합니다.'
         : message;
       const toastMehod = isSuccess ? 'success' : 'error';
 
@@ -117,7 +119,7 @@ const SignUp = () => {
         position: 'top-center',
         theme: 'dark',
         autoClose: isSuccess ? 2000 : false,
-        onClose: isSuccess ? () => (window.location.href = '/') : undefined,
+        onClose: isSuccess ? () => (window.location.href = '/articles') : undefined,
         closeButton: CloseButton,
       });
     })();
@@ -179,7 +181,7 @@ const SignUp = () => {
             </StyledNotice>
           </StyledArea>
           <StyledArea>
-            <StyledInputWrap>
+            <StyledCommonInputWrap>
               <InputText
                 ref={elRef}
                 type="text"
@@ -193,10 +195,10 @@ const SignUp = () => {
               <StyledNotice isInvalidNotice={usernameInvalid && isClicked}>
                 {SIGNUP_PLACEHOLDER['USERNAME']}
               </StyledNotice>
-            </StyledInputWrap>
+            </StyledCommonInputWrap>
           </StyledArea>
           <StyledArea>
-            <StyledInputWrap>
+            <StyledCommonInputWrap>
               <InputText
                 ref={elRef}
                 type="password"
@@ -210,10 +212,10 @@ const SignUp = () => {
               <StyledNotice isInvalidNotice={passwordInvalid && isClicked}>
                 {SIGNUP_PLACEHOLDER['PASSWORD']}
               </StyledNotice>
-            </StyledInputWrap>
+            </StyledCommonInputWrap>
           </StyledArea>
           <StyledArea>
-            <StyledInputWrap>
+            <StyledCommonInputWrap>
               <InputText
                 ref={elRef}
                 type="text"
@@ -227,10 +229,10 @@ const SignUp = () => {
               <StyledNotice isInvalidNotice={emailInvalid && isClicked}>
                 {SIGNUP_PLACEHOLDER['EMAIL']}
               </StyledNotice>
-            </StyledInputWrap>
+            </StyledCommonInputWrap>
           </StyledArea>
           <StyledArea>
-            <StyledInputWrap>
+            <StyledCommonInputWrap>
               <InputText
                 ref={elRef}
                 type="text"
@@ -244,7 +246,7 @@ const SignUp = () => {
               <StyledNotice isInvalidNotice={phoneNumberInvalid && isClicked}>
                 {SIGNUP_PLACEHOLDER['PHONENUMBER']}
               </StyledNotice>
-            </StyledInputWrap>
+            </StyledCommonInputWrap>
           </StyledArea>
 
           <StyledCommonFlexContainer align="center">
@@ -274,12 +276,6 @@ const StyledNotice = styled.p<{ isInvalidNotice: boolean }>`
   margin: 8px 4px;
   font-size: 12px;
   color: ${({ isInvalidNotice }) => (isInvalidNotice ? `${colors.warning}` : `${colors.gray1}`)};
-`;
-
-const StyledInputWrap = styled.div`
-  flex: 1;
-  overflow: hidden;
-  box-sizing: border-box;
 `;
 
 SignUp.displayName = 'signUp';

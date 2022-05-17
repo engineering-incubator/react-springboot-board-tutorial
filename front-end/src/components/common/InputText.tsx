@@ -32,7 +32,7 @@ const InputText = forwardRef(
       disabled,
       onChangeInput,
     }: InputTypes,
-    ref: any,
+    ref?: any,
   ) => {
     const inputRef = useRef<HTMLInputElement>(null);
     useImperativeHandle(ref, () => ({

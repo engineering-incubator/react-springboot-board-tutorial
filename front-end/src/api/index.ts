@@ -4,20 +4,18 @@ import { ArticleItemType, ArticlesParams } from '../hooks/api/useArticles';
 import { LoginDataType } from '../hooks/api/useLogin';
 import { ExternalResponse } from '../@types/response';
 
-const httpClient = () =>
-  axios.create({
-    withCredentials: true,
-    timeout: 2000,
-  });
+export const httpClient = axios.create({
+  withCredentials: true,
+});
 
 export function generateUrl(path: string, params: { [key: string]: string | number }) {
   const query = qs.stringify(params);
   return `${path}?${query ? `&${query}` : ''}`;
 }
 
-const requestClient = async (params: AxiosRequestConfig) => {
+export const requestClient = async (params: AxiosRequestConfig) => {
   try {
-    const response = await httpClient()({
+    const response = await httpClient({
       ...params,
     });
     return response.data;
@@ -58,6 +56,6 @@ export const deleteArticleItem = async <T>(
 export const loginRequest = async (data: LoginDataType): Promise<ExternalResponse<LoginDataType>> =>
   await requestClient({
     method: 'post',
-    url: '/api/vi/authentication/sign-in',
+    url: '/api/v1/authentication/sign-in',
     data,
   });
