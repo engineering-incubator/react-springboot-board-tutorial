@@ -5,25 +5,8 @@ import { getArticleList } from "../../api/articleApi";
 import ArticleItem from "../../components/article/ArticleItem";
 import FloatingButton from "../../components/article/WritingButton";
 import Template from "../../components/common/Template";
-//import { useFetchArticleList } from '../../hooks/useFetchArticle';
+import { useFetchArticleList } from '../../api/hooks/useFetchArticle';
 import "../../styles/pagination.css";
-
-export function useFetchArticleList() {
-  const [articleList, setArticleList] = useState([]);
-  useEffect(() => {
-    (async function getList() {
-      const response = await getArticleList();
-      if (!response.isSuccess) {
-        return;
-      }
-
-      setArticleList(response.data);
-    })();
-  }, []);
-
-  return articleList;
-}
-
 
 const ArticleList = () => {
   const articleList = useFetchArticleList();

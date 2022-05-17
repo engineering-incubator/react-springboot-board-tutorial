@@ -5,19 +5,8 @@ import Template from '../../components/common/Template';
 import ArticleDetail from '../../components/article/ArticleDetail';
 import Button from '../../components/common/Button';
 import { isFailureStatus } from "../../api/config/status-code.config";
-//import { useFetchArticle } from '../../hooks/useFetchArticle';
-export function useFetchArticle() {
-  const params = useParams();
-  const [article, setArticle] = useState({});
-  useEffect(function fetchArticle() {
-    (async function getItem() {
-      const item = await getArticle(params.article_id);
-      setArticle(item);
-    })();
-  }, []);
+import { useFetchArticle } from '../../api/hooks/useFetchArticle';
 
-  return article;
-}
 const Article = () => {
 	const article = useFetchArticle();
 	const params = useParams();
