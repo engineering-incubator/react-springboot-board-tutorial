@@ -9,6 +9,7 @@ import Home from "./Home/home";
 import ArticleEdit from "./articles/articleEdit";
 import ArticleWrite from "./articles/articleWrite";
 import Footer from "./components/footer";
+import ToTop from "./components/toTop";
 
 function App() {
   return (

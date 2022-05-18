@@ -11,12 +11,9 @@ export default function Navigation() {
     padding: 0 32px;
     background: #fff;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    z-index: 900;
   `;
 
-  const FlexItem = styled.div`
-    margin-right: 60px;
-    height: 52px;
-  `;
   const NavigateLink = styled(Link)`
     color: #707991;
     text-decoration: none;
@@ -30,37 +27,49 @@ export default function Navigation() {
       color: #ff334b;
       font-weight: 700;
     }
-    margin-right: 28px;
   `;
-  const Logo = styled.h3`
-    margin: 0 auto;
+  const Logo = styled.div`
+    display: table-cell;
+    vertical-align: middle;
+    margin: 0;
+    padding-right: 90px;
+    font-size: 22px;
     font-weight: 900;
     letter-spacing: -0.2px;
     text-align: left;
     color: #202a43;
+    height: 64px;
   `;
 
   const List = styled.ul`
     list-style: none;
     display: flex;
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
+  `;
+  const ListItem = styled.li`
+    height: 64px;
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 36px;
   `;
 
   return (
     <Container>
-      <FlexItem>
-        <NavigateLink to="/">
-          <Logo>TOPIO</Logo>
+      <NavigateLink to="/">
+        <Logo>TOPIO</Logo>
+      </NavigateLink>
+      <List>
+        <NavigateLink to="/articles">
+          <ListItem>게시판</ListItem>
         </NavigateLink>
-      </FlexItem>
-      <FlexItem>
-        <List>
-          <NavigateLink to="/articles">게시판</NavigateLink>
-          <NavigateLink to="/signup">회원가입</NavigateLink>
-          <NavigateLink to="/login">로그인</NavigateLink>
-        </List>
-      </FlexItem>
+        <NavigateLink to="/signup">
+          <ListItem>회원가입</ListItem>
+        </NavigateLink>
+        <NavigateLink to="/login">
+          <ListItem>로그인</ListItem>
+        </NavigateLink>
+      </List>
     </Container>
   );
 }

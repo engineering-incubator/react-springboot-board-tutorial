@@ -4,7 +4,7 @@ import { requester } from "../configures/requestConfigures";
 import { isSuccess } from "../utilites/validates/httpValidation";
 import { Link } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
-import { Container, Title } from "../components/style";
+import { Title } from "../components/style";
 import { articleDate } from "../utilites/cast";
 
 export default function Home() {
@@ -23,6 +23,14 @@ export default function Home() {
       }
     })();
   }, []);
+
+  const Container = styled.div`
+    display: flex;
+    padding: 0px 32px;
+    flex-direction: column;
+    position: relative;
+    top: 100px;
+  `;
 
   const NavigateLink = styled(Link)`
     text-decoration: none;
@@ -60,26 +68,30 @@ export default function Home() {
   `;
 
   return (
-    <Container>
-      <Title>&#127752; 새롭게 올라온 글이에요</Title>
-      {!isEmpty(articles) &&
-        articles.map((article) => (
-          <NavigateLink
-            to={`/articles/${article.article_id}`}
-            key={article.article_id}
-          >
-            <Card>
-              <ItemTitle>{article.title}</ItemTitle>
-              <ItemContents>{article.content}</ItemContents>
-              <SubContents>
-                {article.author} <b>·</b> {articleDate(article.created_at)}{" "}
-                <b>·</b> 조회수
-                {article.views}
-              </SubContents>
-            </Card>
-          </NavigateLink>
-        ))}
-      {isEmpty(articles) && <SubContents>최근 게시글이 없습니다.</SubContents>}
-    </Container>
+    <>
+      <Container>
+        <Title>&#127752; 새롭게 올라온 글이에요</Title>
+        {isEmpty(articles) && (
+          <ItemContents>아직 새로운 글이 없어요</ItemContents>
+        )}
+        {!isEmpty(articles) &&
+          articles.map((article) => (
+            <NavigateLink
+              to={`/articles/${article.article_id}`}
+              key={article.article_id}
+            >
+              <Card>
+                <ItemTitle>{article.title}</ItemTitle>
+                <ItemContents>{article.content}</ItemContents>
+                <SubContents>
+                  {article.author} <b>·</b> {articleDate(article.created_at)}{" "}
+                  <b>·</b> 조회수
+                  {article.views}
+                </SubContents>
+              </Card>
+            </NavigateLink>
+          ))}
+      </Container>
+    </>
   );
 }
