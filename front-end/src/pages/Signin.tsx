@@ -42,7 +42,6 @@ const Signin = () => {
     }
 
     (async () => {
-      console.trace();
       setIsLoading(true);
       const { code } = await requstLogin(text);
       const isSuccess = isSuccessStatus(code);
@@ -86,9 +85,10 @@ const Signin = () => {
   };
 
   const onKeydownLogin = (e: React.KeyboardEvent) => {
-    e.stopPropagation();
     const { code } = e;
+    console.log(code);
     if (code === 'Enter' && isLoading) return null;
+    console.log('?', isLoading);
     onClickLogin();
   };
 

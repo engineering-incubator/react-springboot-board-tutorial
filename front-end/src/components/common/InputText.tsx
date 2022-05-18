@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useImperativeHandle, RefObject } from 'react';
+import React, { forwardRef, useRef, useImperativeHandle } from 'react';
 import styled from '@emotion/styled';
 import { StyledCommonLabel } from '../../styles/common';
 import { colors } from '../../styles/variables';
