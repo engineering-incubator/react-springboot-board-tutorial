@@ -28,8 +28,7 @@ export default function Home() {
     display: flex;
     padding: 0px 32px;
     flex-direction: column;
-    position: relative;
-    top: 100px;
+    margin: 32px 0;
   `;
 
   const NavigateLink = styled(Link)`

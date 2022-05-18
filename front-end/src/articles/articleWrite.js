@@ -53,6 +53,8 @@ export default function ArticleWrite() {
     }
   };
 
+  //DOMPurify
+
   return (
     <form onSubmit={onSubmit}>
       <h1>글 작성하기</h1>

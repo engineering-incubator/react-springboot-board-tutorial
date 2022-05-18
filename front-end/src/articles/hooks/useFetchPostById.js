@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { isSuccess } from "../../utilites/validates/httpValidation";
 
 export function useFetchPostById(id) {
-  const [post, setPost] = useState(null);
+  const [post, setPost] = useState({});
   useEffect(() => {
     (async function () {
       try {

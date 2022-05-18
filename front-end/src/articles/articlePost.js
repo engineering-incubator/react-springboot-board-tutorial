@@ -1,18 +1,20 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { isSuccess } from "../utilites/validates/httpValidation";
 import { useFetchPostById } from "./hooks/useFetchPostById";
 import { requester } from "../configures/requestConfigures";
+import axios from "axios";
 
 export default function ArticlePost() {
-  const param = useParams();
+  const {articleId} = useParams();
   const history = useHistory();
   const location = useLocation();
-  const article = useFetchPostById(param.articleId);
+  const article = useFetchPostById(articleId);
+
 
   const onUpdate = () => {
-    history.push(`/articles/${param.articleId}/edit`);
+    history.push(`/articles/${articleId}/edit`);
   };
 
   const onDelete = async () => {
@@ -29,21 +31,23 @@ export default function ArticlePost() {
     }
   };
 
+  if (article === null) {return <h5>불러오는 중입니다...</h5>};
+  const {article_id, created_at, modified_at} = article
+
   return (
     <>
-      {isEmpty(article) && <h5>불러오는 중입니다...</h5>}
       {!isEmpty(article) && (
         <article>
           <h2>{article.title}</h2>
           <ol>
             <li>
-              <strong>게시글 번호</strong> {article.article_id}
+              <strong>게시글 번호</strong> {article_id}
             </li>
             <li>
-              <strong>작성일</strong> {article.created_at}
+              <strong>작성일</strong> {created_at}
             </li>
             <li>
-              <strong>변경일</strong> {article.modified_at}
+              <strong>변경일</strong> {modified_at}
             </li>
             <li>
               <strong>작성자</strong> {article.author}

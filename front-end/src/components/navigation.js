@@ -5,7 +5,7 @@ import styled from "styled-components";
 export default function Navigation() {
   const Container = styled.div`
     display: flex;
-    position: fixed;
+    position: sticky;
     top: 0;
     width: 100%;
     padding: 0 32px;

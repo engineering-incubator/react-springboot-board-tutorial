@@ -9,7 +9,6 @@ import Home from "./Home/home";
 import ArticleEdit from "./articles/articleEdit";
 import ArticleWrite from "./articles/articleWrite";
 import Footer from "./components/footer";
-import ToTop from "./components/toTop";
 
 function App() {
   return (
@@ -22,7 +21,7 @@ function App() {
         <Route path="/articles" component={ArticleList} />
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={LogIn} />
-        <Route path="/create" component={ArticleWrite} />
+        <Route path="/article-write" component={ArticleWrite} />
       </Switch>
       <Footer />
     </div>
