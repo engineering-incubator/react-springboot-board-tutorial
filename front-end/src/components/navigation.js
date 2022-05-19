@@ -22,7 +22,7 @@ export default function Navigation() {
     padding-right: 80px;
     color: ${theme.colors.gray};
     font-size: 20px;
-    font-weight: ${theme.fontWeight.black};
+    font-weight: ${theme.fontWeights.black};
     letter-spacing: -0.2px;
     text-align: left;
     vertical-align: middle;
@@ -47,7 +47,7 @@ export default function Navigation() {
 
   return (
     <Container>
-      <NavigateLink to="/" colors={"red"}>
+      <NavigateLink to="/">
         <Logo>TOPIO</Logo>
       </NavigateLink>
       <Menu>

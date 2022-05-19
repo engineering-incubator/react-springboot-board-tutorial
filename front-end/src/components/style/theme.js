@@ -15,7 +15,7 @@ const colors = {
 };
 
 const theme = {
-  fontWeight: fontWeights,
+  fontWeights,
   colors,
 };
 
