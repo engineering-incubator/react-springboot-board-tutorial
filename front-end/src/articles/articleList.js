@@ -7,7 +7,7 @@ import { isSuccess } from "../utilites/validates/httpValidation";
 import "./pagination.css";
 import { requester } from "../configures/requestConfigures";
 import styled from "styled-components";
-import { Button, Container, Title } from "../components/style";
+import { Button, Container, Title } from "../components/style/globalStyle";
 import { articleDate } from "../utilites/cast";
 
 export default function ArticleList() {
@@ -67,24 +67,33 @@ export default function ArticleList() {
 
   const Table = styled.table`
     border-collapse: collapse;
+    margin: 0 0 20px 0;
   `;
   const TableHeaderBorder = styled.th`
     border-bottom: 1px solid #ccc;
-    padding: 16px 0;
+    padding: 16px 0 16px 16px;
     text-align: left;
     color: #202a43;
   `;
   const TableBorder = styled.td`
     border-bottom: 1px solid #eee;
-    padding: 16px 0;
+    padding: 16px 0 16px 16px;
     text-align: left;
+  `;
+
+  const Wrap = styled.div`
+    position: absolute;
+    right: 32px;
+    display: inline-block;
   `;
 
   return (
     <Container>
       <div>
         <Title>&#128221; 게시판</Title>
-        <Button onClick={onMoveWritePage}>글쓰기</Button>
+        <Wrap>
+          <Button onClick={onMoveWritePage}>글쓰기</Button>
+        </Wrap>
       </div>
       {(isEmpty(articles) || isEmpty(paginationState.totalArticles)) && (
         <p>등록된 게시글이 없습니다.</p>

@@ -1,16 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import theme from "./style/theme";
 
 export default function Footer() {
   const Container = styled.div`
     display: block;
-    border-top: 1px solid #eee;
     position: relative;
     width: 100%;
     padding: 32px 32px 80px 32px;
-    font-size: 12px;
-    color: #98a0b3;
-    background: #fff;
+    border-top: 1px solid ${theme.colors.border};
+    background: ${theme.colors.white};
+    font-size: 14px;
+    color: ${theme.colors.lightGray};
   `;
 
   return <Container>2022 @ireneworks</Container>;

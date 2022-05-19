@@ -5,7 +5,7 @@ import LogIn from "./logIn/logIn";
 import Navigation from "./components/navigation";
 import ArticleList from "./articles/articleList";
 import ArticlePost from "./articles/articlePost";
-import Home from "./Home/home";
+import Home from "./home/home";
 import ArticleEdit from "./articles/articleEdit";
 import ArticleWrite from "./articles/articleWrite";
 import Footer from "./components/footer";
