@@ -72,7 +72,7 @@ export default function Home() {
             key={article.article_id}
           >
             <CardBox>
-              <ArticleTitle>{article.title}</ArticleTitle>
+              <h2 className="article-title">{article.title}</h2>
               <ArticleContent>{textLimit(article.content)}</ArticleContent>
               <ArticleInfos>
                 {article.author} <b>·</b> {articleDate(article.created_at)}

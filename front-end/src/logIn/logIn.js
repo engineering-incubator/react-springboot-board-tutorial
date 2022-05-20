@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import {
@@ -7,8 +7,10 @@ import {
 } from "../signUp/utilites/inputValidation";
 import { isSuccess } from "../utilites/validates/httpValidation";
 import { requester } from "../configures/requestConfigures";
+import { AuthContext } from "../utilites/authContext";
 
 export default function LogIn() {
+  const loginContext = useContext(AuthContext);
   const history = useHistory();
   const [usernameErrorMessage, setUsernameErrorMessage] = useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");

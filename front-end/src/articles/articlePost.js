@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import { isSuccess } from "../utilites/validates/httpValidation";
@@ -7,11 +7,11 @@ import { requester } from "../configures/requestConfigures";
 import axios from "axios";
 
 export default function ArticlePost() {
-  const {articleId} = useParams();
+  const { articleId } = useParams();
   const history = useHistory();
   const location = useLocation();
   const article = useFetchPostById(articleId);
-
+  const { article_id, created_at, modified_at, author, views } = article;
 
   const onUpdate = () => {
     history.push(`/articles/${articleId}/edit`);
@@ -31,31 +31,29 @@ export default function ArticlePost() {
     }
   };
 
-  if (article === null) {return <h5>불러오는 중입니다...</h5>};
-  const {article_id, created_at, modified_at} = article
-
   return (
     <>
+      {isEmpty(article) && <h5>불러오는 중입니다...</h5>}
       {!isEmpty(article) && (
         <article>
-          <h2>{article.title}</h2>
-          <ol>
+          <header>{article.title}</header>
+          <ul>
             <li>
               <strong>게시글 번호</strong> {article_id}
             </li>
             <li>
-              <strong>작성일</strong> {created_at}
+              <strong>작성일</strong> <time>{created_at}</time>
             </li>
             <li>
-              <strong>변경일</strong> {modified_at}
+              <strong>변경일</strong> <time>{modified_at}</time>
             </li>
             <li>
-              <strong>작성자</strong> {article.author}
+              <strong>작성자</strong> {author}
             </li>
             <li>
-              <strong>조회수</strong> {article.views}
+              <strong>조회수</strong> {views}
             </li>
-          </ol>
+          </ul>
           <div>
             <button onClick={onUpdate}>수정</button>
             <button onClick={onDelete}>삭제</button>

@@ -15,7 +15,6 @@ export default function ArticleList() {
   const location = useLocation();
   const [articles, setArticles] = useState([]);
 
-  // TODO pagination state -> useReducer 로 통합(custom hook으로 분리하면 좀더 좋을 듯.
   const reducer = (state, action) => {
     if (action.type === "totalPages") {
       return { ...state, totalPages: action.value };
@@ -33,8 +32,28 @@ export default function ArticleList() {
     totalArticles: 0,
   });
 
-  const onPaginationChange = (type, value) => {
-    paginationDispatch({ type, value });
+  const fetchTotalPages = (value) => {
+    const action = {
+      type: "totalPages",
+      value,
+    };
+    paginationDispatch(action);
+  };
+
+  const fetchTotalArticles = (value) => {
+    const action = {
+      type: "totalArticles",
+      value,
+    };
+    paginationDispatch(action);
+  };
+
+  const fetchCurrentPage = (value) => {
+    const action = {
+      type: "currentPage",
+      value,
+    };
+    paginationDispatch(action);
   };
 
   const onPageChange = (currentPage) => {
@@ -48,7 +67,7 @@ export default function ArticleList() {
       ignoreQueryPrefix: true,
     });
     const page = Number(query.page) || 1;
-    onPaginationChange("currentPage", page);
+    fetchCurrentPage(page);
     (async function () {
       try {
         const res = await requester.get(`/v1/articles?currentPage=${page}`);
@@ -57,8 +76,8 @@ export default function ArticleList() {
           return;
         }
         setArticles(res.data.content.items);
-        onPaginationChange("totalPages", res.data.content.totalPages);
-        onPaginationChange("totalArticles", res.data.content.totalElements);
+        fetchTotalPages(res.data.content.totalPages);
+        fetchTotalArticles(res.data.content.totalElements);
       } catch (error) {
         console.log(error);
       }

@@ -27,6 +27,15 @@ export const CardBox = styled.div`
   padding: 20px;
   border: 1px solid ${theme.colors.border};
   border-radius: 4px;
+  .article-title {
+    margin: 0 0 10px 0;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    color: ${theme.colors.gray};
+    &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const Title = styled.h1`
