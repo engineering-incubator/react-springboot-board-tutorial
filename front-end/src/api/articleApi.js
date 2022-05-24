@@ -16,7 +16,13 @@ export const getArticleList = async() => {
 };
 
 export const getArticle = async(articleId) => {
-    return requestClientService('get', `/api/v1/articles/${articleId}`);
+    try {
+        const response = await client.get(`/api/v1/articles/${articleId}`);
+        console.log(response)
+        return response.data;
+    } catch (e) {
+        return e;
+    }
 };
 
 export const createArticle = async(article) => {

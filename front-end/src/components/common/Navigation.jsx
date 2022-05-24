@@ -23,7 +23,7 @@ const Category = styled.div`
   display: inline-block;
   margin: 10px;
 `;
-export const StyledLink = styled(Link)`
+const StyledLink = styled(Link)`
   text-decoration: none;
   color: #fff;
 `;
