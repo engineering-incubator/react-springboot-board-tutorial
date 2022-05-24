@@ -48,10 +48,10 @@ const Navigation = () => {
       <Route path="/" component={Home} exact></Route>
       <Route path="/signUp" component={SignUp} />
       <Route path="/signIn" component={SignIn} />
-      <Route path="/article" component={ArticleList} />
-      <Route path="/article/:article_id" component={Article} />
-      <Route path="/article/update/:article_id" component={UpdateArticle} />
-      <Route path="/article/create" component={CreateArticle} />
+      <Route path="/article" component={ArticleList} exact/>
+      <Route path="/article/:article_id" component={Article} exact/>
+      <Route path="/article/update/:article_id" component={UpdateArticle} exact/>
+      <Route path="/article/create" component={CreateArticle} exact/>
     </>
   );
 };

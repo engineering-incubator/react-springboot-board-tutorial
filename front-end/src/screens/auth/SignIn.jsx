@@ -7,7 +7,6 @@ import Template from "../../components/common/Template";
 
 const SignIn = () => {
 	const history = useHistory();
-	// TODO validation 추가 되어야하고, 그렇다면 sign up 과 어떻게 같이 사용할건지에 대한 고민
 	const [id, setId] = useState();
 	const [password, setPassword] = useState();
 

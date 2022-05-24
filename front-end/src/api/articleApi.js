@@ -1,24 +1,47 @@
-import client, { requestClientService } from "./client";
+import client, { requestClientService } from './client';
 
-export const getArticleList = async() => {
+export const getArticleList = async(currentPage, size) => {
     try {
-        const response = await requestClientService('get', `/api/v1/articles?currentPage=1&size=5`);
+        const params = new URLSearchParams();
+        params.append('currentPage', currentPage.toString());
+        params.append('size', size.toString());
+        const response = await requestClientService(
+            'get',
+            `/api/v1/articles?${params}`,
+        );
         return {
             isSuccess: true,
             data: response.items,
-        }
+        };
     } catch (e) {
         return {
             isSuccess: false,
             message: e.message,
-        }
+        };
+    }
+};
+
+export const getTotalArticleList = async() => {
+    try {
+        const response = await requestClientService(
+            'get',
+            `/api/v1/articles`,
+        );
+        return {
+            isSuccess: true,
+            data: response.items,
+        };
+    } catch (e) {
+        return {
+            isSuccess: false,
+            message: e.message,
+        };
     }
 };
 
 export const getArticle = async(articleId) => {
     try {
         const response = await client.get(`/api/v1/articles/${articleId}`);
-        console.log(response)
         return response.data;
     } catch (e) {
         return e;
@@ -27,16 +50,19 @@ export const getArticle = async(articleId) => {
 
 export const createArticle = async(article) => {
     try {
-        const response = await requestClientService('post', `/api/v1/articles`, { content: article.content, title: article.title });
+        const response = await requestClientService('post', `/api/v1/articles`, {
+            content: article.content,
+            title: article.title,
+        });
         return {
             isSuccess: true,
             data: response.items,
-        }
+        };
     } catch (e) {
         return {
             isSuccess: false,
             message: e.message,
-        }
+        };
     }
 };
 export const updateArticle = async(articleId, article) => {
@@ -45,7 +71,7 @@ export const updateArticle = async(articleId, article) => {
             content: article.content,
             title: article.title,
         });
-        console.log(article.content, article.title, response)
+        console.log(article.content, article.title, response);
         return response.data;
     } catch (e) {
         return e;
