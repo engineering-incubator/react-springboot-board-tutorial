@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { requester } from "../configures/requestConfigures";
-import { isSuccess } from "../utilites/validates/httpValidation";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import {
   CardBox,
@@ -9,35 +7,11 @@ import {
   NavigateLink,
   Title,
 } from "../components/style/globalStyle";
-import { articleDate } from "../utilites/cast";
+import { parseFormattedDate } from "../utilites/castDate";
 import theme from "../components/style/theme";
+import { fetchLatestArticleListsService } from "../services/articleServices";
 
-export default function Home() {
-  const [articles, setArticles] = useState([]);
-
-  useEffect(() => {
-    (async function () {
-      try {
-        const res = await requester.get(`/v1/articles?currentPage=1`);
-        if (!isSuccess(res)) {
-          alert(res.data.message);
-          return;
-        }
-        setArticles(res.data.content.items.slice(0, 5));
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
-
-  const textLimit = (article) => {
-    if (article.length > 100) {
-      return `${article.slice(0, 100)}···`;
-    }
-    return article;
-  };
-
-  const ArticleTitle = styled.h2`
+const ArticleTitle = styled.h2`
     margin: 0 0 10px 0;
     font-size: 22px;
     font-weight: 500;
@@ -46,20 +20,42 @@ export default function Home() {
     &:hover {
     text-decoration: underline;
   `;
-  const ArticleContent = styled.h3`
-    margin: 0 0 18px 0;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: -0.2px;
-    color: ${theme.colors.mediumGray};
-  `;
-  const ArticleInfos = styled.div`
-    margin: 0;
-    font-size: 12px;
-    font-weight: 400;
-    color: ${theme.colors.lightGray};
-  `;
+const ArticleContent = styled.h3`
+  margin: 0 0 18px 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  color: ${theme.colors.mediumGray};
+`;
+const ArticleInfos = styled.div`
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+  color: ${theme.colors.lightGray};
+`;
+
+export default function Home() {
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    (async function () {
+      const res = await fetchLatestArticleListsService();
+      if (!res.isSuccess) {
+        alert(res.data.message);
+        return;
+      }
+      setArticles(res.data.items);
+    })();
+  }, []);
+
+  const textLimit = (article) => {
+    // FIXME css 로 처리하기
+    if (article.length > 100) {
+      return `${article.slice(0, 100)}···`;
+    }
+    return article;
+  };
 
   return (
     <Container>
@@ -75,7 +71,8 @@ export default function Home() {
               <h2 className="article-title">{article.title}</h2>
               <ArticleContent>{textLimit(article.content)}</ArticleContent>
               <ArticleInfos>
-                {article.author} <b>·</b> {articleDate(article.created_at)}
+                {article.author} <b>·</b>{" "}
+                {parseFormattedDate(article.created_at)}
                 <b>·</b> 조회수
                 {article.views}
               </ArticleInfos>

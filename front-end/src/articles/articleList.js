@@ -8,7 +8,7 @@ import "./pagination.css";
 import { requester } from "../configures/requestConfigures";
 import styled from "styled-components";
 import { Button, Container, Title } from "../components/style/globalStyle";
-import { articleDate } from "../utilites/cast";
+import { parseFormattedDate } from "../utilites/castDate";
 
 export default function ArticleList() {
   const history = useHistory();
@@ -142,7 +142,9 @@ export default function ArticleList() {
                     {article.title}
                   </Link>
                 </TableBorder>
-                <TableBorder>{articleDate(article.created_at)}</TableBorder>
+                <TableBorder>
+                  {parseFormattedDate(article.created_at)}
+                </TableBorder>
                 <TableBorder>{article.author}</TableBorder>
                 <TableBorder>{article.views}</TableBorder>
               </tr>

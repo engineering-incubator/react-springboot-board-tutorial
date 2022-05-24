@@ -9,10 +9,14 @@ import Home from "./home/home";
 import ArticleEdit from "./articles/articleEdit";
 import ArticleWrite from "./articles/articleWrite";
 import Footer from "./components/footer";
+import { useProvideAuth } from "./context/useProvideAuth";
+import { loginContext } from "./context/loginContext";
 
 function App() {
+  const auth = useProvideAuth();
+  const context = loginContext
   return (
-    <div>
+    <context.Provider value={auth}>
       <Navigation />
       <Switch>
         <Route path="/signup" component={SignUp} />
@@ -24,7 +28,7 @@ function App() {
         <Route path="/article-write" component={ArticleWrite} />
       </Switch>
       <Footer />
-    </div>
+    </context.Provider>
   );
 }
 

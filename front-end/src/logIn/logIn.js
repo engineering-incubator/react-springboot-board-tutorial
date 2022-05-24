@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { isEmpty } from "../utilites/typeGuard/typeGuard";
 import {
@@ -6,12 +6,12 @@ import {
   userNameValidates,
 } from "../signUp/utilites/inputValidation";
 import { isSuccess } from "../utilites/validates/httpValidation";
-import { requester } from "../configures/requestConfigures";
-import { AuthContext } from "../utilites/authContext";
+import { useProvideAuth } from "../context/useProvideAuth";
+import { signInService } from "../services/authenticationServices";
 
 export default function LogIn() {
-  const loginContext = useContext(AuthContext);
   const history = useHistory();
+  const auth = useProvideAuth();
   const [usernameErrorMessage, setUsernameErrorMessage] = useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
@@ -58,25 +58,19 @@ export default function LogIn() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (!isValid()) {
-        alert("모든 값을 제대로 입력해주세요.");
-        return;
-      }
-      const res = await requester.post(
-        "/v1/authentication/sign-in",
-        userLogInData,
-        { withCreadentials: true },
-      );
-      if (!isSuccess(res)) {
-        alert(res.data.message);
-        return;
-      }
-      alert("로그인되었습니다.");
-      history.replace("/articles");
-    } catch (error) {
-      alert("다시 한번 시도해주세요.");
+    if (!isValid()) {
+      alert("모든 값을 제대로 입력해주세요.");
+      return;
     }
+    const response = await signInService(userLogInData);
+
+    if (!isSuccess(response)) {
+      alert(response.data.message);
+      return;
+    }
+    auth.test(response.data);
+    alert("로그인되었습니다.");
+    history.replace("/articles");
   };
 
   return (
