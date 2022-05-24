@@ -6,7 +6,6 @@ import com.example.reactspringbootboardtutorial.authentication.filter.CustomAuth
 import com.example.reactspringbootboardtutorial.authentication.filter.ExceptionHandlerFilter;
 import com.example.reactspringbootboardtutorial.authentication.filter.JwtAuthenticationFilter;
 import com.example.reactspringbootboardtutorial.authentication.service.CustomUserDetailsService;
-import com.example.reactspringbootboardtutorial.constants.Permission;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,8 +57,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .permitAll()
                     .antMatchers(HttpMethod.GET, "/v1/articles")
                         .permitAll()
-                    .antMatchers(HttpMethod.DELETE, "/v1/articles/**")
-                        .hasRole(Permission.ADMIN.getName())
                     .antMatchers("/swagger-ui/**")
                         .permitAll()
                     .antMatchers("/webjars/**")
