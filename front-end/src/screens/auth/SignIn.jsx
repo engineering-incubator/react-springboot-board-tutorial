@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { signInApi } from "../../api/authApi";
+import { useFetchAuth } from "../../api/hooks/useFetchAuth";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
 import Template from "../../components/common/Template";
@@ -9,6 +10,7 @@ const SignIn = () => {
 	const history = useHistory();
 	const [id, setId] = useState();
 	const [password, setPassword] = useState();
+	// const whoami = useFetchAuth();
 
 	const signUpHandler = async () => {
 		const response = await signInApi({
@@ -17,10 +19,11 @@ const SignIn = () => {
 		if (!response.isSuccess) {
 			return alert(response.message)
 		}
-
 		alert("로그인이 성공했습니다.")
 		history.push("/");
 	}
+
+
 
 	return (
 		<>

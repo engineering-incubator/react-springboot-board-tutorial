@@ -1,5 +1,15 @@
 import client from "./client";
 
+export const whoami = async() => {
+    try {
+        const response = await client.post('/api/v1/authentication/whoami');
+        console.log(response.data)
+        return response.data;
+    } catch (e) {
+        return e;
+    }
+}
+
 export const register = async(
     data
 ) => {
@@ -19,10 +29,11 @@ export const register = async(
     }
 }
 
-export const signInApi = async ({ username, password }) => {
+export const signInApi = async({ username, password }) => {
     try {
         void await client.post('/api/v1/authentication/sign-in', {
-            username, password
+            username,
+            password
         });
 
         return {
