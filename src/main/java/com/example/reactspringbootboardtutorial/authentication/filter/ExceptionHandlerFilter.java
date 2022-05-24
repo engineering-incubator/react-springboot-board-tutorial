@@ -2,9 +2,8 @@ package com.example.reactspringbootboardtutorial.authentication.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

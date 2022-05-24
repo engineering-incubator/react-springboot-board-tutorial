@@ -8,6 +8,13 @@ import FloatingButton from '../../components/article/WritingButton';
 import Template from '../../components/common/Template';
 import { useFetchArticleList } from '../../api/hooks/useFetchArticle';
 import '../../styles/pagination.css';
+import styled from 'styled-components';
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
+`;
+
 const ArticleList = () => {
   const articleList = useFetchArticleList();
   const [page, setPage] = useState(1);
@@ -18,11 +25,10 @@ const ArticleList = () => {
     <>
       <Template title="게시글 둘러보기">
         {articleList.map((article) => (
-          <Link to={`/article/` + article.article_id} key={article.article_id}>
+          <StyledLink to={`/article/` + article.article_id} key={article.article_id}>
             <ArticleItem data={article} />
-          </Link>
+          </StyledLink>
         ))}
-      </Template>
       <Pagination
         activePage={page}
         itemsCountPerPage={10}
@@ -32,17 +38,8 @@ const ArticleList = () => {
         nextPageText={'›'}
         onChange={handlePageChange}
       />
+      </Template>
 
-      <FloatingButton
-        text="홈"
-        onClick={() => (document.location.href = '/')}
-        style={{ bottom: 160 }}
-      />
-      <FloatingButton
-        text="글목록"
-        onClick={() => (document.location.href = '/article')}
-        style={{ bottom: 80 }}
-      />
       <FloatingButton
         text="글쓰기"
         onClick={() => (document.location.href = '/article/create')}
