@@ -22,14 +22,13 @@ const Article = () => {
     alert('글이 삭제되었습니다.');
     history.push('/article');
 	};
-	console.log(article.article_id)
   return (
     <>
       <Template title="글 상세">
         <ArticleDetail data={article} />
         <Link
           to={{
-            pathname: `/article/update/` + article.article_id,
+            pathname: `/article/update/` + article?.article_id,
             state: { article },
           }}
         >

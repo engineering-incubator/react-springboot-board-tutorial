@@ -47,6 +47,7 @@ export function useFetchTotalArticleList() {
       setTotalArticleList(response.data);
     })();
   }, [setTotalArticleList]);
+  console.log(totalArticleList.length)
 
   return totalArticleList;
 }

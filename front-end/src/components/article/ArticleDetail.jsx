@@ -11,7 +11,8 @@ export const ArticleContainer = styled.div`
 `;
 
 const ArticleDetail = (data) => {
-	const { article_id, title, content, created_at, modified_at } = data.data;
+	const { article_id, title, content, created_at, modified_at } = data?.data;
+	console.log(data.data)
 	return (
 		<>
 			<ArticleContainer>
