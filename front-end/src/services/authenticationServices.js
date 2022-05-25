@@ -6,13 +6,12 @@ export async function signInService(data) {
     return signInResponse;
   }
   const whoAmIResponse = await whoAmIApi();
-
   if (!whoAmIResponse.isSuccess) {
     return signInResponse;
   }
 
   return {
     isSuccess: true,
-    data: whoAmIResponse.data.content,
+    data: whoAmIResponse.data,
   };
 }

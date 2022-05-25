@@ -7,7 +7,7 @@ import {
   NavigateLink,
   Title,
 } from "../components/style/globalStyle";
-import { parseFormattedDate } from "../utilites/castDate";
+import { parseFormattedDate } from "../utilites/parseFormattedDate";
 import theme from "../components/style/theme";
 import { fetchLatestArticleListsService } from "../services/articleServices";
 

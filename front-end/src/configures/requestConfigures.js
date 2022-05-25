@@ -1,5 +1,5 @@
-import axios from "axios";
 import React from "react";
+import axios from "axios";
 import { isSuccess } from "../utilites/validates/httpValidation";
 
 export const requester = axios.create({
@@ -26,7 +26,6 @@ export default async function requester1(url, method = "GET", data) {
         data: response.data.content,
       };
     }
-
     return {
       isSuccess: false,
       data: null,

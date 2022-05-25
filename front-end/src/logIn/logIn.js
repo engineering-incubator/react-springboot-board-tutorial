@@ -5,13 +5,12 @@ import {
   passwordValidates,
   userNameValidates,
 } from "../signUp/utilites/inputValidation";
-import { isSuccess } from "../utilites/validates/httpValidation";
-import { useProvideAuth } from "../context/useProvideAuth";
 import { signInService } from "../services/authenticationServices";
+import { useAuth } from "../context/ProvideAuth";
 
 export default function LogIn() {
   const history = useHistory();
-  const auth = useProvideAuth();
+  const auth = useAuth();
   const [usernameErrorMessage, setUsernameErrorMessage] = useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
@@ -62,14 +61,16 @@ export default function LogIn() {
       alert("모든 값을 제대로 입력해주세요.");
       return;
     }
-    const response = await signInService(userLogInData);
 
-    if (!isSuccess(response)) {
-      alert(response.data.message);
+    const response = await signInService(userLogInData);
+    if (!response.isSuccess) {
+      alert(response.message);
       return;
     }
-    auth.test(response.data);
+    auth.setUserInfo(response.data);
     alert("로그인되었습니다.");
+
+    //TODO 왔던 곳으로 다시 돌려주기 state: location from
     history.replace("/articles");
   };
 

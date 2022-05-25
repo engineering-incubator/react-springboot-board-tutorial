@@ -8,7 +8,7 @@ import "./pagination.css";
 import { requester } from "../configures/requestConfigures";
 import styled from "styled-components";
 import { Button, Container, Title } from "../components/style/globalStyle";
-import { parseFormattedDate } from "../utilites/castDate";
+import { parseFormattedDate } from "../utilites/parseFormattedDate";
 
 export default function ArticleList() {
   const history = useHistory();
