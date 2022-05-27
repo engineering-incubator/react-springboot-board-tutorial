@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 import useArticleItem from '../hooks/api/useArticleItem';
 import {
   StyledCommonFlexContainer,
@@ -15,9 +16,12 @@ import { generateDate } from '../utils';
 import { colors } from '../styles/variables';
 import { useRecoilValue } from 'recoil';
 import { whoamiState } from '../recoil/signin';
+import { deleteArticleItem } from '../api';
+import { isSuccessStatus } from '../config/status.code.config';
 
 const ArticleView = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { isSignin, username } = useRecoilValue(whoamiState);
   const { articleId = '' } = useParams();
   const { data, isSuccess, isLoading } = useArticleItem(articleId);
@@ -38,12 +42,25 @@ const ArticleView = () => {
 
   if (!data?.content || !isSuccess) return null;
 
-  const { author, content, created_at, modified_at, title } = data.content;
+  const { article_id, author, content, created_at, modified_at, title } = data.content;
 
   const purifyingDom = DOMPurify.sanitize(content);
   const isModified = created_at !== modified_at;
   const onClickGoBack = () => {
     navigate(-1);
+  };
+  const onClickDelete = async () => {
+    const { code } = await queryClient.fetchQuery(['delete', article_id], () =>
+      deleteArticleItem(`${article_id}`),
+    );
+    const isSuccess = isSuccessStatus(code);
+    if (isSuccess) {
+      if (!confirm('정말 게시글을 삭제하시겠습니까?')) return;
+      alert('게시글이 삭제 되었습니다.');
+      navigate('/articles');
+      return;
+    }
+    alert('잠시 후 다시 시도해 주십시오');
   };
 
   return (
@@ -65,7 +82,7 @@ const ArticleView = () => {
             <StyledCommonPositiveButton onClick={() => navigate(`/article/write/${articleId}`)}>
               수정
             </StyledCommonPositiveButton>
-            <StyledCommonWranningButton>삭제</StyledCommonWranningButton>
+            <StyledCommonWranningButton onClick={onClickDelete}>삭제</StyledCommonWranningButton>
           </>
         )}
       </StyledCommonFlexContainer>

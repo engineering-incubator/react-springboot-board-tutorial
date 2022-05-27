@@ -47,11 +47,8 @@ export const updateArticleItem = async <T>(
 ): Promise<ExternalResponse<ArticleItemType>> =>
   await requestClient({ method: 'put', url: `/api/v1/articles/${articleId}`, data });
 
-export const deleteArticleItem = async <T>(
-  data: T,
-  articleId: string,
-): Promise<ExternalResponse<ArticleItemType>> =>
-  await requestClient({ method: 'delete', url: `/api/v1/articles/${articleId}`, data });
+export const deleteArticleItem = async (articleId: string) =>
+  await requestClient({ method: 'delete', url: `/api/v1/articles/${articleId}` });
 
 // FIXME LoginParamsType 이 response 가 맞나?
 export const loginRequest = async (
