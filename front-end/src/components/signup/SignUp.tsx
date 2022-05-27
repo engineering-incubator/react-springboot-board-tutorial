@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useRef } from 'react';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import InputText, { focusRef } from '../common/InputText';
 import InputRadio from '../common/InputRadio';
 import { inputValidation, getValidationReg, typeValidation } from '../../utils/index';
@@ -30,10 +31,11 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const elRef = useRef<focusRef>(null);
-  const { input, valid } = useSignupState();
+  const navigate = useNavigate();
   const dispatch = useSignupDispatch();
+  const elRef = useRef<focusRef>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { input, valid } = useSignupState();
   const { username, password, email, phoneNumber, permission } = input;
   const {
     username: validUsername,
@@ -102,7 +104,7 @@ const SignUp = () => {
           setIsLoading((prev) => {
             closeToast();
             if (isSuccess) {
-              window.location.href = '/articles';
+              navigate('/articles');
             }
             return !prev;
           });
@@ -119,7 +121,7 @@ const SignUp = () => {
         position: 'top-center',
         theme: 'dark',
         autoClose: isSuccess ? 2000 : false,
-        onClose: isSuccess ? () => (window.location.href = '/articles') : undefined,
+        onClose: isSuccess ? () => navigate('/articles') : undefined,
         closeButton: CloseButton,
       });
     })();

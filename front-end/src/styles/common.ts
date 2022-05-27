@@ -4,7 +4,7 @@ import { colors } from '../styles/variables';
 import { ToastContainer } from 'react-toastify';
 
 export const StyledCommonWrap = styled.main`
-  padding: 0 10px;
+  padding: 0 15px;
   background-color: ${colors.black};
 `;
 

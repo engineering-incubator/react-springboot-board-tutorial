@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArticleItemType } from '../../hooks/api/useArticles';
 import styled from '@emotion/styled';
 import { StyledCommonBlind } from '../../styles/common';
@@ -7,9 +8,13 @@ import { generateDate } from '../../utils';
 
 const ArticleItem = ({ data }: { data: ArticleItemType }) => {
   const { article_id, title, author, created_at, modified_at } = data;
+  const navigate = useNavigate();
+  const onClickItem = () => {
+    navigate(`/article/${article_id}`);
+  };
 
   return (
-    <StyledArticleRow href={`/article/${article_id}`} role="row">
+    <StyledArticleRow onClick={onClickItem} role="row">
       <StyledCommonBlind as={'span'} role="cell">
         {article_id}
       </StyledCommonBlind>

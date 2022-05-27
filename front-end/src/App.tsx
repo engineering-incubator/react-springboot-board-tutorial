@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from './Router';
-import Header from './components/common/Header';
 import { Global } from '@emotion/react';
 import { globalStyles } from './styles/global-styles';
 import { QueryParamProvider } from 'use-query-params';
@@ -24,7 +23,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <QueryParamProvider>
         <Global styles={globalStyles} />
-        <Header />
         <Suspense fallback={<div>Loading...</div>}>
           <Router />
         </Suspense>

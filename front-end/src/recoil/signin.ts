@@ -1,14 +1,16 @@
 import { atom } from 'recoil';
 
-interface SigninType {
+interface WhoamiType {
   isSignin: boolean;
   username: string;
+  permission: string;
 }
 
-export const signinState = atom<SigninType>({
-  key: 'signinState',
+export const whoamiState = atom<WhoamiType>({
+  key: 'whoamiState',
   default: {
     isSignin: false,
     username: '',
+    permission: '',
   },
 });

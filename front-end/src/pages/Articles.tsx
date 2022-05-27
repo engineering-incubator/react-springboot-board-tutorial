@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useArticles from '../hooks/api/useArticles';
+import { useNavigate } from 'react-router-dom';
 import { useQueryParam, withDefault, NumberParam } from 'use-query-params';
 import Loading from '../components/common/Loading';
 import ArticleItem from '../components/article/ArticleItem';
@@ -14,6 +15,7 @@ import {
 import Pagination from '../components/common/Pagination';
 
 const Articles = () => {
+  const navigate = useNavigate();
   const [query, setQuery] = useQueryParam('currentPage', withDefault(NumberParam, 1));
   const [currentPage, setCurrentPage] = useState(query);
   const [totalElements, setTotalElements] = useState(0);
@@ -36,7 +38,7 @@ const Articles = () => {
     setQuery(pageNumber);
   };
 
-  const onClickGoToPostPage = () => (window.location.href = '/article/write');
+  const onClickGoToPostPage = () => navigate('/article/write');
 
   return (
     <>
@@ -82,10 +84,6 @@ const Articles = () => {
 };
 
 const StyledArticles = styled.article``;
-
-const StyledArticlesHeader = styled.div`
-  width: 100%;
-`;
 
 const StyledEmpty = styled.section`
   display: flex;

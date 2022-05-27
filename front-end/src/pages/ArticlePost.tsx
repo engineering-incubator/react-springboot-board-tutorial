@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { ExternalResponse } from '../@types/response';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 import InputText, { focusRef } from '../components/common/InputText';
 import { useParams } from 'react-router-dom';
@@ -10,6 +9,7 @@ import {
   StyledCommonToastContainer,
   StyledCommonClosePopup,
 } from '../styles/common';
+import { useNavigate } from 'react-router-dom';
 import Textarea from '../components/common/Textarea';
 import { createArticleItem, updateArticleItem } from '../api';
 import ErrorNotice from '../components/common/ErrorNotice';
@@ -32,6 +32,7 @@ interface PostContent {
 const ArticlePost = () => {
   const { articleId = '' } = useParams();
   const { data } = useArticleItem(articleId);
+  const navigate = useNavigate();
   const textFieldRef = useRef<focusRef>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [textField, setTextField] = useState<PostContent>({
@@ -115,7 +116,7 @@ const ArticlePost = () => {
           setIsLoading((prev) => {
             closeToast();
             if (isSuccess) {
-              window.location.href = '/';
+              navigate('/');
             }
             return !prev;
           });
@@ -132,7 +133,7 @@ const ArticlePost = () => {
         position: 'top-center',
         theme: 'dark',
         autoClose: isSuccess ? 2000 : false,
-        onClose: isSuccess ? () => (window.location.href = '/articles') : undefined,
+        onClose: isSuccess ? () => navigate('/articles') : undefined,
         closeButton: CloseButton,
       });
     })();

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useArticleItem from '../hooks/api/useArticleItem';
 import {
@@ -13,21 +13,22 @@ import Loading from '../components/common/Loading';
 import DOMPurify from 'dompurify';
 import { generateDate } from '../utils';
 import { colors } from '../styles/variables';
-import { useRecoilState } from 'recoil';
-import { signinState } from '../recoil/signin';
+import { useRecoilValue } from 'recoil';
+import { whoamiState } from '../recoil/signin';
 
 const ArticleView = () => {
   const navigate = useNavigate();
-  const [{ isSignin }] = useRecoilState(signinState);
+  const { isSignin, username } = useRecoilValue(whoamiState);
   const { articleId = '' } = useParams();
   const { data, isSuccess, isLoading } = useArticleItem(articleId);
+  const isValidUser = useMemo(() => username === data?.content.author, [data?.content, username]);
 
   useEffect(() => {
     if (isSignin) return;
     if (
       !confirm('로그인을 하셔야 게시글을 열람하실 수 있습니다\n로그인 페이지로 이동하시겠습니까?')
     ) {
-      window.history.back();
+      navigate(-1);
       return;
     }
     navigate('/signin');
@@ -42,7 +43,7 @@ const ArticleView = () => {
   const purifyingDom = DOMPurify.sanitize(content);
   const isModified = created_at !== modified_at;
   const onClickGoBack = () => {
-    window.history.back();
+    navigate(-1);
   };
 
   return (
@@ -59,11 +60,14 @@ const ArticleView = () => {
         <StyledTextarea dangerouslySetInnerHTML={{ __html: purifyingDom }} />
       </StyledContent>
       <StyledCommonFlexContainer justify={'space-between'}>
-        {/* FIXME auth check 후 render */}
-        <StyledCommonPositiveButton onClick={() => navigate(`/article/write/${articleId}`)}>
-          수정
-        </StyledCommonPositiveButton>
-        <StyledCommonWranningButton>삭제</StyledCommonWranningButton>
+        {isValidUser && (
+          <>
+            <StyledCommonPositiveButton onClick={() => navigate(`/article/write/${articleId}`)}>
+              수정
+            </StyledCommonPositiveButton>
+            <StyledCommonWranningButton>삭제</StyledCommonWranningButton>
+          </>
+        )}
       </StyledCommonFlexContainer>
       <StyledCommonFlexContainer>
         <StyledCommonNegativeButton role="link" onClick={onClickGoBack}>

@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import qs from 'qs';
 import { ArticleItemType, ArticlesParams } from '../hooks/api/useArticles';
-import { LoginDataType } from '../hooks/api/useLogin';
+import { LoginResponseType, LoginParamsType } from '../hooks/api/useLogin';
 import { ExternalResponse } from '../@types/response';
 
 export const httpClient = axios.create({
@@ -53,9 +53,18 @@ export const deleteArticleItem = async <T>(
 ): Promise<ExternalResponse<ArticleItemType>> =>
   await requestClient({ method: 'delete', url: `/api/v1/articles/${articleId}`, data });
 
-export const loginRequest = async (data: LoginDataType): Promise<ExternalResponse<LoginDataType>> =>
+// FIXME LoginParamsType 이 response 가 맞나?
+export const loginRequest = async (
+  data: LoginParamsType,
+): Promise<ExternalResponse<LoginResponseType>> =>
   await requestClient({
     method: 'post',
     url: '/api/v1/authentication/sign-in',
     data,
+  });
+
+export const whoamiRequest = async (): Promise<ExternalResponse<LoginResponseType>> =>
+  await requestClient({
+    method: 'get',
+    url: '/api/v1/authentication/whoami',
   });

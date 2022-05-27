@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import {
   StyledCommonWrap,
+  StyledCommonTitle,
   StyledCommonInputWrap,
   StyledCommonPositiveButton,
   StyledCommonToastContainer,
@@ -12,14 +14,18 @@ import { isSuccessStatus } from '../config/status.code.config';
 import InputText, { focusRef } from '../components/common/InputText';
 import ErrorNotice from '../components/common/ErrorNotice';
 import Loading from '../components/common/Loading';
+import { useSetRecoilState } from 'recoil';
+import { whoamiState } from '../recoil/signin';
 import { toast, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Signin = () => {
   const { requstLogin } = useLogin();
+  const setLoginStatus = useSetRecoilState(whoamiState);
+  const navigate = useNavigate();
   const [isValid, setIsValid] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [text, setText] = useState({
+  const [userInfo, setUserInfo] = useState({
     username: '',
     password: '',
   });
@@ -27,12 +33,12 @@ const Signin = () => {
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.currentTarget;
-    setText((currVal) => ({
+    setUserInfo((currVal) => ({
       ...currVal,
       [name]: value,
     }));
   };
-  const isExistEmptyField = !!Object.entries(text).filter((i) => !i[1]).length;
+  const isExistEmptyField = !!Object.entries(userInfo).filter((i) => !i[1]).length;
 
   // NOTE onClick이 keydown에도 타는건가..!?
   const onClickLogin = () => {
@@ -43,13 +49,13 @@ const Signin = () => {
 
     (async () => {
       setIsLoading(true);
-      const { code } = await requstLogin(text);
+      const { code, content } = await requstLogin(userInfo);
       const isSuccess = isSuccessStatus(code);
 
       const CloseButton = ({ closeToast }: { closeToast: () => void }) => {
         const onClickClose = () => {
           if (isSuccess) {
-            window.location.href = '/articles';
+            navigate('/articles');
           }
           setIsLoading(false);
           closeToast();
@@ -73,10 +79,16 @@ const Signin = () => {
         return;
       }
 
+      setLoginStatus({
+        isSignin: true,
+        username: content.username,
+        permission: content.permission,
+      });
+
       toast.success('로그인에 성공하였습니다.\n잠시후 게시판으로 이동 합니다.', {
         ...toastOptions,
         autoClose: 2000,
-        onClose: () => (window.location.href = '/articles'),
+        onClose: () => navigate('/articles'),
         closeButton: CloseButton,
       });
       setIsValid(true);
@@ -97,11 +109,12 @@ const Signin = () => {
       {isLoading && <Loading isFull={true} msg={'로그인 중입니다. 잠시만 기다려주십시오.'} />}
       <StyledCommonToastContainer />
       <StyledCommonWrap>
+        <StyledCommonTitle>로그인</StyledCommonTitle>
         <StyledCommonInputWrap>
           <InputText
             type="text"
             isInValid={false}
-            value={text.username}
+            value={userInfo.username}
             name="username"
             text="아이디"
             onChangeInput={onChangeInput}
@@ -113,7 +126,7 @@ const Signin = () => {
             ref={passwordRef}
             type="password"
             isInValid={false}
-            value={text.password}
+            value={userInfo.password}
             name="password"
             text="페스워드"
             onChangeInput={onChangeInput}
@@ -128,7 +141,8 @@ const Signin = () => {
           isPositive={!isExistEmptyField}
           disabled={isExistEmptyField}
           onClick={onClickLogin}
-          onKeyDown={(e) => onKeydownLogin(e)}>
+          // onKeyDown={(e) => onKeydownLogin(e)}
+        >
           로그인
         </StyledButton>
       </StyledCommonWrap>
