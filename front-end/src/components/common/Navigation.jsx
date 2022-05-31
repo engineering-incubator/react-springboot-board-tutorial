@@ -49,9 +49,9 @@ const Navigation = () => {
       <Route path="/signUp" component={SignUp} />
       <Route path="/signIn" component={SignIn} />
       <Route path="/article" component={ArticleList} exact/>
+      <Route path="/article/create" component={CreateArticle} exact/>
       <Route path="/article/:article_id" component={Article} exact/>
       <Route path="/article/update/:article_id" component={UpdateArticle} exact/>
-      <Route path="/article/create" component={CreateArticle} exact/>
     </>
   );
 };

@@ -2,8 +2,7 @@ import client from "./client";
 
 export const whoami = async() => {
     try {
-        const response = await client.post('/api/v1/authentication/whoami');
-        console.log(response.data)
+        const response = await client.get('/api/v1/authentication/whoami');
         return response.data;
     } catch (e) {
         return e;
