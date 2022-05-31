@@ -8,10 +8,4 @@ export function PrivateRoute({ ...rest }) {
     return <Route {...rest} />;
   }
   return <Redirect to="/login" />;
-  // return (
-  //   <Route
-  //     {...rest}
-  //     render={() => (auth.isLoggedIn() ?  : <Redirect to="/login" />)}
-  //   />
-  // );
 }

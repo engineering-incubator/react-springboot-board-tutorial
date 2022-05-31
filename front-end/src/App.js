@@ -19,7 +19,6 @@ function App() {
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={LogIn} />
         <Route exact path="/" component={Home} />
-        {/*<PrivateRoute path="/articles/:articleId">*/}
         <PrivateRoute
           exact
           path="/articles/:articleId"
@@ -30,8 +29,6 @@ function App() {
           path="/articles/:articleId/edit"
           component={ArticleEditMock}
         />
-        {/*</PrivateRoute>*/}
-
         <Route path="/articles" component={ArticleList} />
         <Route path="/article-write" component={ArticleWrite} />
       </Switch>
