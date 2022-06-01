@@ -14,12 +14,14 @@ public class AuthenticationService {
 
     return UserDetailsDto.builder()
         .username(userDetails.getUsername())
-        .permissions(
+        .permission(
             userDetails
                 .getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList())
+                .get(0)
+                .substring(5)
         ).build();
   }
 }
