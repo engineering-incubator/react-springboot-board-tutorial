@@ -29,7 +29,7 @@ export const getTotalArticleList = async() => {
         );
         return {
             isSuccess: true,
-            data: response.items,
+            data: response,
         };
     } catch (e) {
         return {

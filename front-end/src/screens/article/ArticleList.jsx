@@ -20,7 +20,6 @@ const ArticleList = () => {
   const SIZE = 5;
   const articleList = useFetchArticleList(page, SIZE);
   const totalItems = useFetchTotalArticleList();
-
   const handlePageChange = (page) => {
     setPage(page);
   };
@@ -38,7 +37,7 @@ const ArticleList = () => {
         <Pagination
           activePage={page}
           itemsCountPerPage={SIZE}
-          totalItemsCount={totalItems.length}
+          totalItemsCount={totalItems.totalElements || totalItems.length}
           pageRangeDisplayed={5}
           prevPageText={'‹'}
           nextPageText={'›'}

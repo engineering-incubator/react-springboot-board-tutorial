@@ -12,10 +12,10 @@ const Article = () => {
   const article = useFetchArticle();
   const params = useParams();
   const history = useHistory();
+  console.log(params.article_id);
 
   const requestDelete = async () => {
     const result = await deleteArticle(params.article_id);
-    console.log(result);
     if (isFailureStatus(result.code)) {
       return alert(result.message);
     }
