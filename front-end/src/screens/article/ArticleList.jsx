@@ -28,7 +28,7 @@ const ArticleList = () => {
       <Template title="게시글 둘러보기">
         {articleList.map((article) => (
           <StyledLink
-            to={`/article/` + article.article_id}
+            to={`/article/detail/` + article.article_id}
             key={article.article_id}
           >
             <ArticleItem data={article} />

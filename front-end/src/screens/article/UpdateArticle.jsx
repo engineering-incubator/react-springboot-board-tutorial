@@ -24,7 +24,7 @@ const UpdateArticle = (props) => {
       return alert(result.message);
     }
     alert('글이 수정되었습니다.');
-    document.location.href = `/article/${params.article_id}`;
+    document.location.href = `/article/detail/${params.article_id}`;
   };
   
   return (
