@@ -1,5 +1,11 @@
 # react-springboot-board-tutorial
+---
+### 순서
+- [API 인터페이스 확인하는 법](https://github.com/engineering-incubator/react-springboot-board-tutorial/edit/ynw/README.md#api-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4-%ED%99%95%EC%9D%B8%ED%95%98%EB%8A%94-%EB%B2%95)
+- [Features](https://github.com/engineering-incubator/react-springboot-board-tutorial/edit/ynw/README.md#features)
+- [결과물](https://github.com/engineering-incubator/react-springboot-board-tutorial/edit/ynw/README.md#%EA%B2%B0%EA%B3%BC%EB%AC%BC)
 
+---
 ### API 인터페이스 확인하는 법
 
 1. Tomcat 서버를 실행시킨다. (intelliJ로 실행을 시키거나 ./gradlew bootRun 명령어를 통해 실행시킨다.)
@@ -62,3 +68,6 @@
       "content": "example-content"
     }
     ```
+
+### 결과물
+
