@@ -25,8 +25,7 @@ const Article = () => {
   return (
     <>
       <Template title="글 상세">
-        <p>임시로 글 상세가 안보이게 해둔 상태</p>
-        {/* <ArticleDetail data={article} /> */}
+        <ArticleDetail data={article} />
         <Link
           to={{
             pathname: `/article/update/` + article?.article_id,

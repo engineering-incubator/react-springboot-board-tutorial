@@ -45,13 +45,15 @@ const Navigation = () => {
           <StyledLink to="/article">게시글로 이동</StyledLink>
         </Category>
       </Nav>
+      <Switch>
         <Route path="/" component={Home} exact></Route>
         <Route path="/signUp" component={SignUp} />
         <Route path="/signIn" component={SignIn} />
         <Route path="/article" component={ArticleList} exact />
         <Route path="/article/update/:article_id" component={UpdateArticle} />
         <Route path="/article/create" component={CreateArticle} />
-        <Route path="/article/:article_id(\\d+)" component={Article} exact />
+        <Route path="/article/:article_id" component={Article} exact />
+      </Switch>
     </>
   );
 };
