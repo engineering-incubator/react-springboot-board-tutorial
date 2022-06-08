@@ -11,7 +11,7 @@ import CreateArticle from '../../screens/article/CreateArticle';
 
 const Nav = styled.div`
   margin: 0 auto;
-  width: 430px;
+  width: 450px;
 `;
 const Category = styled.div`
   color: #000;
@@ -45,13 +45,13 @@ const Navigation = () => {
           <StyledLink to="/article">게시글로 이동</StyledLink>
         </Category>
       </Nav>
-        <Route path="/" component={Home} exact></Route>
-        <Route path="/signUp" component={SignUp} />
-        <Route path="/signIn" component={SignIn} />
-        <Route path="/article" component={ArticleList} exact />
-        <Route path="/article/update/:article_id" component={UpdateArticle} />
-        <Route path="/article/create" component={CreateArticle} />
-        <Route path="/article/detail/:article_id" component={Article} exact />
+      <Route path="/" component={Home} exact></Route>
+      <Route path="/signUp" component={SignUp} />
+      <Route path="/signIn" component={SignIn} />
+      <Route path="/article" component={ArticleList} exact />
+      <Route path="/article/update/:article_id" component={UpdateArticle} />
+      <Route path="/article/create" component={CreateArticle} />
+      <Route path="/article/detail/:article_id" component={Article} exact />
     </>
   );
 };
