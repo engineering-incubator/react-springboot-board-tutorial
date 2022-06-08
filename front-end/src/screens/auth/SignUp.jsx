@@ -19,10 +19,39 @@ const PERMISSIONS = [
 ];
 const reducer = (state, action) => {
   // TODO reducer 의 철학에 위배 되는 듯 하다.. Plain object 형태를 넣어줘야 할듯 하다. DOM 을 넣는 건 쫌......
-  return {
-    ...state,
-    [action.name]: action.value,
-  };
+  switch (action.name) {
+    case 'username':
+      return {
+        ...state,
+        [action.name]: action.value,
+      };
+    case 'password':
+      return {
+        ...state,
+        [action.name]: action.value,
+      };
+    case 'passwordConfirm':
+      return {
+        ...state,
+        [action.name]: action.value,
+      };
+    case 'permisson':
+      return {
+        ...state,
+        [action.name]: action.value,
+      };
+    case 'email':
+      return {
+        ...state,
+        [action.name]: action.value,
+      };
+    case 'phoneNumber':
+      return {
+        ...state,
+        [action.name]: action.value,
+      };
+    default: return state;
+  }
 };
 
 const SignUp = () => {
